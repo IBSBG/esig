@@ -74,10 +74,10 @@
             <id>maven central</id>
             <url>https://repo1.maven.org/maven2/</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
         </repository>
         <repository>
@@ -95,10 +95,10 @@
             <id>joinup-dss-thirdparty</id>
             <url>http://joinup.ec.europa.eu/site/sd-dss/maven2</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
         <!-- This will disable repository lookup that comes from transitive dependency -->
@@ -107,10 +107,10 @@
             <id>maven2-repository.dev.java.net</id>
             <url>http://download.java.net/maven/2/</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
         <repository>
