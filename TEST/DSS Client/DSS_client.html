@@ -1,0 +1,110 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Подписване на файлове</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+
+    <link rel="stylesheet" href="styles.css?v=1.0">
+</head>
+
+<body>
+
+<div class="content">
+    <form method="post" enctype="multipart/form-data">
+        <h1>Демонстрационно приложение за подписване</h1>
+        <hr>
+        <h3>Файл за подписване</h3>
+        <input type="file" id="file" name="file" value="Изберете файл">
+
+        <h3>Контейнер</h3>
+        <div>
+            <input type="radio" checked id="containerNo" name="container" value="no">
+            <label for="containerNo">No</label>
+
+            <input type="radio" id="containerASiC-S" name="container" value="asic-s">
+            <label for="containerASiC-S">ASiC-S</label>
+
+            <input type="radio" id="containerASiC-E" name="container" value="asic-e">
+            <label for="containerASiC-E">ASiC-E</label>
+        </div>
+
+        <h3>Формат на подписа</h3>
+        <div>
+            <input type="radio" id="signatureFormatXAdES" name="signatureFormat" value="xades">
+            <label for="signatureFormatXAdES">XAdES</label>
+
+            <input type="radio" id="signatureFormatCAdES" name="signatureFormat" value="cades">
+            <label for="signatureFormatCAdES">CAdES</label>
+
+            <input type="radio" id="signatureFormatPAdES" name="signatureFormat" value="pades">
+            <label for="signatureFormatPAdES">PAdES</label>
+
+            <input type="radio" id="signatureFormatJAdES" name="signatureFormat" value="jades">
+            <label for="signatureFormatJAdES">JAdES</label>
+        </div>
+
+        <h3>Тип на подписа</h3>
+        <div>
+            <input type="radio" id="packagingFormatEnveloped" name="packagingFormat" value="enveloped">
+            <label for="packagingFormatEnveloped">Enveloped</label>
+
+            <input type="radio" id="packagingFormatEnveloping" name="packagingFormat" value="enveloping">
+            <label for="packagingFormatEnveloping">Enveloping</label>
+
+            <input type="radio" id="packagingFormatDetached" name="packagingFormat" value="detached">
+            <label for="packagingFormatDetached">Detached</label>
+
+            <input type="radio" id="packagingFormatInternallyDetached" name="packagingFormat" value="internally_detached">
+            <label for="packagingFormatInternallyDetached">Internally detached</label>
+        </div>
+
+        <h3>Ниво на подписa</h3>
+        <div>
+            <input type="radio" id="signatureLevelBASELINE_B" name="signatureLevel" value="baseline_b">
+            <label for="signatureLevelBASELINE_B">BASELINE_B</label>
+
+            <input type="radio" id="signatureLevelBASELINE_T" name="signatureLevel" value="baseline_t">
+            <label for="signatureLevelBASELINE_T">BASELINE_T</label>
+
+            <input type="radio" id="signatureLevelBASELINE_LT" name="signatureLevel" value="baseline_lt">
+            <label for="signatureLevelBASELINE_LT">BASELINE_LT</label>
+
+            <input type="radio" id="signatureLevelBASELINE_LTA" name="signatureLevel" value="baseline_lta">
+            <label for="signatureLevelBASELINE_LTA">BASELINE_LTA</label>
+        </div>
+
+        <h3>Хеш алгоритъм</h3>
+        <div>
+            <input type="radio" id="digestAlgorithmSHA1" name="digestAlgorithm" value="sha1">
+            <label for="digestAlgorithmSHA1">SHA1</label>
+
+            <input type="radio" id="digestAlgorithmSHA256" name="digestAlgorithm" value="sha256">
+            <label for="digestAlgorithmSHA256">SHA256</label>
+
+            <input type="radio" id="digestAlgorithmSHA384" name="digestAlgorithm" value="sha384">
+            <label for="digestAlgorithmSHA384">SHA384</label>
+
+            <input type="radio" id="digestAlgorithmSHA512" name="digestAlgorithm" value="sha512">
+            <label for="digestAlgorithmSHA512">SHA512</label>
+        </div>
+        <br>
+        <br>
+        <button disabled id="submitButton" type="submit">Submit</button>
+    </form>
+
+    <br>
+    <div>
+        <p id="message" class="message"><strong>Неуспешно свързване с локалната компонента!</strong></p>
+    </div>
+</div>
+
+<script src="scripts.js"></script>
+<script type="application/javascript">
+    checkAgentStatus();
+</script>
+</body>
+</html>
