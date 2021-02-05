@@ -8,7 +8,7 @@ function checkAgentStatus() {
             console.log(JSON.parse(request.response).version);
             if ("1.23-SNAPSHOT" === responseText) {
                 document.getElementById("message").style.color = "green";
-                document.getElementById("message").innerText = "Успешно свързване с локалната компонента!";
+                document.getElementById("message").innerText = "Успешно свързване с NexU локална компонента!";
                 document.getElementById("submitButton").disabled = false;
             }
         } else {
