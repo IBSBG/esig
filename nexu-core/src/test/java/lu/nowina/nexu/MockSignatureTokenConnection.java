@@ -17,10 +17,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
 import eu.europa.esig.dss.model.DSSException;
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.enumerations.MaskGenerationFunction;
-import eu.europa.esig.dss.SignatureAlgorithm;
+import eu.europa.esig.dss.model.Digest;
 import eu.europa.esig.dss.model.SignatureValue;
 import eu.europa.esig.dss.model.ToBeSigned;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
@@ -56,6 +57,16 @@ public class MockSignatureTokenConnection implements SignatureTokenConnection {
 	public SignatureValue sign(ToBeSigned toBeSigned, DigestAlgorithm digestAlgorithm, MaskGenerationFunction mgf,
 			DSSPrivateKeyEntry keyEntry) throws DSSException {
 		return new SignatureValue(SignatureAlgorithm.RSA_SSA_PSS_SHA256_MGF1, "value".getBytes());
+	}
+
+	@Override
+	public SignatureValue signDigest(Digest digest, DSSPrivateKeyEntry dssPrivateKeyEntry) throws DSSException {
+		return null;
+	}
+
+	@Override
+	public SignatureValue signDigest(Digest digest, MaskGenerationFunction maskGenerationFunction, DSSPrivateKeyEntry dssPrivateKeyEntry) throws DSSException {
+		return null;
 	}
 
 }

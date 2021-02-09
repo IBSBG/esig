@@ -1,18 +1,17 @@
 package lu.nowina.nexu;
 
+import eu.europa.esig.dss.enumerations.CertificateSourceType;
+import eu.europa.esig.dss.enumerations.KeyUsageBit;
+import eu.europa.esig.dss.enumerations.QCStatement;
+import eu.europa.esig.dss.model.x509.CertificateToken;
+import eu.europa.esig.dss.spi.DSSASN1Utils;
+import eu.europa.esig.dss.spi.DSSUtils;
+import eu.europa.esig.dss.spi.x509.CertificatePolicy;
+
 import java.io.File;
 import java.util.List;
 import java.util.Set;
 
-import org.bouncycastle.asn1.x509.IssuerSerial;
-
-import eu.europa.esig.dss.CertificatePolicy;
-import eu.europa.esig.dss.DSSASN1Utils;
-import eu.europa.esig.dss.DSSUtils;
-import eu.europa.esig.dss.QCStatementOids;
-import eu.europa.esig.dss.tsl.KeyUsageBit;
-import eu.europa.esig.dss.x509.CertificateSourceType;
-import eu.europa.esig.dss.x509.CertificateToken;
 
 public class DssTest {
 
@@ -35,12 +34,12 @@ public class DssTest {
 		List<String> qcStatementsIdList = DSSASN1Utils.getQCStatementsIdList(certificateToken);
 		System.out.println(qcStatementsIdList);
 
-		for (QCStatementOids oid : QCStatementOids.values()) {
+		for (QCStatement oid : QCStatement.values()) {
 
 			System.out.println(oid + " " + oid.getOid() + " " + oid.getDescription());
 		}
 
-		Set<KeyUsageBit> keyUsageBits = certificateToken.getKeyUsageBits();
+		List<KeyUsageBit> keyUsageBits = certificateToken.getKeyUsageBits();
 		for (KeyUsageBit keyUsageBit : keyUsageBits) {
 			System.out.println(keyUsageBit);
 		}
@@ -51,13 +50,13 @@ public class DssTest {
 		System.out
 				.println("Other data : " + DSSASN1Utils.get(certificateToken.getIssuerX500Principal()).get("2.5.4.3"));
 		System.out.println("Extended key usage : " + DSSASN1Utils.getExtendedKeyUsage(certificateToken));
-		Set<KeyUsageBit> kubs = certificateToken.getKeyUsageBits();
+		List<KeyUsageBit> kubs = certificateToken.getKeyUsageBits();
 		for (KeyUsageBit kub : kubs) {
 			System.out.println("Usage : " + kub.name() + " | " + kub.toString());
 		}
-		Set<CertificateSourceType> set = certificateToken.getSources();
-		for(CertificateSourceType cst : set) {
-			System.out.println(cst);
-		}
+//		Set<CertificateSourceType> set = certificateToken.getSources();
+//		for(CertificateSourceType cst : set) {
+//			System.out.println(cst);
+//		}
 	}
 }

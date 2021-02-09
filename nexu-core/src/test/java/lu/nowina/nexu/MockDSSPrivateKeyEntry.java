@@ -13,10 +13,10 @@
  */
 package lu.nowina.nexu;
 
+import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
 import eu.europa.esig.dss.model.DSSException;
-import eu.europa.esig.dss.EncryptionAlgorithm;
+import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
-import eu.europa.esig.dss.x509.CertificateToken;
 
 public class MockDSSPrivateKeyEntry implements DSSPrivateKeyEntry {
 
