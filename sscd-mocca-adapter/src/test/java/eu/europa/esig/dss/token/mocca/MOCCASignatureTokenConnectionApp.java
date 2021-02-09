@@ -29,11 +29,11 @@ package eu.europa.esig.dss.token.mocca;
 import java.security.KeyStore.PasswordProtection;
 import java.util.List;
 
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import eu.europa.esig.dss.model.SignatureValue;
+import eu.europa.esig.dss.model.ToBeSigned;
 import org.bouncycastle.util.encoders.Base64;
 
-import eu.europa.esig.dss.DigestAlgorithm;
-import eu.europa.esig.dss.SignatureValue;
-import eu.europa.esig.dss.ToBeSigned;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
 import eu.europa.esig.dss.token.PrefilledPasswordCallback;
 

@@ -68,10 +68,10 @@
     </licenses>
 
     <repositories>
-<!--        <repository>-->
-<!--            <id>E-Government Innovationszentrum - EGIZ</id>-->
-<!--            <url>https://apps.egiz.gv.at/maven/</url>-->
-<!--        </repository>-->
+        <repository>
+            <id>E-Government Innovationszentrum - EGIZ</id>
+            <url>https://apps.egiz.gv.at/maven/</url>
+        </repository>
         <repository>
             <id>cefdigital</id>
             <name>cefdigital</name>
