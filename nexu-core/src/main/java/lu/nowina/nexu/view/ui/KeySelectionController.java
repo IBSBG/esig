@@ -13,6 +13,7 @@
  */
 package lu.nowina.nexu.view.ui;
 
+import eu.europa.esig.dss.enumerations.QCStatement;
 import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.spi.DSSASN1Utils;
 import eu.europa.esig.dss.spi.DSSUtils;
@@ -159,10 +160,10 @@ public class KeySelectionController extends AbstractUIOperationController<DSSPri
     private List<ImageView> getQCIcons(final CertificateToken certificateToken) throws IOException {
         final List<ImageView> qcIconsImages = new ArrayList<>();
         final List<String> qcStatements = DSSASN1Utils.getQCStatementsIdList(certificateToken);
-        if (qcStatements.contains(QCStatementOids.QC_COMPLIANCE.getOid())) {
+        if (qcStatements.contains(QCStatement.QC_COMPLIANCE.getOid())) {
             qcIconsImages.add(this.fetchImage(ICON_QC));
         }
-        if (qcStatements.contains(QCStatementOids.QC_SSCD.getOid())) {
+        if (qcStatements.contains(QCStatement.QC_SSCD.getOid())) {
             qcIconsImages.add(this.fetchImage(ICON_QCSD));
         }
         if (qcIconsImages.isEmpty()) {

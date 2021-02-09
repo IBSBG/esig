@@ -74,7 +74,7 @@ public class CreateTokenOperation extends AbstractCompositeOperation<Map<TokenOp
             boolean advanced = false;
             if (this.api.getAppConfig().isAdvancedModeAvailable() && this.api.getAppConfig().isEnablePopUps()) {
                 LOG.info("Advanced mode available");
-                final OperationResult<Void> result =
+                final OperationResult<Object> result =
                         this.operationFactory.getOperation(UIOperation.class, "/fxml/unsupported-product.fxml",
                                 new Object[]{this.api.getAppConfig().getApplicationName()}).perform();
                 if(result.getStatus().equals(BasicOperationStatus.SUCCESS)) {
@@ -142,7 +142,7 @@ public class CreateTokenOperation extends AbstractCompositeOperation<Map<TokenOp
         switch (result.getResult()) {
             case MOCCA:
                 tokenId = this.api.registerTokenConnection(
-                        new MOCCASignatureTokenConnectionAdapter(new MOCCASignatureTokenConnection(
+                        (SignatureTokenConnection) new MOCCASignatureTokenConnectionAdapter(new MOCCASignatureTokenConnection(
                                 this.display.getPasswordInputCallback()), this.api, selectedCard));
                 break;
             case MSCAPI:
