@@ -39,6 +39,7 @@
         <module>nexu-https-plugin</module>
         <module>nexu-windows-keystore-plugin</module>
         <module>nexu-multi-user-support</module>
+        <module>sscd-mocca-adapter</module>
     </modules>
 
     <properties>
@@ -49,7 +50,7 @@
         <dss.version>5.7</dss.version>
         <slf4j.version>1.7.12</slf4j.version>
         <jna.version>4.2.2</jna.version>
-<!--        <mocca.version>1.3.30</mocca.version>-->
+        <!--        <mocca.version>1.3.30</mocca.version>-->
     </properties>
 
     <scm>
@@ -67,6 +68,10 @@
     </licenses>
 
     <repositories>
+<!--        <repository>-->
+<!--            <id>E-Government Innovationszentrum - EGIZ</id>-->
+<!--            <url>https://apps.egiz.gv.at/maven/</url>-->
+<!--        </repository>-->
         <repository>
             <id>cefdigital</id>
             <name>cefdigital</name>
@@ -236,7 +241,7 @@
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>
-<!--                                    <additionalparam>-Xdoclint:none</additionalparam>-->
+                                    <!--                                    <additionalparam>-Xdoclint:none</additionalparam>-->
                                     <quiet>true</quiet>
                                 </configuration>
                             </execution>

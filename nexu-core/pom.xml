@@ -19,9 +19,8 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<groupId>lu.nowina.apps</groupId>
 			<artifactId>sscd-mocca-adapter</artifactId>
-			<version>5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>lu.nowina.apps</groupId>
@@ -72,9 +71,8 @@
 	        <scope>test</scope>
   		</dependency>
 		<dependency>
-			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<groupId>lu.nowina.apps</groupId>
 			<artifactId>sscd-mocca-adapter</artifactId>
-			<version>5.4</version>
 		</dependency>
 	</dependencies>
 
