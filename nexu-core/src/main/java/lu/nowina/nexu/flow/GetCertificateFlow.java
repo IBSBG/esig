@@ -101,7 +101,7 @@ class GetCertificateFlow extends AbstractCoreFlow<GetCertificateRequest, GetCert
     								final CertificateToken certificate = key.getCertificate();
     								resp.setCertificate(certificate);
     								resp.setKeyId(certificate.getDSSIdAsString());
-    								resp.setEncryptionAlgorithm(certificate.getEncryptionAlgorithm());
+    								resp.setEncryptionAlgorithm(certificate.getSignatureAlgorithm().getEncryptionAlgorithm());
 
     								final CertificateToken[] certificateChain = key.getCertificateChain();
     								if (certificateChain != null) {
