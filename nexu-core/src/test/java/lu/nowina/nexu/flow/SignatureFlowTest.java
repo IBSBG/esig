@@ -43,8 +43,8 @@ import lu.nowina.nexu.view.core.UIOperation;
 import org.junit.Assert;
 import org.junit.Test;
 
-import eu.europa.esig.dss.DigestAlgorithm;
-import eu.europa.esig.dss.ToBeSigned;
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import eu.europa.esig.dss.model.ToBeSigned;
 import eu.europa.esig.dss.token.JKSSignatureToken;
 import eu.europa.esig.dss.token.SignatureTokenConnection;
 

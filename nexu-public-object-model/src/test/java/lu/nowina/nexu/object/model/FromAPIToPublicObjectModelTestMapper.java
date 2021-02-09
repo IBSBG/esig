@@ -13,11 +13,11 @@
  */
 package lu.nowina.nexu.object.model;
 
-import java.util.Map;
-
+import eu.europa.esig.dss.model.SignatureValue;
+import lu.nowina.nexu.object.model.GetIdentityInfoResponse.Gender;
 import org.mapstruct.Mapper;
 
-import lu.nowina.nexu.object.model.GetIdentityInfoResponse.Gender;
+import java.util.Map;
 
 /**
  * This test <code>MapStruct</code> mapper is used only to ease the maintenance
@@ -52,7 +52,7 @@ public interface FromAPIToPublicObjectModelTestMapper {
 	CertificateFilter mapCertificateFilter(lu.nowina.nexu.api.CertificateFilter certificateFilter);
 	Feedback mapFeedback(lu.nowina.nexu.api.Feedback feedback);
 	TokenId mapTokenId(lu.nowina.nexu.api.TokenId tokenId);
-	ToBeSigned mapToBeSigned(eu.europa.esig.dss.ToBeSigned toBeSigned);
+	ToBeSigned mapToBeSigned(eu.europa.esig.dss.model.ToBeSigned toBeSigned);
 	FeedbackStatus mapFeedbackStatus(lu.nowina.nexu.api.FeedbackStatus feedbackStatus);
 	EnvironmentInfo mapEnvironmentInfo(lu.nowina.nexu.api.EnvironmentInfo environmentInfo);
 	JREVendor mapJREVendor(lu.nowina.nexu.api.JREVendor jreVendor);
@@ -60,7 +60,7 @@ public interface FromAPIToPublicObjectModelTestMapper {
 	OS mapOS(lu.nowina.nexu.api.OS os);
 	Purpose mapPurpose(lu.nowina.nexu.api.Purpose purpose);
 	Gender mapGender(lu.nowina.nexu.api.GetIdentityInfoResponse.Gender gender);
-	SignatureValue mapSignatureValue(eu.europa.esig.dss.SignatureValue signatureValue);
+	SignatureValue mapSignatureValue(eu.europa.esig.dss.model.SignatureValue signatureValue);
 	IdentityInfoSignatureData mapIndentityInfoSignatureData(lu.nowina.nexu.api.IdentityInfoSignatureData iisd);
 	Map<String, IdentityInfoSignatureData> mapIndentityInfoSignatureData(Map<String, lu.nowina.nexu.api.IdentityInfoSignatureData> map);
 }

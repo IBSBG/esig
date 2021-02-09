@@ -13,37 +13,20 @@
  */
 package lu.nowina.nexu;
 
+import at.gv.egiz.smcc.util.LinuxLibraryFinder;
+import com.sun.jna.*;
+import lu.nowina.nexu.api.DetectedCard;
+import lu.nowina.nexu.api.EnvironmentInfo;
+import lu.nowina.nexu.api.OS;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.smartcardio.*;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.smartcardio.ATR;
-import javax.smartcardio.Card;
-import javax.smartcardio.CardException;
-import javax.smartcardio.CardTerminal;
-import javax.smartcardio.CardTerminals;
-import javax.smartcardio.TerminalFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.sun.jna.IntegerType;
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
-import com.sun.jna.NativeMappedConverter;
-import com.sun.jna.Platform;
-import com.sun.jna.Pointer;
-
-import lu.nowina.nexu.api.DetectedCard;
-import lu.nowina.nexu.api.EnvironmentInfo;
-import lu.nowina.nexu.api.OS;
+import java.util.*;
 
 /**
  * Detects smartcard.
@@ -65,7 +48,7 @@ public class CardDetector {
 		if (info.getOs() == OS.LINUX) {
 			logger.info("The OS is Linux, we check for Library");
 			try {
-				final File libFile = at.gv.egiz.smcc.util.LinuxLibraryFinder.getLibraryPath("pcsclite", "1");
+				final File libFile = LinuxLibraryFinder.getLibraryPath("pcsclite", "1");
 				if (libFile != null) {
 					logger.info("Library installed is at " + libFile.getAbsolutePath());
 					System.setProperty("sun.security.smartcardio.library", libFile.getAbsolutePath());

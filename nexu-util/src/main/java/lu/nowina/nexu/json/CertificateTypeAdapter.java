@@ -13,20 +13,13 @@
  */
 package lu.nowina.nexu.json;
 
-import java.lang.reflect.Type;
-
+import com.google.gson.*;
+import eu.europa.esig.dss.model.x509.CertificateToken;
+import eu.europa.esig.dss.spi.DSSUtils;
 import org.apache.commons.codec.binary.Base64;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import java.lang.reflect.Type;
 
-import eu.europa.esig.dss.DSSUtils;
-import eu.europa.esig.dss.x509.CertificateToken;
 
 public class CertificateTypeAdapter implements JsonSerializer<CertificateToken>, JsonDeserializer<CertificateToken> {
 

@@ -13,33 +13,26 @@
  */
 package lu.nowina.nexu.generic;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.smartcardio.Card;
-import javax.smartcardio.CardException;
-import javax.smartcardio.CardTerminal;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import at.gv.egiz.smcc.CancelledException;
-import at.gv.egiz.smcc.CardNotSupportedException;
-import at.gv.egiz.smcc.SignatureCard;
-import at.gv.egiz.smcc.SignatureCardFactory;
-import at.gv.egiz.smcc.TimeoutException;
-import eu.europa.esig.dss.DSSException;
-import eu.europa.esig.dss.DigestAlgorithm;
-import eu.europa.esig.dss.MaskGenerationFunction;
-import eu.europa.esig.dss.SignatureValue;
-import eu.europa.esig.dss.ToBeSigned;
+import at.gv.egiz.smcc.*;
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import eu.europa.esig.dss.enumerations.MaskGenerationFunction;
+import eu.europa.esig.dss.model.DSSException;
+import eu.europa.esig.dss.model.SignatureValue;
+import eu.europa.esig.dss.model.ToBeSigned;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
-import eu.europa.esig.dss.token.SignatureTokenConnection;
 import eu.europa.esig.dss.token.mocca.MOCCASignatureTokenConnection;
 import lu.nowina.nexu.CancelledOperationException;
 import lu.nowina.nexu.api.DetectedCard;
 import lu.nowina.nexu.api.NexuAPI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.smartcardio.Card;
+import javax.smartcardio.CardException;
+import javax.smartcardio.CardTerminal;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This adapter class allows to manage {@link CancelledOperationException} and {@link SignatureCard}.
@@ -47,7 +40,7 @@ import lu.nowina.nexu.api.NexuAPI;
  * @author Jean Lepropre (jean.lepropre@nowina.lu)
  */
 @SuppressWarnings("restriction")
-public class MOCCASignatureTokenConnectionAdapter implements SignatureTokenConnection {
+public class MOCCASignatureTokenConnectionAdapter {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(MOCCASignatureTokenConnectionAdapter.class.getSimpleName());
 	
@@ -122,13 +115,8 @@ public class MOCCASignatureTokenConnectionAdapter implements SignatureTokenConne
 				t = t.getCause();
 			}
 			// Rethrow exception as is.
-			throw e;
+			throw new DSSException(e.getMessage());
 		}
-	}
-
-	@Deprecated
-	public SignatureValue sign(ToBeSigned toBeSigned, DigestAlgorithm digestAlgorithm, DSSPrivateKeyEntry keyEntry) throws DSSException {
-		return sign(toBeSigned, digestAlgorithm,null, keyEntry);
 	}
 
 	@Override
@@ -152,4 +140,5 @@ public class MOCCASignatureTokenConnectionAdapter implements SignatureTokenConne
 			throw e;
 		}
 	}
+
 }

@@ -16,7 +16,7 @@ package lu.nowina.nexu.generic;
 import java.io.File;
 import java.util.List;
 
-import eu.europa.esig.dss.DigestAlgorithm;
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
 import eu.europa.esig.dss.token.MSCAPISignatureToken;
 import eu.europa.esig.dss.token.PasswordInputCallback;

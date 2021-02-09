@@ -13,33 +13,22 @@
  */
 package lu.nowina.nexu.flow.operation;
 
+import eu.europa.esig.dss.token.MSCAPISignatureToken;
+import eu.europa.esig.dss.token.SignatureTokenConnection;
+import eu.europa.esig.dss.token.mocca.MOCCASignatureTokenConnection;
+import lu.nowina.nexu.api.*;
+import lu.nowina.nexu.api.flow.BasicOperationStatus;
+import lu.nowina.nexu.api.flow.OperationResult;
+import lu.nowina.nexu.generic.*;
+import lu.nowina.nexu.model.Pkcs11Params;
+import lu.nowina.nexu.view.core.UIOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import eu.europa.esig.dss.token.MSCAPISignatureToken;
-import eu.europa.esig.dss.token.SignatureTokenConnection;
-import eu.europa.esig.dss.token.mocca.MOCCASignatureTokenConnection;
-import lu.nowina.nexu.api.DetectedCard;
-import lu.nowina.nexu.api.Match;
-import lu.nowina.nexu.api.NexuAPI;
-import lu.nowina.nexu.api.Product;
-import lu.nowina.nexu.api.ProductAdapter;
-import lu.nowina.nexu.api.ScAPI;
-import lu.nowina.nexu.api.TokenId;
-import lu.nowina.nexu.api.flow.BasicOperationStatus;
-import lu.nowina.nexu.api.flow.OperationResult;
-import lu.nowina.nexu.generic.ConnectionInfo;
-import lu.nowina.nexu.generic.GenericCardAdapter;
-import lu.nowina.nexu.generic.MOCCASignatureTokenConnectionAdapter;
-import lu.nowina.nexu.generic.Pkcs11SignatureTokenAdapter;
-import lu.nowina.nexu.generic.SCInfo;
-import lu.nowina.nexu.model.Pkcs11Params;
-import lu.nowina.nexu.view.core.UIOperation;
 
 /**
  * This {@link CompositeOperation} allows to create a {@link TokenId}.

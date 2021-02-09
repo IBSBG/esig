@@ -13,14 +13,13 @@
  */
 package lu.nowina.nexu.generic;
 
-import javax.xml.bind.JAXBContext;
-
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import lu.nowina.nexu.api.EnvironmentInfo;
+import lu.nowina.nexu.api.ScAPI;
 import org.junit.Assert;
 import org.junit.Test;
 
-import eu.europa.esig.dss.DigestAlgorithm;
-import lu.nowina.nexu.api.EnvironmentInfo;
-import lu.nowina.nexu.api.ScAPI;
+import javax.xml.bind.JAXBContext;
 
 public class SCDatabaseTest {
 

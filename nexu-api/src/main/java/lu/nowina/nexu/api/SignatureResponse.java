@@ -13,9 +13,9 @@
  */
 package lu.nowina.nexu.api;
 
-import eu.europa.esig.dss.SignatureAlgorithm;
-import eu.europa.esig.dss.SignatureValue;
-import eu.europa.esig.dss.x509.CertificateToken;
+import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
+import eu.europa.esig.dss.model.SignatureValue;
+import eu.europa.esig.dss.model.x509.CertificateToken;
 
 public class SignatureResponse {
 

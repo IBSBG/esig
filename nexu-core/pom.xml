@@ -24,20 +24,6 @@
 			<version>5.4</version>
 		</dependency>
 		<dependency>
-			<groupId>at.gv.egiz</groupId>
-			<artifactId>smcc</artifactId>
-		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.openjfx</groupId>-->
-<!--			<artifactId>javafx-controls</artifactId>-->
-<!--			<version>15.0.1</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.openjfx</groupId>-->
-<!--			<artifactId>javafx-fxml</artifactId>-->
-<!--			<version>15.0.1</version>-->
-<!--		</dependency>-->
-		<dependency>
 			<groupId>lu.nowina.apps</groupId>
 			<artifactId>nexu-model</artifactId>
 			<version>${project.version}</version>
@@ -54,9 +40,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>lu.nowina.apps</groupId>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-token</artifactId>
-			<version>1.23-SNAPSHOT</version>
+			<version>${dss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-asic-cades</artifactId>
+			<version>${dss.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -80,6 +71,11 @@
 	        <version>${powermock.version}</version>
 	        <scope>test</scope>
   		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>sscd-mocca-adapter</artifactId>
+			<version>5.4</version>
+		</dependency>
 	</dependencies>
 
 	<properties>

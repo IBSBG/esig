@@ -13,7 +13,7 @@
  */
 package lu.nowina.nexu.object.model;
 
-import eu.europa.esig.dss.x509.CertificateToken;
+import eu.europa.esig.dss.model.x509.CertificateToken;
 
 /**
  * Util mappers.

@@ -20,6 +20,8 @@ package lu.nowina.nexu.object.model;
  * 
  * @author Jean Lepropre (jean.lepropre@nowina.lu)
  */
+import eu.europa.esig.dss.model.SignatureValue;
+
 public class IdentityInfoSignatureData {
 
 	private String rawData;

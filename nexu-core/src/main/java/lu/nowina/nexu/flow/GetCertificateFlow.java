@@ -13,38 +13,22 @@
  */
 package lu.nowina.nexu.flow;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
 import eu.europa.esig.dss.token.SignatureTokenConnection;
-import eu.europa.esig.dss.x509.CertificateToken;
-import lu.nowina.nexu.api.Execution;
-import lu.nowina.nexu.api.GetCertificateRequest;
-import lu.nowina.nexu.api.GetCertificateResponse;
-import lu.nowina.nexu.api.Match;
-import lu.nowina.nexu.api.NexuAPI;
-import lu.nowina.nexu.api.Product;
-import lu.nowina.nexu.api.ProductAdapter;
-import lu.nowina.nexu.api.TokenId;
+import lu.nowina.nexu.api.*;
 import lu.nowina.nexu.api.flow.BasicOperationStatus;
 import lu.nowina.nexu.api.flow.Operation;
 import lu.nowina.nexu.api.flow.OperationResult;
-import lu.nowina.nexu.flow.operation.AdvancedCreationFeedbackOperation;
-import lu.nowina.nexu.flow.operation.ConfigureProductOperation;
-import lu.nowina.nexu.flow.operation.CoreOperationStatus;
-import lu.nowina.nexu.flow.operation.CreateTokenOperation;
-import lu.nowina.nexu.flow.operation.GetMatchingProductAdaptersOperation;
-import lu.nowina.nexu.flow.operation.GetTokenConnectionOperation;
-import lu.nowina.nexu.flow.operation.SaveProductOperation;
-import lu.nowina.nexu.flow.operation.SelectPrivateKeyOperation;
-import lu.nowina.nexu.flow.operation.TokenOperationResultKey;
+import lu.nowina.nexu.flow.operation.*;
 import lu.nowina.nexu.view.core.UIDisplay;
 import lu.nowina.nexu.view.core.UIOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 class GetCertificateFlow extends AbstractCoreFlow<GetCertificateRequest, GetCertificateResponse> {
 

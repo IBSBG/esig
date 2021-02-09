@@ -13,38 +13,22 @@
  */
 package lu.nowina.nexu.rest;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import eu.europa.esig.dss.model.ToBeSigned;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.bind.DatatypeConverter;
-
+import lu.nowina.nexu.api.*;
+import lu.nowina.nexu.api.plugin.*;
+import lu.nowina.nexu.json.GsonHelper;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.europa.esig.dss.DigestAlgorithm;
-import eu.europa.esig.dss.ToBeSigned;
-import lu.nowina.nexu.api.AuthenticateRequest;
-import lu.nowina.nexu.api.CertificateFilter;
-import lu.nowina.nexu.api.Execution;
-import lu.nowina.nexu.api.Feedback;
-import lu.nowina.nexu.api.FeedbackStatus;
-import lu.nowina.nexu.api.GetCertificateRequest;
-import lu.nowina.nexu.api.GetIdentityInfoRequest;
-import lu.nowina.nexu.api.NexuAPI;
-import lu.nowina.nexu.api.NexuRequest;
-import lu.nowina.nexu.api.Purpose;
-import lu.nowina.nexu.api.SignatureRequest;
-import lu.nowina.nexu.api.TokenId;
-import lu.nowina.nexu.api.plugin.HttpPlugin;
-import lu.nowina.nexu.api.plugin.HttpRequest;
-import lu.nowina.nexu.api.plugin.HttpResponse;
-import lu.nowina.nexu.api.plugin.HttpStatus;
-import lu.nowina.nexu.api.plugin.InitializationMessage;
-import lu.nowina.nexu.json.GsonHelper;
+import javax.xml.bind.DatatypeConverter;
+import java.util.Collections;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
  * Default implementation of HttpPlugin for NexU.

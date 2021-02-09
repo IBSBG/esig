@@ -44,9 +44,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>lu.nowina.apps</groupId>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-token</artifactId>
-			<version>1.23-SNAPSHOT</version>
+			<version>${dss.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

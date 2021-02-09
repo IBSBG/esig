@@ -13,11 +13,11 @@
  */
 package lu.nowina.nexu.api;
 
-import java.util.List;
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
+import eu.europa.esig.dss.model.x509.CertificateToken;
 
-import eu.europa.esig.dss.DigestAlgorithm;
-import eu.europa.esig.dss.EncryptionAlgorithm;
-import eu.europa.esig.dss.x509.CertificateToken;
+import java.util.List;
 
 public class GetCertificateResponse {
 

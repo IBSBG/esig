@@ -13,16 +13,15 @@
  */
 package lu.nowina.nexu.api;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import eu.europa.esig.dss.DigestAlgorithm;
-import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.token.PasswordInputCallback;
 import eu.europa.esig.dss.token.SignatureTokenConnection;
 import lu.nowina.nexu.api.flow.FutureOperationInvocation;
 import lu.nowina.nexu.api.flow.NoOpFutureOperationInvocation;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Convenient base class for {@link ProductAdapter}s supporting {@link DetectedCard}s.

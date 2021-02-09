@@ -13,17 +13,12 @@
  */
 package lu.nowina.nexu.generic;
 
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import lu.nowina.nexu.api.EnvironmentInfo;
+
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import eu.europa.esig.dss.DigestAlgorithm;
-import lu.nowina.nexu.api.EnvironmentInfo;
 
 /**
  * SCInfo contains information about a SmartCard, such as known ATR, label, downloadUrl for drivers, infoUrl for information, ...

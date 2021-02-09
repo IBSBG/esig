@@ -13,19 +13,21 @@
  */
 package lu.nowina.nexu.object.model;
 
-import org.junit.Test;
-
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import eu.europa.esig.dss.DigestAlgorithm;
-import eu.europa.esig.dss.EncryptionAlgorithm;
-import eu.europa.esig.dss.SignatureAlgorithm;
-import eu.europa.esig.dss.SignatureValue;
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
+import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
+import eu.europa.esig.dss.model.SignatureValue;
+import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.token.JKSSignatureToken;
-import eu.europa.esig.dss.x509.CertificateToken;
+import lu.nowina.nexu.api.flow.BasicOperationStatus;
+import lu.nowina.nexu.json.GsonHelper;
+import org.apache.commons.codec.binary.Base64;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore.PasswordProtection;
@@ -33,12 +35,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.codec.binary.Base64;
-import org.junit.Assert;
-
-import lu.nowina.nexu.api.flow.BasicOperationStatus;
-import lu.nowina.nexu.json.GsonHelper;
 
 /**
  * JUnit test class for JSON marshalling/unmarshalling.

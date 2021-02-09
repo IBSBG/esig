@@ -13,8 +13,8 @@
  */
 package lu.nowina.nexu.json.pojo;
 
+import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
-import eu.europa.esig.dss.x509.CertificateToken;
 
 public class TestWithCertificate {
 	

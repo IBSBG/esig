@@ -13,7 +13,7 @@
  */
 package lu.nowina.nexu.api;
 
-import eu.europa.esig.dss.ToBeSigned;
+import eu.europa.esig.dss.model.ToBeSigned;
 
 /**
  * Request used to perform the authentication.

@@ -15,6 +15,7 @@ package lu.nowina.nexu.object.model;
 
 import java.util.Map;
 
+import eu.europa.esig.dss.model.SignatureValue;
 import lu.nowina.nexu.object.model.GetIdentityInfoResponse.Gender;
 
 import org.mapstruct.Mapper;
@@ -59,7 +60,7 @@ public interface FromPublicObjectModelToAPITestMapper {
 	@Mapping(target="exception", ignore=true)
 	lu.nowina.nexu.api.Feedback mapFeedback(Feedback feedback);
 	lu.nowina.nexu.api.TokenId mapTokenId(TokenId tokenId);
-	eu.europa.esig.dss.ToBeSigned mapToBeSigned(ToBeSigned toBeSigned);
+	eu.europa.esig.dss.model.ToBeSigned mapToBeSigned(ToBeSigned toBeSigned);
 	lu.nowina.nexu.api.FeedbackStatus mapFeedbackStatus(FeedbackStatus feedbackStatus);
 	lu.nowina.nexu.api.EnvironmentInfo mapEnvironmentInfo(EnvironmentInfo environmentInfo);
 	lu.nowina.nexu.api.JREVendor mapJREVendor(JREVendor jreVendor);
@@ -67,7 +68,7 @@ public interface FromPublicObjectModelToAPITestMapper {
 	lu.nowina.nexu.api.OS mapOS(OS os);
 	lu.nowina.nexu.api.Purpose mapPurpose(Purpose purpose);
 	lu.nowina.nexu.api.GetIdentityInfoResponse.Gender mapGender(Gender gender);
-	eu.europa.esig.dss.SignatureValue mapSignatureValue(SignatureValue signatureValue);
+	eu.europa.esig.dss.model.SignatureValue mapSignatureValue(SignatureValue signatureValue);
 	lu.nowina.nexu.api.IdentityInfoSignatureData mapIndentityInfoSignatureData(IdentityInfoSignatureData iisd);
 	Map<String, lu.nowina.nexu.api.IdentityInfoSignatureData> mapIndentityInfoSignatureData(Map<String, IdentityInfoSignatureData> map);
 }

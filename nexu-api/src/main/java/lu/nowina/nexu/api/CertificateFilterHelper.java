@@ -1,12 +1,11 @@
 package lu.nowina.nexu.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import eu.europa.esig.dss.enumerations.KeyUsageBit;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
 import eu.europa.esig.dss.token.SignatureTokenConnection;
-import eu.europa.esig.dss.tsl.KeyUsageBit;
-import lu.nowina.nexu.api.CertificateFilter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides filtering capabilities for product adapters.
@@ -20,7 +19,7 @@ public class CertificateFilterHelper {
 		if (filter.getNonRepudiationBit()) {
 			List<DSSPrivateKeyEntry> filteredList = new ArrayList<>();
 			for (DSSPrivateKeyEntry entry : token.getKeys()) {
-				if (entry.getCertificate().checkKeyUsage(KeyUsageBit.nonRepudiation)) {
+				if (entry.getCertificate().checkKeyUsage(KeyUsageBit.NON_REPUDIATION)) {
 					filteredList.add(entry);
 				}
 			}
