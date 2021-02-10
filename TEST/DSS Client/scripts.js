@@ -17,6 +17,19 @@ function checkAgentStatus() {
     }
 }
 
+function sign(requestParameters) {
+    let request = new XMLHttpRequest();
+    request.open("POST", "http://localhost:9795/rest/signDoc");
+    request.send(JSON.stringify(requestParameters));
+    request.onload = () => {
+        if (request.status == 200) {
+            alert(request.response);
+        } else {
+            alert("ERROR status=" + request.status + " statusText=" + request.statusText);
+        }
+    }
+}
+
 document.addEventListener('submit', function (event) {
 
     // Prevent form from submitting to the server
@@ -24,27 +37,42 @@ document.addEventListener('submit', function (event) {
 
     let formData = new FormData(event.target);
     let file = formData.get('file');
+    let container = formData.get('container');
+    let signatureFormat = formData.get('signatureFormat');
+    let packagingFormat = formData.get('packagingFormat');
+    let signatureLevel = formData.get('signatureLevel');
+    let digestAlgorithm = formData.get('digestAlgorithm');
 
     alert(" Файл [" + file.name + "]" +
         "\n Размер на файла [" + file.size + " bytes]" +
-        "\n Контейнер [" + formData.get('container') + "]" +
-        "\n Формат на подписа [" + formData.get('signatureFormat') + "]" +
-        "\n Тип на подписа [" + formData.get('packagingFormat') + "]" +
-        "\n Ниво на подписa [" + formData.get('signatureLevel') + "]" +
-        "\n Хеш алгоритъм [" + formData.get('digestAlgorithm') + "]"
+        "\n Контейнер [" + container + "]" +
+        "\n Формат на подписа [" + signatureFormat + "]" +
+        "\n Тип на подписа [" + packagingFormat + "]" +
+        "\n Ниво на подписa [" + signatureLevel + "]" +
+        "\n Хеш алгоритъм [" + digestAlgorithm + "]"
     );
 
     let reader = new FileReader();
-    reader.onload = function () {
+    reader.onloadend = function () {
         let arrayBuffer = this.result;
-        let array = new Uint8Array(arrayBuffer);
-        let binaryString = String.fromCharCode.apply(null, array);
-        alert("Файл byte array [" + array + "]");
-        alert("Извикване на локална компонента за подписване с вече събраните данни!");
-        // document.querySelector('#result').innerHTML = arrayBuffer + '  '+arrayBuffer.byteLength;
-    }
-    reader.readAsArrayBuffer(file);
+        var fileInBase64Format = arrayBuffer.split(',')[1];
+        // alert(arrayBuffer)
+        // let fileByteArray = new Uint8Array(arrayBuffer);
+        // let binaryString = String.fromCharCode.apply(null, fileByteArray);
+        // alert("Файл byte array [" + fileByteArray + "]");
 
+        let requestParameters = {
+            signatureFormat:signatureFormat,
+            packagingFormat:packagingFormat,
+            signatureLevel:signatureLevel,
+            digestAlgorithm:digestAlgorithm,
+            fileForSignByteArray:fileInBase64Format
+        }
+
+        sign(requestParameters);
+    }
+    // reader.readAsArrayBuffer(file);
+    reader.readAsDataURL(file);
 });
 
 function changeSignatureLevel(signatureFormat) {

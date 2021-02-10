@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.DatatypeConverter;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +39,11 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class RestHttpPlugin implements HttpPlugin {
 
 	private static final Logger logger = LoggerFactory.getLogger(RestHttpPlugin.class.getName());
+
+	private Execution execution = null;
+	private Feedback feedback = null;
+	private GetCertificateResponse getCertificateResponse = null;
+	private GetSignDocRequest getSignDocRequest = null;
 
 	@Override
 	public List<InitializationMessage> init(String pluginId, NexuAPI api) {
@@ -62,9 +68,97 @@ public class RestHttpPlugin implements HttpPlugin {
 			return getIdentityInfo(api, payload);
 		case "/authenticate":
 			return authenticate(api, req, payload);
+		case "/signDoc":
+			return getSignDoc(api, req, payload);
 		default:
 			throw new RuntimeException("Target not recognized " + target);
 		}
+	}
+
+
+	private HttpResponse getSignDoc(NexuAPI api, HttpRequest req, String signDataPayload) {
+		String certificatesPayload = "";
+		HttpResponse httpResponse = getCertificates(api, req, certificatesPayload);
+		parseCertificateResponse(httpResponse);
+
+		logger.info("signDataPayload + " + signDataPayload);
+		if(execution != null
+				&& execution.isSuccess()
+				&& getCertificateResponse != null
+				&& getCertificateResponse.getCertificate() != null){
+			logger.info("SIGN FILE HERE");
+			parseSignDocRequestData(signDataPayload);
+
+//			{
+//				"tokenId": {
+//				"id": "0905084b-03f4-4aa0-a8df-bf48af49e8a1"
+//			},
+//				"keyId": "C-D14CA8F0E252E917827D29A4B15DF8D242D44040B92DF38120BB4B5D795B24B6",
+//					"toBeSigned": {
+//				"bytes": "MYIBFDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMC8GCSqGSIb3DQEJBDEiBCA/4jOymX8WhGmxPKzILzgoO5z2F2pLIPpW/ybZmGeDeDCBxgYLKoZIhvcNAQkQAi8xgbYwgbMwgbAwga0EINFMqPDiUukXgn0ppLFd+NJC1EBAuS3zgSC7S115WyS2MIGIMHykejB4MQswCQYDVQQGEwJCRzEYMBYGA1UEYRMPTlRSQkctMjAxMjMwNDI2MRIwEAYDVQQKEwlCT1JJQ0EgQUQxEDAOBgNVBAsTB0ItVHJ1c3QxKTAnBgNVBAMTIEItVHJ1c3QgT3BlcmF0aW9uYWwgUXVhbGlmaWVkIENBAgh8XwP6HytnCA=="
+//			},
+//				"digestAlgorithm": "SHA256"
+//			}
+//			signRequest(api, req, payload);
+		}
+
+		return httpResponse;
+	}
+
+	private void parseSignDocRequestData(String signDataPayload) {
+		logger.info("*** PARSE SIGN DOC REQUEST DATA START ***");
+		byte[] decodedBytes  = new byte[0];
+		try {
+			getSignDocRequest = GsonHelper.fromJson(signDataPayload, GetSignDocRequest.class);
+			decodedBytes = Base64.getDecoder().decode(getSignDocRequest.getFileBase64Format());
+			getSignDocRequest.setFileByteArray(decodedBytes);
+			logger.info("getSignDocRequest " + new String(decodedBytes));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		logger.info("*** PARSE SIGN DOC REQUEST DATA END ***");
+	}
+
+	private void parseCertificateResponse(HttpResponse httpResponse) {
+		logger.info("*** PARSE CERTIFICATE RESPONSE START ***");
+		try {
+			execution = GsonHelper.fromJson(httpResponse.getContent(), Execution.class);
+			if(execution != null){
+				logger.info("Success = " + execution.isSuccess());
+				logger.info("Error = " + execution.getError());
+				logger.info("ErrorMessage = " + execution.getErrorMessage());
+				if(execution.getResponse() != null){
+					String responseString = GsonHelper.toJson(execution.getResponse());
+					getCertificateResponse = GsonHelper.fromJson(responseString, GetCertificateResponse.class);
+					if(getCertificateResponse != null){
+						logger.info("Response -> tokenId -> id = " + getCertificateResponse.getTokenId().getId());
+						logger.info("Response -> KeyId = " + getCertificateResponse.getKeyId());
+						logger.info("Response -> certificate = " + getCertificateResponse.getCertificate());
+						logger.info("Response -> certificateChain = " + getCertificateResponse.getCertificateChain());
+//						for (CertificateToken certificateToken : getCertificateResponse.getCertificateChain()) {
+//							logger.info("Response -> certificateChain item = " + certificateToken.getCertificate());
+//						}
+						logger.info("Response -> encryptionAlgorithm = " + getCertificateResponse.getEncryptionAlgorithm());
+					}
+				}
+				if(execution.getFeedback() != null){
+					String feedbackString = GsonHelper.toJson(execution.getFeedback());
+					feedback = GsonHelper.fromJson(feedbackString, Feedback.class);
+					if(feedback != null){
+						logger.info("Feedback -> info -> jreVendor = " + feedback.getInfo().getJreVendor());
+						logger.info("Feedback -> info -> osName = " + feedback.getInfo().getOsName());
+						logger.info("Feedback -> info -> osArch = " + feedback.getInfo().getOsArch());
+						logger.info("Feedback -> info -> osVersion = " + feedback.getInfo().getOsVersion());
+						logger.info("Feedback -> info -> arch = " + feedback.getInfo().getArch());
+						logger.info("Feedback -> info -> os = " + feedback.getInfo().getOs());
+						logger.info("Feedback -> nexuVersion = " + feedback.getNexuVersion());
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		logger.info("*** PARSE CERTIFICATE RESPONSE END ***");
 	}
 
 	protected <T> Execution<T> returnNullIfValid(NexuRequest request) {
