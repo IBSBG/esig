@@ -55,7 +55,7 @@ document.addEventListener('submit', function (event) {
     let reader = new FileReader();
     reader.onloadend = function () {
         let arrayBuffer = this.result;
-        var fileInBase64Format = arrayBuffer.split(',')[1];
+        var fileBase64Format = arrayBuffer.split(',')[1];
         // alert(arrayBuffer)
         // let fileByteArray = new Uint8Array(arrayBuffer);
         // let binaryString = String.fromCharCode.apply(null, fileByteArray);
@@ -67,7 +67,7 @@ document.addEventListener('submit', function (event) {
             packagingFormat:packagingFormat,
             signatureLevel:signatureLevel,
             digestAlgorithm:digestAlgorithm,
-            fileForSignByteArray:fileInBase64Format
+            fileBase64Format:fileBase64Format
         }
 
         sign(requestParameters);
