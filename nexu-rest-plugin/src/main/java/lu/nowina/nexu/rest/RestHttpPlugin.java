@@ -88,7 +88,7 @@ public class RestHttpPlugin implements HttpPlugin {
 				&& getCertificateResponse.getCertificate() != null){
 			logger.info("SIGN FILE HERE");
 			parseSignDocRequestData(signDataPayload);
-
+			//todo get toBeSigned data from dss-demo-webapp
 //			{
 //				"tokenId": {
 //				"id": "0905084b-03f4-4aa0-a8df-bf48af49e8a1"
@@ -99,6 +99,10 @@ public class RestHttpPlugin implements HttpPlugin {
 //			},
 //				"digestAlgorithm": "SHA256"
 //			}
+			//todo use signRequest
+			//signRequest(api, req, payload);
+			//todo from response signRequest - Sign document in dss-demo-webapp
+
 //			signRequest(api, req, payload);
 		}
 
