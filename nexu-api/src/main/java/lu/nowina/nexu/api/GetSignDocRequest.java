@@ -15,12 +15,21 @@ package lu.nowina.nexu.api;
 
 public class GetSignDocRequest {
 
+	private String container;
 	private String signatureFormat;
 	private String packagingFormat;
 	private String signatureLevel;
 	private String digestAlgorithm;
 	private String fileBase64Format;
 	private byte[] fileByteArray;
+
+	public String getContainer() {
+		return container;
+	}
+
+	public void setContainer(String container) {
+		this.container = container;
+	}
 
 	public String getSignatureFormat() {
 		return signatureFormat;

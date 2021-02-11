@@ -62,6 +62,7 @@ document.addEventListener('submit', function (event) {
         // alert("Файл byte array [" + fileByteArray + "]");
 
         let requestParameters = {
+            container:container,
             signatureFormat:signatureFormat,
             packagingFormat:packagingFormat,
             signatureLevel:signatureLevel,
