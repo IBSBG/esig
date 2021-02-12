@@ -21,6 +21,8 @@ public class HttpResponse {
 
 	private HttpStatus httpStatus;
 
+	private String signedFileBase64;
+
 	public HttpResponse(String content, String contentType, HttpStatus status) {
 		this.content = content;
 		this.contentType = contentType;
@@ -43,4 +45,11 @@ public class HttpResponse {
 		return httpStatus;
 	}
 
+	public String getSignedFileBase64() {
+		return signedFileBase64;
+	}
+
+	public void setSignedFileBase64(String signedFileBase64) {
+		this.signedFileBase64 = signedFileBase64;
+	}
 }

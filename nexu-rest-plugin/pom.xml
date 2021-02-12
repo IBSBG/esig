@@ -43,7 +43,7 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
-			<artifactId>dss-pades</artifactId>
+			<artifactId>dss-pades-pdfbox</artifactId>
 			<version>5.8.RC1</version>
 			<scope>compile</scope>
 		</dependency>
@@ -74,12 +74,6 @@
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-service</artifactId>
-			<version>5.8.RC1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
-			<artifactId>dss-document</artifactId>
 			<version>5.8.RC1</version>
 			<scope>compile</scope>
 		</dependency>

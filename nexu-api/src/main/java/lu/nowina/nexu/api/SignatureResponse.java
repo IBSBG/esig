@@ -46,4 +46,5 @@ public class SignatureResponse {
 	public CertificateToken[] getCertificateChain() {
 		return certificateChain;
 	}
+
 }

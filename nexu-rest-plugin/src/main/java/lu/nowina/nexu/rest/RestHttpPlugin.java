@@ -117,7 +117,8 @@ public class RestHttpPlugin implements HttpPlugin {
 
 	private HttpResponse getSignDoc(NexuAPI api, HttpRequest req, String signDataPayload) {
 		String certificatesPayload = "";
-		HttpResponse httpGetCertificateResponse = getCertificates(api, req, certificatesPayload);
+		String signedDocumentBase64 = null;
+		HttpResponse httpGetCertificateResponse = getCertificates(api, req, certificatesPayload);// force window for select certificate
 		parseCertificateResponse(httpGetCertificateResponse);
 
 		logger.info("signDataPayload + " + signDataPayload);
@@ -139,32 +140,51 @@ public class RestHttpPlugin implements HttpPlugin {
 				logger.info("payloadForSign= " + payloadForSign);
 //				SignatureData signatureData = GsonHelper.fromJson(payloadForSign, SignatureData.class);
 				if(payloadForSign != null){
-					HttpResponse httpGetSignResponse = signRequest(api, req, payloadForSign);
+					HttpResponse httpGetSignResponse = signRequest(api, req, payloadForSign);// force window for pin code
 
-					signDocument(signatureRequest);
+					SignatureResponse signatureResponse = parseSignResponse(httpGetSignResponse);
+					if(signatureResponse != null){
+						signedDocumentBase64 = signDocument(signatureResponse);
+						httpGetCertificateResponse.setSignedFileBase64(signedDocumentBase64);
+					}
 				}
 			}
-
-			//todo from response signRequest - Sign document in dss-demo-webapp
-
-//			signRequest(api, req, payload);
 		}
 
 		return httpGetCertificateResponse;
 	}
 
-	public String signDocument(SignatureRequest signatureRequest) {
-		//todo !!!!!!!!!!!!
-		String encoded = Utils.toBase64(signatureRequest.getToBeSigned().getBytes());
+	private SignatureResponse parseSignResponse(HttpResponse httpGetSignResponse) {
+		logger.info("*** PARSE SIGN RESPONSE START ***");
+		execution = GsonHelper.fromJson(httpGetSignResponse.getContent(), Execution.class);
+		if(execution != null){
+			if(execution != null
+				&& execution.isSuccess()
+				&& execution.getResponse() != null){
+				String responseString = GsonHelper.toJson(execution.getResponse());
+				SignatureResponse signatureResponse = GsonHelper.fromJson(responseString, SignatureResponse.class);
+				return signatureResponse;
+			}
+
+		}
+		logger.info("*** PARSE SIGN RESPONSE END ***");
+		return null;
+	}
+
+	public String signDocument(SignatureResponse signatureResponse) {
+		String encoded = Utils.toBase64(signatureResponse.getSignatureValue());
 		signatureDocumentForm.setBase64SignatureValue(encoded);
 
 		DSSDocument document = signDocument(signatureDocumentForm);
-		InMemoryDocument signedDocument = new InMemoryDocument(DSSUtils.toByteArray(document), document.getName(), document.getMimeType());
+		byte[] signedDocument = DSSUtils.toByteArray(document);
+		String signedDocumentBase64 = Utils.toBase64(signedDocument);
+
+//		InMemoryDocument signedDocument = new InMemoryDocument(DSSUtils.toByteArray(document), document.getName(), document.getMimeType());
 //		model.addAttribute("signedDocument", signedDocument);
 
-		SignDocumentResponse signedDocumentResponse = new SignDocumentResponse();
-		signedDocumentResponse.setUrlToDownload("download");
-		return null;
+//		SignDocumentResponse signedDocumentResponse = new SignDocumentResponse();
+//		signedDocumentResponse.setUrlToDownload("download");
+		return signedDocumentBase64;
 	}
 
 	public DSSDocument signDocument(SignatureDocumentForm form) {
@@ -176,6 +196,7 @@ public class RestHttpPlugin implements HttpPlugin {
 		try {
 			DSSDocument toSignDocument = WebAppUtils.toDSSDocument(getSignDocRequest.getFileByteArray(), "test.xml");
 			SignatureAlgorithm sigAlgorithm = SignatureAlgorithm.getAlgorithm(form.getEncryptionAlgorithm(), form.getDigestAlgorithm());
+			logger.info("UBase64SignatureValue = " + form.getBase64SignatureValue());
 			SignatureValue signatureValue = new SignatureValue(sigAlgorithm, Utils.fromBase64(form.getBase64SignatureValue()));
 			DSSDocument signedDocument = service.signDocument(toSignDocument, parameters, signatureValue); //todo IBS sign document
 			logger.info("End signDocument with one document");
@@ -205,6 +226,8 @@ public class RestHttpPlugin implements HttpPlugin {
 
 		if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.XAdES_BASELINE_B.toString())){
 			signatureDocumentForm.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.PAdES_BASELINE_B.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.PAdES_BASELINE_B);
 		}
 
 		if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.CAdES.toString())){
@@ -414,7 +437,7 @@ public class RestHttpPlugin implements HttpPlugin {
 		byte[] decodedBytes  = new byte[0];
 		try {
 			getSignDocRequest = GsonHelper.fromJson(signDataPayload, GetSignDocRequest.class);
-			decodedBytes = Base64.getDecoder().decode(getSignDocRequest.getFileBase64Format());
+			decodedBytes = Utils.fromBase64(getSignDocRequest.getFileBase64Format());
 			getSignDocRequest.setFileByteArray(decodedBytes);
 			logger.info("getSignDocRequest " + new String(decodedBytes));
 		} catch (Exception e) {

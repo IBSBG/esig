@@ -17,7 +17,7 @@
         <dependency>
             <groupId>eu.europa.ec.joinup.sd-dss</groupId>
             <artifactId>dss-spi</artifactId>
-            <version>${dss.version}</version>
+            <version>5.8.RC1</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>

@@ -23,7 +23,8 @@ function sign(requestParameters) {
     request.send(JSON.stringify(requestParameters));
     request.onload = () => {
         if (request.status == 200) {
-            alert(request.response);
+            console.log(request.response)
+            // alert(request.response);
         } else {
             alert("ERROR status=" + request.status + " statusText=" + request.statusText);
         }
