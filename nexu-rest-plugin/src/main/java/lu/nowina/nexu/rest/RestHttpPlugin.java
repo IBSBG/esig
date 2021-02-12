@@ -13,10 +13,40 @@
  */
 package lu.nowina.nexu.rest;
 
-import eu.europa.esig.dss.enumerations.DigestAlgorithm;
+import eu.europa.esig.dss.AbstractSignatureParameters;
+import eu.europa.esig.dss.alert.ExceptionOnStatusAlert;
+import eu.europa.esig.dss.asic.cades.ASiCWithCAdESSignatureParameters;
+import eu.europa.esig.dss.asic.cades.signature.ASiCWithCAdESService;
+import eu.europa.esig.dss.asic.xades.ASiCWithXAdESSignatureParameters;
+import eu.europa.esig.dss.asic.xades.signature.ASiCWithXAdESService;
+import eu.europa.esig.dss.cades.CAdESSignatureParameters;
+import eu.europa.esig.dss.cades.signature.CAdESService;
+import eu.europa.esig.dss.enumerations.*;
+import eu.europa.esig.dss.jades.signature.JAdESService;
+import eu.europa.esig.dss.model.DSSDocument;
+import eu.europa.esig.dss.model.InMemoryDocument;
+import eu.europa.esig.dss.model.SignatureValue;
 import eu.europa.esig.dss.model.ToBeSigned;
-
+import eu.europa.esig.dss.model.x509.CertificateToken;
+import eu.europa.esig.dss.pades.PAdESSignatureParameters;
+import eu.europa.esig.dss.pades.signature.PAdESService;
+import eu.europa.esig.dss.service.crl.OnlineCRLSource;
+import eu.europa.esig.dss.service.http.commons.CommonsDataLoader;
+import eu.europa.esig.dss.service.http.commons.OCSPDataLoader;
+import eu.europa.esig.dss.service.http.proxy.ProxyConfig;
+import eu.europa.esig.dss.service.ocsp.OnlineOCSPSource;
+import eu.europa.esig.dss.signature.DocumentSignatureService;
+import eu.europa.esig.dss.signature.MultipleDocumentsSignatureService;
+import eu.europa.esig.dss.spi.DSSUtils;
+import eu.europa.esig.dss.spi.tsl.TrustedListsCertificateSource;
+import eu.europa.esig.dss.utils.Utils;
+import eu.europa.esig.dss.validation.CertificateVerifier;
+import eu.europa.esig.dss.validation.CommonCertificateVerifier;
+import eu.europa.esig.dss.xades.XAdESSignatureParameters;
+import eu.europa.esig.dss.xades.signature.XAdESService;
 import lu.nowina.nexu.api.*;
+import lu.nowina.nexu.api.exception.ApplicationJsonRequestException;
+import lu.nowina.nexu.api.model.*;
 import lu.nowina.nexu.api.plugin.*;
 import lu.nowina.nexu.json.GsonHelper;
 import org.apache.commons.io.IOUtils;
@@ -25,9 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.DatatypeConverter;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -40,10 +68,21 @@ public class RestHttpPlugin implements HttpPlugin {
 
 	private static final Logger logger = LoggerFactory.getLogger(RestHttpPlugin.class.getName());
 
+	private CAdESService cadesService;
+	private PAdESService padesService;
+	private XAdESService xadesService;
+	private JAdESService jadesService;
+
+	private ASiCWithCAdESService asicWithCAdESService;
+	private ASiCWithXAdESService asicWithXAdESService;
+
+	private TrustedListsCertificateSource tslCertificateSource = new TrustedListsCertificateSource();
+
 	private Execution execution = null;
 	private Feedback feedback = null;
-	private GetCertificateResponse getCertificateResponse = null;
+	private GetCertificate getCertificate = null;
 	private GetSignDocRequest getSignDocRequest = null;
+	SignatureDocumentForm signatureDocumentForm = null;
 
 	@Override
 	public List<InitializationMessage> init(String pluginId, NexuAPI api) {
@@ -60,54 +99,315 @@ public class RestHttpPlugin implements HttpPlugin {
 		logger.info("Payload '" + payload + "'");
 
 		switch(target) {
-		case "/sign":
-			return signRequest(api, req, payload);
-		case "/certificates":
-			return getCertificates(api, req, payload);
-		case "/identityInfo":
-			return getIdentityInfo(api, payload);
-		case "/authenticate":
-			return authenticate(api, req, payload);
-		case "/signDoc":
-			return getSignDoc(api, req, payload);
-		default:
-			throw new RuntimeException("Target not recognized " + target);
+			case "/sign":
+				return signRequest(api, req, payload);
+			case "/certificates":
+				return getCertificates(api, req, payload);
+			case "/identityInfo":
+				return getIdentityInfo(api, payload);
+			case "/authenticate":
+				return authenticate(api, req, payload);
+			case "/signDoc":
+				return getSignDoc(api, req, payload);
+			default:
+				throw new RuntimeException("Target not recognized " + target);
 		}
 	}
 
 
 	private HttpResponse getSignDoc(NexuAPI api, HttpRequest req, String signDataPayload) {
 		String certificatesPayload = "";
-		HttpResponse httpResponse = getCertificates(api, req, certificatesPayload);
-		parseCertificateResponse(httpResponse);
+		HttpResponse httpGetCertificateResponse = getCertificates(api, req, certificatesPayload);
+		parseCertificateResponse(httpGetCertificateResponse);
 
 		logger.info("signDataPayload + " + signDataPayload);
 		if(execution != null
 				&& execution.isSuccess()
-				&& getCertificateResponse != null
-				&& getCertificateResponse.getCertificate() != null){
+				&& getCertificate != null
+				&& getCertificate.getCertificate() != null){
 			logger.info("SIGN FILE HERE");
 			parseSignDocRequestData(signDataPayload);
-			//todo get toBeSigned data from dss-demo-webapp
-//			{
-//				"tokenId": {
-//				"id": "0905084b-03f4-4aa0-a8df-bf48af49e8a1"
-//			},
-//				"keyId": "C-D14CA8F0E252E917827D29A4B15DF8D242D44040B92DF38120BB4B5D795B24B6",
-//					"toBeSigned": {
-//				"bytes": "MYIBFDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMC8GCSqGSIb3DQEJBDEiBCA/4jOymX8WhGmxPKzILzgoO5z2F2pLIPpW/ybZmGeDeDCBxgYLKoZIhvcNAQkQAi8xgbYwgbMwgbAwga0EINFMqPDiUukXgn0ppLFd+NJC1EBAuS3zgSC7S115WyS2MIGIMHykejB4MQswCQYDVQQGEwJCRzEYMBYGA1UEYRMPTlRSQkctMjAxMjMwNDI2MRIwEAYDVQQKEwlCT1JJQ0EgQUQxEDAOBgNVBAsTB0ItVHJ1c3QxKTAnBgNVBAMTIEItVHJ1c3QgT3BlcmF0aW9uYWwgUXVhbGlmaWVkIENBAgh8XwP6HytnCA=="
-//			},
-//				"digestAlgorithm": "SHA256"
-//			}
-			//todo use signRequest
-			//signRequest(api, req, payload);
+			ToBeSigned dataToSign = getDataToSign();
+			if(dataToSign != null){
+				SignatureRequest signatureRequest = new SignatureRequest();
+				signatureRequest.setTokenId(getCertificate.getTokenId());
+				signatureRequest.setKeyId(getCertificate.getKeyId());
+				signatureRequest.setToBeSigned(dataToSign);
+				signatureRequest.setDigestAlgorithm(DigestAlgorithm.SHA256);
+
+				String payloadForSign = GsonHelper.toJson(signatureRequest);
+				logger.info("payloadForSign= " + payloadForSign);
+//				SignatureData signatureData = GsonHelper.fromJson(payloadForSign, SignatureData.class);
+				if(payloadForSign != null){
+					HttpResponse httpGetSignResponse = signRequest(api, req, payloadForSign);
+
+					signDocument(signatureRequest);
+				}
+			}
+
 			//todo from response signRequest - Sign document in dss-demo-webapp
 
 //			signRequest(api, req, payload);
 		}
 
-		return httpResponse;
+		return httpGetCertificateResponse;
 	}
+
+	public String signDocument(SignatureRequest signatureRequest) {
+		//todo !!!!!!!!!!!!
+		String encoded = Utils.toBase64(signatureRequest.getToBeSigned().getBytes());
+		signatureDocumentForm.setBase64SignatureValue(encoded);
+
+		DSSDocument document = signDocument(signatureDocumentForm);
+		InMemoryDocument signedDocument = new InMemoryDocument(DSSUtils.toByteArray(document), document.getName(), document.getMimeType());
+//		model.addAttribute("signedDocument", signedDocument);
+
+		SignDocumentResponse signedDocumentResponse = new SignDocumentResponse();
+		signedDocumentResponse.setUrlToDownload("download");
+		return null;
+	}
+
+	public DSSDocument signDocument(SignatureDocumentForm form) {
+		logger.info("Start signDocument with one document");
+		DocumentSignatureService service = getSignatureService(form.getContainerType(), form.getSignatureForm());
+
+		AbstractSignatureParameters parameters = fillParameters(form);
+
+		try {
+			DSSDocument toSignDocument = WebAppUtils.toDSSDocument(getSignDocRequest.getFileByteArray(), "test.xml");
+			SignatureAlgorithm sigAlgorithm = SignatureAlgorithm.getAlgorithm(form.getEncryptionAlgorithm(), form.getDigestAlgorithm());
+			SignatureValue signatureValue = new SignatureValue(sigAlgorithm, Utils.fromBase64(form.getBase64SignatureValue()));
+			DSSDocument signedDocument = service.signDocument(toSignDocument, parameters, signatureValue); //todo IBS sign document
+			logger.info("End signDocument with one document");
+			return signedDocument;
+		} catch (Exception e) {
+			throw new ApplicationJsonRequestException(e.getMessage());
+		}
+	}
+
+	private ToBeSigned getDataToSign() {
+		signatureDocumentForm = new SignatureDocumentForm();
+		signatureDocumentForm.setBase64Certificate(getCertificate.getCertificate());
+		signatureDocumentForm.setBase64CertificateChain(getCertificate.getCertificateChain());
+		signatureDocumentForm.setEncryptionAlgorithm(getCertificate.getEncryptionAlgorithm());
+		signatureDocumentForm.setSigningDate(new Date());
+		signatureDocumentForm.setDigestAlgorithm(DigestAlgorithm.SHA256);
+
+		if(getSignDocRequest.getPackagingFormat().equalsIgnoreCase(SignaturePackaging.ENVELOPED.toString())){
+			signatureDocumentForm.setSignaturePackaging(SignaturePackaging.ENVELOPED);
+		} else if(getSignDocRequest.getPackagingFormat().equalsIgnoreCase(SignaturePackaging.ENVELOPING.toString())){
+			signatureDocumentForm.setSignaturePackaging(SignaturePackaging.ENVELOPING);
+		} else if(getSignDocRequest.getPackagingFormat().equalsIgnoreCase(SignaturePackaging.DETACHED.toString())){
+			signatureDocumentForm.setSignaturePackaging(SignaturePackaging.DETACHED);
+		} else if(getSignDocRequest.getPackagingFormat().equalsIgnoreCase(SignaturePackaging.INTERNALLY_DETACHED.toString())){
+			signatureDocumentForm.setSignaturePackaging(SignaturePackaging.INTERNALLY_DETACHED);
+		}
+
+		if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.XAdES_BASELINE_B.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
+		}
+
+		if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.CAdES.toString())){
+			signatureDocumentForm.setSignatureForm(SignatureForm.CAdES);
+		} else if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.XAdES.toString())){
+			signatureDocumentForm.setSignatureForm(SignatureForm.XAdES);
+		} else if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.PAdES.toString())){
+			signatureDocumentForm.setSignatureForm(SignatureForm.PAdES);
+		}
+
+//		if (signatureDigestForm.isAddContentTimestamp()) {
+//			signatureDigestForm.setContentTimestamp(WebAppUtils.fromTimestampToken(signingService.getContentTimestamp(signatureDigestForm)));
+//		}
+		ToBeSigned dataToSign = getDataToSign(signatureDocumentForm);
+		return dataToSign;
+	}
+
+	public ToBeSigned getDataToSign(SignatureDocumentForm signatureDocumentForm) {
+		logger.info("Start getDataToSign with one document");
+		DocumentSignatureService service = getSignatureService(signatureDocumentForm.getContainerType(), signatureDocumentForm.getSignatureForm());
+
+		AbstractSignatureParameters parameters = fillParameters(signatureDocumentForm);
+
+		try {
+			DSSDocument toSignDocument = WebAppUtils.toDSSDocument(getSignDocRequest.getFileByteArray(), "test.xml");
+			ToBeSigned toBeSigned = service.getDataToSign(toSignDocument, parameters);
+			logger.info("End getDataToSign with one document");
+			return toBeSigned;
+		} catch (Exception e) {
+			throw new ApplicationJsonRequestException(e.getMessage());
+		}
+	}
+
+	private AbstractSignatureParameters fillParameters(SignatureDocumentForm form) {
+		AbstractSignatureParameters parameters = getSignatureParameters(form.getContainerType(), form.getSignatureForm());
+		parameters.setSignaturePackaging(form.getSignaturePackaging());
+
+		fillParameters(parameters, form);
+
+		return parameters;
+	}
+
+	private void fillParameters(AbstractSignatureParameters parameters, AbstractSignatureForm form) {
+		parameters.setSignatureLevel(form.getSignatureLevel());
+		parameters.setDigestAlgorithm(form.getDigestAlgorithm());
+		// parameters.setEncryptionAlgorithm(form.getEncryptionAlgorithm()); retrieved from certificate
+		parameters.bLevel().setSigningDate(form.getSigningDate());
+
+		parameters.setSignWithExpiredCertificate(form.isSignWithExpiredCertificate());
+
+//		if (form.isAddContentTimestamp()) {
+//			parameters.setContentTimestamps(Arrays.asList(WebAppUtils.toTimestampToken(form.getContentTimestamp())));
+//		}
+
+		CertificateToken signingCertificate = DSSUtils.loadCertificateFromBase64EncodedString(form.getBase64Certificate());
+		parameters.setSigningCertificate(signingCertificate);
+
+		List<String> base64CertificateChain = form.getBase64CertificateChain();
+		if (Utils.isCollectionNotEmpty(base64CertificateChain)) {
+			List<CertificateToken> certificateChain = new LinkedList<>();
+			for (String base64Certificate : base64CertificateChain) {
+				certificateChain.add(DSSUtils.loadCertificateFromBase64EncodedString(base64Certificate));
+			}
+			parameters.setCertificateChain(certificateChain);
+		}
+	}
+
+	private AbstractSignatureParameters getSignatureParameters(ASiCContainerType containerType, SignatureForm signatureForm) {
+		AbstractSignatureParameters parameters = null;
+		if (containerType != null) {
+			parameters = getASiCSignatureParameters(containerType, signatureForm);
+		} else {
+			switch (signatureForm) {
+				case CAdES:
+					parameters = new CAdESSignatureParameters();
+					break;
+				case PAdES:
+					PAdESSignatureParameters padesParams = new PAdESSignatureParameters();
+					padesParams.setContentSize(9472 * 2); // double reserved space for signature
+					parameters = padesParams;
+					break;
+				case XAdES:
+					parameters = new XAdESSignatureParameters();
+					break;
+//				case JAdES:
+//					JAdESSignatureParameters jadesParameters = new JAdESSignatureParameters();
+//					jadesParameters.setJwsSerializationType(JWSSerializationType.JSON_SERIALIZATION); // to allow T+ levels + parallel signing
+//					jadesParameters.setSigDMechanism(SigDMechanism.OBJECT_ID_BY_URI_HASH); // to use by default
+//					parameters = jadesParameters;
+//					break;
+				default:
+					logger.error("Unknown signature form : " + signatureForm);
+			}
+		}
+		return parameters;
+	}
+
+	private AbstractSignatureParameters getASiCSignatureParameters(ASiCContainerType containerType, SignatureForm signatureForm) {
+		AbstractSignatureParameters parameters = null;
+		switch (signatureForm) {
+			case CAdES:
+				ASiCWithCAdESSignatureParameters asicCadesParams = new ASiCWithCAdESSignatureParameters();
+				asicCadesParams.aSiC().setContainerType(containerType);
+				parameters = asicCadesParams;
+				break;
+			case XAdES:
+				ASiCWithXAdESSignatureParameters asicXadesParams = new ASiCWithXAdESSignatureParameters();
+				asicXadesParams.aSiC().setContainerType(containerType);
+				parameters = asicXadesParams;
+				break;
+			default:
+				logger.error("Unknow signature form for ASiC container: " + signatureForm);
+		}
+		return parameters;
+	}
+
+	private DocumentSignatureService getSignatureService(ASiCContainerType containerType, SignatureForm signatureForm) {
+		DocumentSignatureService service = null;
+		if (containerType != null) {
+			service = (DocumentSignatureService) getASiCSignatureService(signatureForm);
+		} else {
+			switch (signatureForm) {
+				case CAdES:
+					cadesService = new CAdESService(certificateVerifier());
+					service = cadesService;
+					break;
+				case PAdES:
+					padesService = new PAdESService(certificateVerifier());
+					service = padesService;
+					break;
+				case XAdES:
+					xadesService = new XAdESService(certificateVerifier());
+					service = xadesService;
+					break;
+//				case JAdES:
+//					service = jadesService;
+//					break;
+				default:
+					logger.error("Unknow signature form : " + signatureForm);
+			}
+		}
+		return service;
+	}
+
+	private MultipleDocumentsSignatureService getASiCSignatureService(SignatureForm signatureForm) {
+		MultipleDocumentsSignatureService service = null;
+		switch (signatureForm) {
+			case CAdES:
+				service = asicWithCAdESService;
+				break;
+			case XAdES:
+				service = asicWithXAdESService;
+				break;
+			default:
+				logger.error("Unknow signature form : " + signatureForm);
+		}
+		return service;
+	}
+
+	private CertificateVerifier certificateVerifier() {
+		CommonCertificateVerifier certificateVerifier = new CommonCertificateVerifier();
+		certificateVerifier.setCrlSource(onlineCRLSource());
+		certificateVerifier.setOcspSource(onlineOcspSource());
+		certificateVerifier.setDataLoader(crlDataLoader());
+		certificateVerifier.setTrustedCertSources(tslCertificateSource);
+
+		// Default configs
+		certificateVerifier.setAlertOnMissingRevocationData(new ExceptionOnStatusAlert());
+		certificateVerifier.setCheckRevocationForUntrustedChains(false);
+
+		return certificateVerifier;
+	}
+
+	private OnlineCRLSource onlineCRLSource() {
+		OnlineCRLSource onlineCRLSource = new OnlineCRLSource();
+		onlineCRLSource.setDataLoader(crlDataLoader());
+		return onlineCRLSource;
+	}
+
+
+	private OnlineOCSPSource onlineOcspSource() {
+		OnlineOCSPSource onlineOCSPSource = new OnlineOCSPSource();
+		onlineOCSPSource.setDataLoader(ocspDataLoader());
+		return onlineOCSPSource;
+	}
+
+	private OCSPDataLoader ocspDataLoader() {
+		OCSPDataLoader ocspDataLoader = new OCSPDataLoader();
+		ocspDataLoader.setProxyConfig(proxyConfig());
+		return ocspDataLoader;
+	}
+
+	private ProxyConfig proxyConfig() {
+		// not defined by default
+		return null;
+	}
+
+	private CommonsDataLoader crlDataLoader() {
+		CommonsDataLoader dataLoader = new CommonsDataLoader();
+		dataLoader.setProxyConfig(proxyConfig());
+		return dataLoader;
+	}
+
 
 	private void parseSignDocRequestData(String signDataPayload) {
 		logger.info("*** PARSE SIGN DOC REQUEST DATA START ***");
@@ -133,16 +433,16 @@ public class RestHttpPlugin implements HttpPlugin {
 				logger.info("ErrorMessage = " + execution.getErrorMessage());
 				if(execution.getResponse() != null){
 					String responseString = GsonHelper.toJson(execution.getResponse());
-					getCertificateResponse = GsonHelper.fromJson(responseString, GetCertificateResponse.class);
-					if(getCertificateResponse != null){
-						logger.info("Response -> tokenId -> id = " + getCertificateResponse.getTokenId().getId());
-						logger.info("Response -> KeyId = " + getCertificateResponse.getKeyId());
-						logger.info("Response -> certificate = " + getCertificateResponse.getCertificate());
-						logger.info("Response -> certificateChain = " + getCertificateResponse.getCertificateChain());
+					getCertificate = GsonHelper.fromJson(responseString, GetCertificate.class);
+					if(getCertificate != null){
+						logger.info("Response -> tokenId -> id = " + getCertificate.getTokenId().getId());
+						logger.info("Response -> KeyId = " + getCertificate.getKeyId());
+						logger.info("Response -> certificate = " + getCertificate.getCertificate());
+						logger.info("Response -> certificateChain = " + getCertificate.getCertificateChain());
 //						for (CertificateToken certificateToken : getCertificateResponse.getCertificateChain()) {
 //							logger.info("Response -> certificateChain item = " + certificateToken.getCertificate());
 //						}
-						logger.info("Response -> encryptionAlgorithm = " + getCertificateResponse.getEncryptionAlgorithm());
+						logger.info("Response -> encryptionAlgorithm = " + getCertificate.getEncryptionAlgorithm());
 					}
 				}
 				if(execution.getFeedback() != null){
@@ -168,7 +468,7 @@ public class RestHttpPlugin implements HttpPlugin {
 	protected <T> Execution<T> returnNullIfValid(NexuRequest request) {
 		return null;
 	}
-	
+
 	private HttpResponse signRequest(NexuAPI api, HttpRequest req, String payload) {
 		logger.info("Signature");
 		final SignatureRequest r;
@@ -234,7 +534,7 @@ public class RestHttpPlugin implements HttpPlugin {
 					r.setCertificateFilter(certificateFilter);
 				}
 			}
-			
+
 		} else {
 			r = GsonHelper.fromJson(payload, GetCertificateRequest.class);
 		}
@@ -313,7 +613,7 @@ public class RestHttpPlugin implements HttpPlugin {
 			return null;
 		}
 	}
-	
+
 	private HttpResponse toHttpResponse(final Execution<?> respObj) {
 		if (respObj.isSuccess()) {
 			return new HttpResponse(GsonHelper.toJson(respObj), "application/json;charset=UTF-8", HttpStatus.OK);

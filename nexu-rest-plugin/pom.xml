@@ -23,6 +23,96 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-document</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-model</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-cades</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-pades</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-xades</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-jades</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-asic-cades</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-asic-xades</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-service</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
+			<artifactId>dss-document</artifactId>
+			<version>5.8.RC1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.30</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId> <!-- Replaces java.util.Logging (see http://www.slf4j.org/images/legacy.png) -->
+			<version>${slf4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId> <!-- Replaces commons-logging -->
+			<version>${slf4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>org.slf4j</groupId>-->
+		<!--			<artifactId>log4j-over-slf4j</artifactId> &lt;!&ndash; Replaces log4j &ndash;&gt;-->
+		<!--			<version>2.0.0-alpha1</version>-->
+		<!--			<scope>runtime</scope>-->
+		<!--		</dependency>-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.30</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 </project>

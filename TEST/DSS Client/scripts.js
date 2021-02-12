@@ -78,16 +78,16 @@ document.addEventListener('submit', function (event) {
 
 function changeSignatureLevel(signatureFormat) {
     document.getElementById("signatureLevelBASELINE_B").checked  = true;
-    document.getElementById("signatureLevelBASELINE_B").value = signatureFormat + "_BASELINE_B";
+    document.getElementById("signatureLevelBASELINE_B").value = signatureFormat + "-BASELINE-B";
     document.getElementById("signatureLevelBASELINE_B_label").innerText = signatureFormat + "-BASELINE_B";
 
-    document.getElementById("signatureLevelBASELINE_T").value = signatureFormat + "BASELINE_T";
+    document.getElementById("signatureLevelBASELINE_T").value = signatureFormat + "-BASELINE-T";
     document.getElementById("signatureLevelBASELINE_T_label").innerText = signatureFormat + "-BASELINE_T";
 
-    document.getElementById("signatureLevelBASELINE_LT").value = signatureFormat + "BASELINE_LT";
+    document.getElementById("signatureLevelBASELINE_LT").value = signatureFormat + "-BASELINE-LT";
     document.getElementById("signatureLevelBASELINE_LT_label").innerText = signatureFormat + "-BASELINE_LT";
 
-    document.getElementById("signatureLevelBASELINE_LTA").value = signatureFormat + "BASELINE_LTA";
+    document.getElementById("signatureLevelBASELINE_LTA").value = signatureFormat + "-BASELINE-LTA";
     document.getElementById("signatureLevelBASELINE_LTA_label").innerText = signatureFormat + "-BASELINE_LTA";
 }
 
