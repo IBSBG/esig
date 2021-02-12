@@ -26,17 +26,16 @@
  */
 package eu.europa.esig.dss.token.mocca;
 
-import java.security.cert.CertificateException;
-
+import at.gv.egiz.smcc.SignatureCard.KeyboxName;
 import eu.europa.esig.dss.enumerations.EncryptionAlgorithm;
 import eu.europa.esig.dss.model.DSSException;
 import eu.europa.esig.dss.model.x509.CertificateToken;
 import eu.europa.esig.dss.spi.DSSUtils;
+import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import at.gv.egiz.smcc.SignatureCard.KeyboxName;
-import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
+import java.security.cert.CertificateException;
 
 /**
  * A DSSPrivateKeyEntry implementation for the MOCCA framework
