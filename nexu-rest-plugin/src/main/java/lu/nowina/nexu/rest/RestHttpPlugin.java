@@ -194,7 +194,7 @@ public class RestHttpPlugin implements HttpPlugin {
 		AbstractSignatureParameters parameters = fillParameters(form);
 
 		try {
-			DSSDocument toSignDocument = WebAppUtils.toDSSDocument(getSignDocRequest.getFileByteArray(), "test.xml");
+			DSSDocument toSignDocument = WebAppUtils.toDSSDocument(getSignDocRequest.getFileByteArray(), getSignDocRequest.getFileName());
 			SignatureAlgorithm sigAlgorithm = SignatureAlgorithm.getAlgorithm(form.getEncryptionAlgorithm(), form.getDigestAlgorithm());
 			logger.info("UBase64SignatureValue = " + form.getBase64SignatureValue());
 			SignatureValue signatureValue = new SignatureValue(sigAlgorithm, Utils.fromBase64(form.getBase64SignatureValue()));
@@ -252,7 +252,7 @@ public class RestHttpPlugin implements HttpPlugin {
 		AbstractSignatureParameters parameters = fillParameters(signatureDocumentForm);
 
 		try {
-			DSSDocument toSignDocument = WebAppUtils.toDSSDocument(getSignDocRequest.getFileByteArray(), "test.xml");
+			DSSDocument toSignDocument = WebAppUtils.toDSSDocument(getSignDocRequest.getFileByteArray(), getSignDocRequest.getFileName());
 			ToBeSigned toBeSigned = service.getDataToSign(toSignDocument, parameters);
 			logger.info("End getDataToSign with one document");
 			return toBeSigned;

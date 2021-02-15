@@ -20,6 +20,7 @@ public class GetSignDocRequest {
 	private String packagingFormat;
 	private String signatureLevel;
 	private String digestAlgorithm;
+	private String fileName;
 	private String fileBase64Format;
 	private byte[] fileByteArray;
 
@@ -77,5 +78,13 @@ public class GetSignDocRequest {
 
 	public void setFileByteArray(byte[] fileByteArray) {
 		this.fileByteArray = fileByteArray;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }

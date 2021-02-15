@@ -68,7 +68,8 @@ document.addEventListener('submit', function (event) {
             packagingFormat:packagingFormat,
             signatureLevel:signatureLevel,
             digestAlgorithm:digestAlgorithm,
-            fileBase64Format:fileBase64Format
+            fileBase64Format:fileBase64Format,
+            fileName: file.name
         }
 
         sign(requestParameters);
