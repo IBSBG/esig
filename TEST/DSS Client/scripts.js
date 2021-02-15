@@ -49,7 +49,6 @@ function sign(requestParameters) {
     }
 }
 
-
 let saveData = (function () {
     let a = document.createElement("a");
     document.body.appendChild(a);
@@ -66,8 +65,6 @@ let saveData = (function () {
         window.URL.revokeObjectURL(url);
     };
 }());
-
-
 
 document.addEventListener('submit', function (event) {
 
@@ -129,8 +126,53 @@ function changeSignatureLevel(signatureFormat) {
 
     document.getElementById("signatureLevelBASELINE_LTA").value = signatureFormat + "-BASELINE-LTA";
     document.getElementById("signatureLevelBASELINE_LTA_label").innerText = signatureFormat + "-BASELINE_LTA";
+
+
+    let selectedContainer = document.querySelector('input[name="container"]:checked').value;
+    if("no" === selectedContainer){
+        if("CAdES" === signatureFormat){
+            document.getElementById("packagingFormatDetached").disabled = false;
+            document.getElementById("packagingFormatEnveloping").disabled = false;
+        } else if("PAdES" === signatureFormat){
+            document.getElementById("packagingFormatInternallyDetached").disabled = true;
+            document.getElementById("packagingFormatEnveloping").disabled = true;
+            document.getElementById("packagingFormatDetached").disabled = true;
+            document.getElementById("packagingFormatEnveloped").disabled = false;
+            document.getElementById("packagingFormatEnveloped").checked = true;
+        } else if("XAdES" === signatureFormat){
+            document.getElementById("packagingFormatInternallyDetached").disabled = false;
+            document.getElementById("packagingFormatEnveloping").disabled = false;
+            document.getElementById("packagingFormatDetached").disabled = false;
+            document.getElementById("packagingFormatEnveloped").disabled = false;
+        }
+    }
 }
 
 function changeContainer(container) {
+    if("no" === container){
+        document.getElementById("signatureFormatPAdES").disabled = false;
+        document.getElementById("packagingFormatDetached").disabled = false;
+        document.getElementById("packagingFormatEnveloping").disabled = false;
 
+        document.getElementById("signatureFormatPAdES").checked = false;
+        document.getElementById("signatureFormatCAdES").checked = false;
+        document.getElementById("signatureFormatXAdES").checked = false;
+
+    } else if("asic-s" === container){
+        document.getElementById("signatureFormatPAdES").disabled = true;
+        document.getElementById("packagingFormatEnveloped").disabled = true;
+        document.getElementById("packagingFormatInternallyDetached").disabled = true;
+        document.getElementById("packagingFormatEnveloping").disabled = true;
+        document.getElementById("packagingFormatDetached").disabled = false;
+
+        document.getElementById("packagingFormatDetached").checked = true;
+    } else if("asic-e" === container){
+        document.getElementById("signatureFormatPAdES").disabled = true;
+        document.getElementById("packagingFormatEnveloped").disabled = true;
+        document.getElementById("packagingFormatInternallyDetached").disabled = true;
+        document.getElementById("packagingFormatEnveloping").disabled = true;
+        document.getElementById("packagingFormatDetached").disabled = false;
+
+        document.getElementById("packagingFormatDetached").checked = true;
+    }
 }

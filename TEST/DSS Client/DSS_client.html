@@ -22,43 +22,43 @@
 
         <h3>Контейнер</h3>
         <div>
-            <input type="radio" checked id="containerNo" name="container" value="no">
+            <input type="radio" checked id="containerNo" onclick="changeContainer('no')" name="container" value="no">
             <label for="containerNo">No</label>
 
-            <input type="radio" id="containerASiC-S" name="container" value="asic-s">
+            <input type="radio" id="containerASiC-S" onclick="changeContainer('asic-s')" name="container" value="asic-s">
             <label for="containerASiC-S">ASiC-S</label>
 
-            <input type="radio" id="containerASiC-E" name="container" value="asic-e">
+            <input type="radio" id="containerASiC-E" onclick="changeContainer('asic-e')" name="container" value="asic-e">
             <label for="containerASiC-E">ASiC-E</label>
         </div>
 
         <h3>Формат на подписа</h3>
         <div>
-            <input type="radio" id="signatureFormatXAdES" onclick="changeSignatureLevel('XAdES')" name="signatureFormat" value="xades">
-            <label for="signatureFormatXAdES">XAdES</label>
-
             <input type="radio" id="signatureFormatCAdES" onclick="changeSignatureLevel('CAdES')" name="signatureFormat" value="cades">
             <label for="signatureFormatCAdES">CAdES</label>
 
             <input type="radio" id="signatureFormatPAdES" onclick="changeSignatureLevel('PAdES')" name="signatureFormat" value="pades">
             <label for="signatureFormatPAdES">PAdES</label>
 
-            <input type="radio" id="signatureFormatJAdES" onclick="changeSignatureLevel('JAdES')" name="signatureFormat" value="jades">
-            <label for="signatureFormatJAdES">JAdES</label>
+            <input type="radio" id="signatureFormatXAdES" onclick="changeSignatureLevel('XAdES')" name="signatureFormat" value="xades">
+            <label for="signatureFormatXAdES">XAdES</label>
+
+<!--            <input type="radio" id="signatureFormatJAdES" onclick="changeSignatureLevel('JAdES')" name="signatureFormat" value="jades">-->
+<!--            <label for="signatureFormatJAdES">JAdES</label>-->
         </div>
 
         <h3>Тип на подписа</h3>
         <div>
-            <input type="radio" id="packagingFormatEnveloped" name="packagingFormat" value="enveloped">
+            <input type="radio" disabled id="packagingFormatEnveloped" name="packagingFormat" value="enveloped">
             <label for="packagingFormatEnveloped">Enveloped</label>
 
-            <input type="radio" id="packagingFormatEnveloping" name="packagingFormat" value="enveloping">
+            <input type="radio" disabled id="packagingFormatEnveloping" name="packagingFormat" value="enveloping">
             <label for="packagingFormatEnveloping">Enveloping</label>
 
-            <input type="radio" id="packagingFormatDetached" name="packagingFormat" value="detached">
+            <input type="radio" disabled id="packagingFormatDetached" name="packagingFormat" value="detached">
             <label for="packagingFormatDetached">Detached</label>
 
-            <input type="radio" id="packagingFormatInternallyDetached" name="packagingFormat" value="internally_detached">
+            <input type="radio" disabled id="packagingFormatInternallyDetached" name="packagingFormat" value="internally_detached">
             <label for="packagingFormatInternallyDetached">Internally detached</label>
         </div>
 

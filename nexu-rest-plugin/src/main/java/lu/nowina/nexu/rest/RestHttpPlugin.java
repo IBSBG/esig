@@ -226,7 +226,8 @@ public class RestHttpPlugin implements HttpPlugin {
 		signatureDocumentForm.setBase64CertificateChain(getCertificate.getCertificateChain());
 		signatureDocumentForm.setEncryptionAlgorithm(getCertificate.getEncryptionAlgorithm());
 		signatureDocumentForm.setSigningDate(new Date());
-		signatureDocumentForm.setDigestAlgorithm(DigestAlgorithm.SHA256);
+		setDigestAlgorithm();
+		setContainerType();
 		setPackingFormat();
 		setSignatureLevel();
 		setSignatureFormat();
@@ -237,6 +238,26 @@ public class RestHttpPlugin implements HttpPlugin {
 //		}
 		ToBeSigned dataToSign = getDataToSign(signatureDocumentForm);
 		return dataToSign;
+	}
+
+	private void setDigestAlgorithm() {
+		if(getSignDocRequest.getDigestAlgorithm().equalsIgnoreCase(DigestAlgorithm.SHA256.toString())){
+			signatureDocumentForm.setDigestAlgorithm(DigestAlgorithm.SHA256);
+		} else if(getSignDocRequest.getDigestAlgorithm().equalsIgnoreCase(DigestAlgorithm.SHA1.toString())){
+			signatureDocumentForm.setDigestAlgorithm(DigestAlgorithm.SHA1);
+		} else if(getSignDocRequest.getDigestAlgorithm().equalsIgnoreCase(DigestAlgorithm.SHA384.toString())){
+			signatureDocumentForm.setDigestAlgorithm(DigestAlgorithm.SHA384);
+		} else if(getSignDocRequest.getDigestAlgorithm().equalsIgnoreCase(DigestAlgorithm.SHA512.toString())){
+			signatureDocumentForm.setDigestAlgorithm(DigestAlgorithm.SHA512);
+		}
+	}
+
+	private void setContainerType() {
+		if(getSignDocRequest.getContainer().equalsIgnoreCase(ASiCContainerType.ASiC_E.toString())){
+			signatureDocumentForm.setContainerType(ASiCContainerType.ASiC_E);
+		} else if(getSignDocRequest.getContainer().equalsIgnoreCase(ASiCContainerType.ASiC_S.toString())){
+			signatureDocumentForm.setContainerType(ASiCContainerType.ASiC_S);
+		}
 	}
 
 	private void setSignatureFormat() {
@@ -436,9 +457,11 @@ public class RestHttpPlugin implements HttpPlugin {
 		MultipleDocumentsSignatureService service = null;
 		switch (signatureForm) {
 			case CAdES:
+				asicWithCAdESService = new ASiCWithCAdESService(certificateVerifier());
 				service = asicWithCAdESService;
 				break;
 			case XAdES:
+				asicWithXAdESService = new ASiCWithXAdESService(certificateVerifier());
 				service = asicWithXAdESService;
 				break;
 			default:
