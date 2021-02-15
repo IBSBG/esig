@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>lu.nowina.apps</groupId>
 			<artifactId>sscd-mocca-adapter</artifactId>
-			<version>5.7</version>
+			<version>5.8</version>
 		</dependency>
 		<dependency>
 			<groupId>lu.nowina.apps</groupId>
