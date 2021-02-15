@@ -11,35 +11,30 @@
  * SANS GARANTIES OU CONDITIONS QUELLES QU’ELLES SOIENT, expresses ou implicites.
  * Consultez la Licence pour les autorisations et les restrictions linguistiques spécifiques relevant de la Licence.
  */
-package lu.nowina.nexu.api.plugin;
+package lu.nowina.nexu.api;
 
-public class HttpResponse {
+import eu.europa.esig.dss.enumerations.SignatureAlgorithm;
+import eu.europa.esig.dss.model.SignatureValue;
+import eu.europa.esig.dss.model.x509.CertificateToken;
 
-	private String content;
+public class SignDocResponse {
 
-	private String contentType;
+	private String signedFileBase64;
+	private String signedFileName;
 
-	private HttpStatus httpStatus;
-
-	public HttpResponse(String content, String contentType, HttpStatus status) {
-		this.content = content;
-		this.contentType = contentType;
-
-		if (status == null) {
-			throw new IllegalArgumentException();
-		}
-		this.httpStatus = status;
+	public String getSignedFileName() {
+		return signedFileName;
 	}
 
-	public String getContent() {
-		return content;
+	public void setSignedFileName(String signedFileName) {
+		this.signedFileName = signedFileName;
 	}
 
-	public String getContentType() {
-		return contentType;
+	public String getSignedFileBase64() {
+		return signedFileBase64;
 	}
 
-	public HttpStatus getHttpStatus() {
-		return httpStatus;
+	public void setSignedFileBase64(String signedFileBase64) {
+		this.signedFileBase64 = signedFileBase64;
 	}
 }

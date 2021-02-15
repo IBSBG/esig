@@ -82,7 +82,9 @@ public class RestHttpPlugin implements HttpPlugin {
 	private Feedback feedback = null;
 	private GetCertificate getCertificate = null;
 	private GetSignDocRequest getSignDocRequest = null;
-	SignatureDocumentForm signatureDocumentForm = null;
+	private SignatureDocumentForm signatureDocumentForm = null;
+
+	private String signedFileName;
 
 	@Override
 	public List<InitializationMessage> init(String pluginId, NexuAPI api) {
@@ -145,7 +147,15 @@ public class RestHttpPlugin implements HttpPlugin {
 					SignatureResponse signatureResponse = parseSignResponse(httpGetSignResponse);
 					if(signatureResponse != null){
 						signedDocumentBase64 = signDocument(signatureResponse);
-						httpGetCertificateResponse.setSignedFileBase64(signedDocumentBase64);
+						SignDocResponse signDocResponse = new SignDocResponse();
+						signDocResponse.setSignedFileBase64(signedDocumentBase64);
+						signDocResponse.setSignedFileName(signedFileName);
+
+						String payload = GsonHelper.toJson(signDocResponse);
+						SignDocResponse r = GsonHelper.fromJson(payload, SignDocResponse.class);
+						Execution<SignDocResponse> execution = new Execution(r);
+
+						return toHttpResponse(execution);
 					}
 				}
 			}
@@ -178,6 +188,10 @@ public class RestHttpPlugin implements HttpPlugin {
 		DSSDocument document = signDocument(signatureDocumentForm);
 		byte[] signedDocument = DSSUtils.toByteArray(document);
 		String signedDocumentBase64 = Utils.toBase64(signedDocument);
+		if(document.getName() != null && document.getName().trim().length() > 0){
+			signedFileName = document.getName();
+		}
+
 
 //		InMemoryDocument signedDocument = new InMemoryDocument(DSSUtils.toByteArray(document), document.getName(), document.getMimeType());
 //		model.addAttribute("signedDocument", signedDocument);

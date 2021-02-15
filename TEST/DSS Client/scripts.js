@@ -24,12 +24,35 @@ function sign(requestParameters) {
     request.onload = () => {
         if (request.status == 200) {
             console.log(request.response)
-            // alert(request.response);
+            let obj = JSON.parse(request.response);
+            let file = atob(obj.response.signedFileBase64)
+            // alert(file);
+
+            // let data = { x: 42, s: file, d: new Date() };
+            saveData(file, obj.response.signedFileName);
         } else {
             alert("ERROR status=" + request.status + " statusText=" + request.statusText);
+
         }
     }
 }
+
+let saveData = (function () {
+    let a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (file, fileName) {
+        // let json = JSON.stringify(file);
+        let blob = new Blob([file], {type: "octet/stream"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
+
 
 document.addEventListener('submit', function (event) {
 
@@ -44,14 +67,14 @@ document.addEventListener('submit', function (event) {
     let signatureLevel = formData.get('signatureLevel');
     let digestAlgorithm = formData.get('digestAlgorithm');
 
-    alert(" Файл [" + file.name + "]" +
-        "\n Размер на файла [" + file.size + " bytes]" +
-        "\n Контейнер [" + container + "]" +
-        "\n Формат на подписа [" + signatureFormat + "]" +
-        "\n Тип на подписа [" + packagingFormat + "]" +
-        "\n Ниво на подписa [" + signatureLevel + "]" +
-        "\n Хеш алгоритъм [" + digestAlgorithm + "]"
-    );
+    // alert(" Файл [" + file.name + "]" +
+    //     "\n Размер на файла [" + file.size + " bytes]" +
+    //     "\n Контейнер [" + container + "]" +
+    //     "\n Формат на подписа [" + signatureFormat + "]" +
+    //     "\n Тип на подписа [" + packagingFormat + "]" +
+    //     "\n Ниво на подписa [" + signatureLevel + "]" +
+    //     "\n Хеш алгоритъм [" + digestAlgorithm + "]"
+    // );
 
     let reader = new FileReader();
     reader.onloadend = function () {
