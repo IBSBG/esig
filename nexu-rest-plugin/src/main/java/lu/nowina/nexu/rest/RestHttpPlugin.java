@@ -213,7 +213,31 @@ public class RestHttpPlugin implements HttpPlugin {
 		signatureDocumentForm.setEncryptionAlgorithm(getCertificate.getEncryptionAlgorithm());
 		signatureDocumentForm.setSigningDate(new Date());
 		signatureDocumentForm.setDigestAlgorithm(DigestAlgorithm.SHA256);
+		setPackingFormat();
+		setSignatureLevel();
+		setSignatureFormat();
 
+		//todo timestamp ?!
+//		if (signatureDigestForm.isAddContentTimestamp()) {
+//			signatureDigestForm.setContentTimestamp(WebAppUtils.fromTimestampToken(signingService.getContentTimestamp(signatureDigestForm)));
+//		}
+		ToBeSigned dataToSign = getDataToSign(signatureDocumentForm);
+		return dataToSign;
+	}
+
+	private void setSignatureFormat() {
+		if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.CAdES.toString())){
+			signatureDocumentForm.setSignatureForm(SignatureForm.CAdES);
+		} else if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.XAdES.toString())){
+			signatureDocumentForm.setSignatureForm(SignatureForm.XAdES);
+		} else if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.PAdES.toString())){
+			signatureDocumentForm.setSignatureForm(SignatureForm.PAdES);
+		} else if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.JAdES.toString())){
+			signatureDocumentForm.setSignatureForm(SignatureForm.JAdES);
+		}
+	}
+
+	private void setPackingFormat() {
 		if(getSignDocRequest.getPackagingFormat().equalsIgnoreCase(SignaturePackaging.ENVELOPED.toString())){
 			signatureDocumentForm.setSignaturePackaging(SignaturePackaging.ENVELOPED);
 		} else if(getSignDocRequest.getPackagingFormat().equalsIgnoreCase(SignaturePackaging.ENVELOPING.toString())){
@@ -223,26 +247,48 @@ public class RestHttpPlugin implements HttpPlugin {
 		} else if(getSignDocRequest.getPackagingFormat().equalsIgnoreCase(SignaturePackaging.INTERNALLY_DETACHED.toString())){
 			signatureDocumentForm.setSignaturePackaging(SignaturePackaging.INTERNALLY_DETACHED);
 		}
+	}
 
+	private void setSignatureLevel() {
 		if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.XAdES_BASELINE_B.toString())){
 			signatureDocumentForm.setSignatureLevel(SignatureLevel.XAdES_BASELINE_B);
-		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.PAdES_BASELINE_B.toString())){
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.XAdES_BASELINE_T.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.XAdES_BASELINE_T);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.XAdES_BASELINE_LT.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.XAdES_BASELINE_LT);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.XAdES_BASELINE_LTA.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.XAdES_BASELINE_LTA);
+		}
+
+		if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.CAdES_BASELINE_B.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.CAdES_BASELINE_B);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.CAdES_BASELINE_T.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.CAdES_BASELINE_T);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.CAdES_BASELINE_LT.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.CAdES_BASELINE_LT);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.CAdES_BASELINE_LTA.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.CAdES_BASELINE_LTA);
+		}
+
+		if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.PAdES_BASELINE_B.toString())){
 			signatureDocumentForm.setSignatureLevel(SignatureLevel.PAdES_BASELINE_B);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.PAdES_BASELINE_T.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.PAdES_BASELINE_T);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.PAdES_BASELINE_LT.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.PAdES_BASELINE_LT);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.PAdES_BASELINE_LTA.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.PAdES_BASELINE_LTA);
 		}
 
-		if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.CAdES.toString())){
-			signatureDocumentForm.setSignatureForm(SignatureForm.CAdES);
-		} else if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.XAdES.toString())){
-			signatureDocumentForm.setSignatureForm(SignatureForm.XAdES);
-		} else if(getSignDocRequest.getSignatureFormat().equalsIgnoreCase(SignatureForm.PAdES.toString())){
-			signatureDocumentForm.setSignatureForm(SignatureForm.PAdES);
+		if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.JAdES_BASELINE_B.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.JAdES_BASELINE_B);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.JAdES_BASELINE_T.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.JAdES_BASELINE_T);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.JAdES_BASELINE_LT.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.JAdES_BASELINE_LT);
+		} else if(getSignDocRequest.getSignatureLevel().equalsIgnoreCase(SignatureLevel.JAdES_BASELINE_LTA.toString())){
+			signatureDocumentForm.setSignatureLevel(SignatureLevel.JAdES_BASELINE_LTA);
 		}
-
-//		if (signatureDigestForm.isAddContentTimestamp()) {
-//			signatureDigestForm.setContentTimestamp(WebAppUtils.fromTimestampToken(signingService.getContentTimestamp(signatureDigestForm)));
-//		}
-		ToBeSigned dataToSign = getDataToSign(signatureDocumentForm);
-		return dataToSign;
 	}
 
 	public ToBeSigned getDataToSign(SignatureDocumentForm signatureDocumentForm) {
