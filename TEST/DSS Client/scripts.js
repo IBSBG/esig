@@ -25,11 +25,23 @@ function sign(requestParameters) {
         if (request.status == 200) {
             console.log(request.response)
             let obj = JSON.parse(request.response);
-            let file = atob(obj.response.signedFileBase64)
-            // alert(file);
+            // let fileBlob = window.atob(obj.response.signedFileBase64);
+
+            const binaryImg = atob(obj.response.signedFileBase64);
+            const length = binaryImg.length;
+            const arrayBuffer = new ArrayBuffer(length);
+            const uintArray = new Uint8Array(arrayBuffer);
+
+            for (let i = 0; i < length; i++) {
+                uintArray[i] = binaryImg.charCodeAt(i);
+            }
+
+            const fileBlob = new Blob([uintArray], { type: 'application/pdf' });
+
+            console.log(obj.response.signedFileBase64);
 
             // let data = { x: 42, s: file, d: new Date() };
-            saveData(file, obj.response.signedFileName);
+            saveData(fileBlob, obj.response.signedFileName);
         } else {
             alert("ERROR status=" + request.status + " statusText=" + request.statusText);
 
@@ -37,13 +49,16 @@ function sign(requestParameters) {
     }
 }
 
+
 let saveData = (function () {
     let a = document.createElement("a");
     document.body.appendChild(a);
     a.style = "display: none";
     return function (file, fileName) {
         // let json = JSON.stringify(file);
-        let blob = new Blob([file], {type: "octet/stream"}),
+        // console.log(file);
+        // let blob = new Blob([file], {type: "octet/stream"}),
+        let blob = new Blob([file], {type: "application/octet-stream"}),
             url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = fileName;
