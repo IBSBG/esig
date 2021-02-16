@@ -24,7 +24,6 @@ import eu.europa.esig.dss.cades.signature.CAdESService;
 import eu.europa.esig.dss.enumerations.*;
 import eu.europa.esig.dss.jades.signature.JAdESService;
 import eu.europa.esig.dss.model.DSSDocument;
-import eu.europa.esig.dss.model.InMemoryDocument;
 import eu.europa.esig.dss.model.SignatureValue;
 import eu.europa.esig.dss.model.ToBeSigned;
 import eu.europa.esig.dss.model.x509.CertificateToken;
@@ -46,7 +45,9 @@ import eu.europa.esig.dss.xades.XAdESSignatureParameters;
 import eu.europa.esig.dss.xades.signature.XAdESService;
 import lu.nowina.nexu.api.*;
 import lu.nowina.nexu.api.exception.ApplicationJsonRequestException;
-import lu.nowina.nexu.api.model.*;
+import lu.nowina.nexu.api.model.AbstractSignatureForm;
+import lu.nowina.nexu.api.model.SignatureDocumentForm;
+import lu.nowina.nexu.api.model.WebAppUtils;
 import lu.nowina.nexu.api.plugin.*;
 import lu.nowina.nexu.json.GsonHelper;
 import org.apache.commons.io.IOUtils;
@@ -55,7 +56,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.DatatypeConverter;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -136,7 +140,7 @@ public class RestHttpPlugin implements HttpPlugin {
 				signatureRequest.setTokenId(getCertificate.getTokenId());
 				signatureRequest.setKeyId(getCertificate.getKeyId());
 				signatureRequest.setToBeSigned(dataToSign);
-				signatureRequest.setDigestAlgorithm(DigestAlgorithm.SHA256);
+				signatureRequest.setDigestAlgorithm(signatureDocumentForm.getDigestAlgorithm());
 
 				String payloadForSign = GsonHelper.toJson(signatureRequest);
 				logger.info("payloadForSign= " + payloadForSign);
@@ -233,9 +237,10 @@ public class RestHttpPlugin implements HttpPlugin {
 		setSignatureFormat();
 
 		//todo timestamp ?!
-//		if (signatureDigestForm.isAddContentTimestamp()) {
-//			signatureDigestForm.setContentTimestamp(WebAppUtils.fromTimestampToken(signingService.getContentTimestamp(signatureDigestForm)));
+//		if (signatureDocumentForm.isAddContentTimestamp()) {
+//			signatureDocumentForm.setContentTimestamp(WebAppUtils.fromTimestampToken(signingService.getContentTimestamp(signatureDocumentForm)));
 //		}
+
 		ToBeSigned dataToSign = getDataToSign(signatureDocumentForm);
 		return dataToSign;
 	}
@@ -354,7 +359,7 @@ public class RestHttpPlugin implements HttpPlugin {
 	private void fillParameters(AbstractSignatureParameters parameters, AbstractSignatureForm form) {
 		parameters.setSignatureLevel(form.getSignatureLevel());
 		parameters.setDigestAlgorithm(form.getDigestAlgorithm());
-		// parameters.setEncryptionAlgorithm(form.getEncryptionAlgorithm()); retrieved from certificate
+//		 parameters.setEncryptionAlgorithm(form.getEncryptionAlgorithm()); retrieved from certificate
 		parameters.bLevel().setSigningDate(form.getSigningDate());
 
 		parameters.setSignWithExpiredCertificate(form.isSignWithExpiredCertificate());

@@ -113,6 +113,13 @@ document.addEventListener('submit', function (event) {
     reader.readAsDataURL(file);
 });
 
+function uncheckedAllPackagingFormats() {
+    document.getElementById("packagingFormatInternallyDetached").checked = false;
+    document.getElementById("packagingFormatEnveloped").checked = false;
+    document.getElementById("packagingFormatDetached").checked = false;
+    document.getElementById("packagingFormatEnveloping").checked = false;
+}
+
 function changeSignatureLevel(signatureFormat) {
     document.getElementById("signatureLevelBASELINE_B").checked  = true;
     document.getElementById("signatureLevelBASELINE_B").value = signatureFormat + "-BASELINE-B";
@@ -131,19 +138,26 @@ function changeSignatureLevel(signatureFormat) {
     let selectedContainer = document.querySelector('input[name="container"]:checked').value;
     if("no" === selectedContainer){
         if("CAdES" === signatureFormat){
+            document.getElementById("packagingFormatInternallyDetached").disabled = true;
+            document.getElementById("packagingFormatEnveloped").disabled = true;
             document.getElementById("packagingFormatDetached").disabled = false;
             document.getElementById("packagingFormatEnveloping").disabled = false;
+
+            uncheckedAllPackagingFormats();
         } else if("PAdES" === signatureFormat){
             document.getElementById("packagingFormatInternallyDetached").disabled = true;
             document.getElementById("packagingFormatEnveloping").disabled = true;
             document.getElementById("packagingFormatDetached").disabled = true;
             document.getElementById("packagingFormatEnveloped").disabled = false;
+
             document.getElementById("packagingFormatEnveloped").checked = true;
         } else if("XAdES" === signatureFormat){
             document.getElementById("packagingFormatInternallyDetached").disabled = false;
             document.getElementById("packagingFormatEnveloping").disabled = false;
             document.getElementById("packagingFormatDetached").disabled = false;
             document.getElementById("packagingFormatEnveloped").disabled = false;
+
+            uncheckedAllPackagingFormats();
         }
     }
 }
@@ -151,6 +165,7 @@ function changeSignatureLevel(signatureFormat) {
 function changeContainer(container) {
     if("no" === container){
         document.getElementById("signatureFormatPAdES").disabled = false;
+
         document.getElementById("packagingFormatDetached").disabled = false;
         document.getElementById("packagingFormatEnveloping").disabled = false;
 
@@ -158,8 +173,10 @@ function changeContainer(container) {
         document.getElementById("signatureFormatCAdES").checked = false;
         document.getElementById("signatureFormatXAdES").checked = false;
 
+        uncheckedAllPackagingFormats();
     } else if("asic-s" === container){
         document.getElementById("signatureFormatPAdES").disabled = true;
+
         document.getElementById("packagingFormatEnveloped").disabled = true;
         document.getElementById("packagingFormatInternallyDetached").disabled = true;
         document.getElementById("packagingFormatEnveloping").disabled = true;
@@ -168,6 +185,7 @@ function changeContainer(container) {
         document.getElementById("packagingFormatDetached").checked = true;
     } else if("asic-e" === container){
         document.getElementById("signatureFormatPAdES").disabled = true;
+
         document.getElementById("packagingFormatEnveloped").disabled = true;
         document.getElementById("packagingFormatInternallyDetached").disabled = true;
         document.getElementById("packagingFormatEnveloping").disabled = true;
