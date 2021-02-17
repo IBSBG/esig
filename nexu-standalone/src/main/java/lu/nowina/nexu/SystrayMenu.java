@@ -13,6 +13,7 @@
  */
 package lu.nowina.nexu;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -47,6 +48,14 @@ public class SystrayMenu {
 			systrayMenuItems[i++] = systrayMenuItem;
 		}
 
+		Menu langMenu = new Menu(resources.getString("systray.menu.language"));
+		MenuItem bgLangMenuItem = new MenuItem(resources.getString("systray.menu.language.bg.item"));
+		MenuItem engLangMenuItem = new MenuItem(resources.getString("systray.menu.language.en.item"));
+		bgLangMenuItem.addActionListener(e -> changeLang("bg"));
+		engLangMenuItem.addActionListener(e -> changeLang("en"));
+		langMenu.add(bgLangMenuItem);
+		langMenu.add(engLangMenuItem);
+
 		final SystrayMenuItem exitMenuItem = createExitSystrayMenuItem(resources);
 
 		final String tooltip = api.getAppConfig().getApplicationName();
@@ -58,13 +67,13 @@ public class SystrayMenu {
 				// Use reflection to avoid wrong initialization issues
 				Class.forName("lu.nowina.nexu.systray.AWTSystrayMenuInitializer")
 					.asSubclass(SystrayMenuInitializer.class).newInstance()
-					.init(tooltip, trayIconURL, operationFactory, exitMenuItem, systrayMenuItems);
+					.init(tooltip, trayIconURL, operationFactory, exitMenuItem, langMenu, systrayMenuItems);
 				break;
 			case LINUX:
 				// Use reflection to avoid wrong initialization issues
 				Class.forName("lu.nowina.nexu.systray.DorkboxSystrayMenuInitializer")
 					.asSubclass(SystrayMenuInitializer.class).newInstance()
-					.init(tooltip, trayIconURL, operationFactory, exitMenuItem, systrayMenuItems);
+					.init(tooltip, trayIconURL, operationFactory, exitMenuItem, langMenu, systrayMenuItems);
 				break;
 			case NOT_RECOGNIZED:
 				LOGGER.warn("System tray is currently not supported for NOT_RECOGNIZED OS.");
@@ -79,6 +88,10 @@ public class SystrayMenu {
 		} catch (ClassNotFoundException e) {
 			LOGGER.error("Cannot initialize systray menu", e);
 		}
+	}
+
+	private void changeLang(String lang){
+		LOGGER.info("!!!!!!!!!!!!!!!!! " + lang);
 	}
 
 	private SystrayMenuItem createAboutSystrayMenuItem(final OperationFactory operationFactory, final NexuAPI api,

@@ -13,6 +13,7 @@
  */
 package lu.nowina.nexu.systray;
 
+import java.awt.*;
 import java.net.URL;
 
 import lu.nowina.nexu.SystrayMenu;
@@ -35,6 +36,6 @@ public interface SystrayMenuInitializer {
      * @param systrayMenuItems Systray menu items.
      */
     void init(final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
-    		final SystrayMenuItem exitMenuItem, final SystrayMenuItem... systrayMenuItems);
+              final SystrayMenuItem exitMenuItem, final Menu menu, final SystrayMenuItem... systrayMenuItems);
     
 }

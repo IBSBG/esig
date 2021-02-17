@@ -13,13 +13,7 @@
  */
 package lu.nowina.nexu.systray;
 
-import java.awt.AWTException;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
+import java.awt.*;
 import java.net.URL;
 
 import org.slf4j.Logger;
@@ -43,10 +37,12 @@ public class AWTSystrayMenuInitializer implements SystrayMenuInitializer {
 	
 	@Override
 	public void init(final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
-			final SystrayMenuItem exitMenuItem, final SystrayMenuItem... systrayMenuItems) {
+			final SystrayMenuItem exitMenuItem, final Menu langMenu, final SystrayMenuItem... systrayMenuItems) {
 		if (SystemTray.isSupported()) {
 			final PopupMenu popup = new PopupMenu();
-			
+
+
+
 			for(final SystrayMenuItem systrayMenuItem : systrayMenuItems) {
 				final MenuItem mi = new MenuItem(systrayMenuItem.getLabel());
 				mi.addActionListener((l) -> systrayMenuItem.getFutureOperationInvocation().call(operationFactory));
@@ -56,7 +52,9 @@ public class AWTSystrayMenuInitializer implements SystrayMenuInitializer {
 			final Image image = Toolkit.getDefaultToolkit().getImage(trayIconURL);
 			final TrayIcon trayIcon = new TrayIcon(image, tooltip, popup);
 			trayIcon.setImageAutoSize(true);
-			
+
+			popup.add(langMenu);
+
 			final MenuItem mi = new MenuItem(exitMenuItem.getLabel());
 			mi.addActionListener((l) -> exit(operationFactory, exitMenuItem, trayIcon));
 			popup.add(mi);

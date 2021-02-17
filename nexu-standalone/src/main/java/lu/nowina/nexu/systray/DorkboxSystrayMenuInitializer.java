@@ -13,12 +13,12 @@
  */
 package lu.nowina.nexu.systray;
 
+import java.awt.*;
 import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dorkbox.systemTray.Menu;
 import dorkbox.systemTray.MenuItem;
 import dorkbox.systemTray.SystemTray;
 import lu.nowina.nexu.api.SystrayMenuItem;
@@ -40,7 +40,7 @@ public class DorkboxSystrayMenuInitializer implements SystrayMenuInitializer {
 
 	@Override
 	public void init(final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
-			final SystrayMenuItem exitMenuItem, final SystrayMenuItem... systrayMenuItems) {
+					 final SystrayMenuItem exitMenuItem, final Menu langMenu, final SystrayMenuItem... systrayMenuItems) {
 		final SystemTray systemTray = SystemTray.get();
 		if (systemTray == null) {
 			LOGGER.warn("System tray is currently not supported.");
@@ -49,7 +49,7 @@ public class DorkboxSystrayMenuInitializer implements SystrayMenuInitializer {
 
 		systemTray.setImage(trayIconURL);
 
-		final Menu menu = systemTray.getMenu();
+		final dorkbox.systemTray.Menu menu = systemTray.getMenu();
 		for(final SystrayMenuItem systrayMenuItem : systrayMenuItems) {
 			menu.add(new MenuItem(systrayMenuItem.getLabel(),
 					(e) -> systrayMenuItem.getFutureOperationInvocation().call(operationFactory)));
