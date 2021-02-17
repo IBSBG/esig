@@ -13,23 +13,15 @@
  */
 package lu.nowina.nexu.generic;
 
-import java.io.File;
-import java.util.List;
-
 import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import eu.europa.esig.dss.token.DSSPrivateKeyEntry;
 import eu.europa.esig.dss.token.MSCAPISignatureToken;
 import eu.europa.esig.dss.token.PasswordInputCallback;
 import eu.europa.esig.dss.token.SignatureTokenConnection;
-import eu.europa.esig.dss.token.mocca.MOCCASignatureTokenConnection;
-import lu.nowina.nexu.api.AbstractCardProductAdapter;
-import lu.nowina.nexu.api.CertificateFilter;
-import lu.nowina.nexu.api.CertificateFilterHelper;
-import lu.nowina.nexu.api.DetectedCard;
-import lu.nowina.nexu.api.GetIdentityInfoResponse;
-import lu.nowina.nexu.api.MessageDisplayCallback;
-import lu.nowina.nexu.api.NexuAPI;
-import lu.nowina.nexu.api.ScAPI;
+import lu.nowina.nexu.api.*;
+
+import java.io.File;
+import java.util.List;
 
 public class GenericCardAdapter extends AbstractCardProductAdapter {
 
@@ -71,8 +63,6 @@ public class GenericCardAdapter extends AbstractCardProductAdapter {
             case PKCS_11:
                 final String absolutePath = cInfo.getApiParam();
                 return new Pkcs11SignatureTokenAdapter(new File(absolutePath), callback, card.getTerminalIndex());
-            case MOCCA:
-                return (SignatureTokenConnection) new MOCCASignatureTokenConnectionAdapter(new MOCCASignatureTokenConnection(callback), api, card);
             default:
                 throw new RuntimeException("API not supported");
         }

@@ -15,7 +15,6 @@ package lu.nowina.nexu.flow.operation;
 
 import eu.europa.esig.dss.token.MSCAPISignatureToken;
 import eu.europa.esig.dss.token.SignatureTokenConnection;
-import eu.europa.esig.dss.token.mocca.MOCCASignatureTokenConnection;
 import lu.nowina.nexu.api.*;
 import lu.nowina.nexu.api.flow.BasicOperationStatus;
 import lu.nowina.nexu.api.flow.OperationResult;
@@ -140,11 +139,6 @@ public class CreateTokenOperation extends AbstractCompositeOperation<Map<TokenOp
         map.put(TokenOperationResultKey.SELECTED_PRODUCT, selectedCard);
         final TokenId tokenId;
         switch (result.getResult()) {
-            case MOCCA:
-                tokenId = this.api.registerTokenConnection(
-                        (SignatureTokenConnection) new MOCCASignatureTokenConnectionAdapter(new MOCCASignatureTokenConnection(
-                                this.display.getPasswordInputCallback()), this.api, selectedCard));
-                break;
             case MSCAPI:
                 tokenId = this.api.registerTokenConnection(new MSCAPISignatureToken());
                 break;
