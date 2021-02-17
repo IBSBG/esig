@@ -27,6 +27,10 @@ function sign(requestParameters) {
             let obj = JSON.parse(request.response);
             // let fileBlob = window.atob(obj.response.signedFileBase64);
 
+            if(obj.response.success == true){
+                alert("Successful signing!");
+            }
+
             const binaryImg = atob(obj.response.signedFileBase64);
             const length = binaryImg.length;
             const arrayBuffer = new ArrayBuffer(length);

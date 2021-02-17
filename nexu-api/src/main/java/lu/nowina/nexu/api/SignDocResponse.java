@@ -18,9 +18,35 @@ import eu.europa.esig.dss.model.SignatureValue;
 import eu.europa.esig.dss.model.x509.CertificateToken;
 
 public class SignDocResponse {
-
+	private boolean success;
+	private String error;
+	private String errorMessage;
 	private String signedFileBase64;
 	private String signedFileName;
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
 
 	public String getSignedFileName() {
 		return signedFileName;

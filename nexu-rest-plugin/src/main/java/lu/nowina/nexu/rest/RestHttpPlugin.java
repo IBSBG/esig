@@ -152,6 +152,7 @@ public class RestHttpPlugin implements HttpPlugin {
 					if(signatureResponse != null){
 						signedDocumentBase64 = signDocument(signatureResponse);
 						SignDocResponse signDocResponse = new SignDocResponse();
+						signDocResponse.setSuccess(true);
 						signDocResponse.setSignedFileBase64(signedDocumentBase64);
 						signDocResponse.setSignedFileName(signedFileName);
 
