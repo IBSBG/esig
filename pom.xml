@@ -47,7 +47,7 @@
         <encoding>UTF-8</encoding>
         <skip.package>false</skip.package>
         <dss.version>5.7</dss.version>
-        <slf4j.version>1.7.12</slf4j.version>
+        <slf4j.version>1.7.30</slf4j.version>
         <jna.version>4.2.2</jna.version>
     </properties>
 
