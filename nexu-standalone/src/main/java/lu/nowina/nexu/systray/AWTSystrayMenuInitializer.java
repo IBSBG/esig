@@ -13,14 +13,13 @@
  */
 package lu.nowina.nexu.systray;
 
-import java.awt.*;
-import java.net.URL;
-
+import lu.nowina.nexu.api.SystrayMenuItem;
+import lu.nowina.nexu.api.flow.OperationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import lu.nowina.nexu.api.SystrayMenuItem;
-import lu.nowina.nexu.api.flow.OperationFactory;
+import java.awt.*;
+import java.net.URL;
 
 /**
  * Implementation of {@link SystrayMenuInitializer} using AWT.
@@ -36,29 +35,29 @@ public class AWTSystrayMenuInitializer implements SystrayMenuInitializer {
 	}
 	
 	@Override
-	public void init(final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
+	public void init(PopupMenu popupMenu, final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
 			final SystrayMenuItem exitMenuItem, final Menu langMenu, final SystrayMenuItem... systrayMenuItems) {
 		if (SystemTray.isSupported()) {
-			final PopupMenu popup = new PopupMenu();
+//			PopupMenu popup = new PopupMenu();
 
 
 
 			for(final SystrayMenuItem systrayMenuItem : systrayMenuItems) {
-				final MenuItem mi = new MenuItem(systrayMenuItem.getLabel());
+				MenuItem mi = new MenuItem(systrayMenuItem.getLabel());
 				mi.addActionListener((l) -> systrayMenuItem.getFutureOperationInvocation().call(operationFactory));
-				popup.add(mi);
+				popupMenu.add(mi);
 			}
 			
 			final Image image = Toolkit.getDefaultToolkit().getImage(trayIconURL);
-			final TrayIcon trayIcon = new TrayIcon(image, tooltip, popup);
+			final TrayIcon trayIcon = new TrayIcon(image, tooltip, popupMenu);
 			trayIcon.setImageAutoSize(true);
 
-			popup.add(langMenu);
+			popupMenu.add(langMenu);
 
-			final MenuItem mi = new MenuItem(exitMenuItem.getLabel());
+			MenuItem mi = new MenuItem(exitMenuItem.getLabel());
 			mi.addActionListener((l) -> exit(operationFactory, exitMenuItem, trayIcon));
-			popup.add(mi);
-			
+			popupMenu.add(mi);
+
 			try {
 				SystemTray.getSystemTray().add(trayIcon);
 			} catch (final AWTException e) {

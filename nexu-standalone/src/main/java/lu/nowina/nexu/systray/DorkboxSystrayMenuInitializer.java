@@ -13,16 +13,15 @@
  */
 package lu.nowina.nexu.systray;
 
-import java.awt.*;
-import java.net.URL;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import dorkbox.systemTray.MenuItem;
 import dorkbox.systemTray.SystemTray;
 import lu.nowina.nexu.api.SystrayMenuItem;
 import lu.nowina.nexu.api.flow.OperationFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.net.URL;
 
 /**
  * Implementation of {@link SystrayMenuInitializer} using
@@ -39,7 +38,7 @@ public class DorkboxSystrayMenuInitializer implements SystrayMenuInitializer {
 	}
 
 	@Override
-	public void init(final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
+	public void init(PopupMenu popupMenu, final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
 					 final SystrayMenuItem exitMenuItem, final Menu langMenu, final SystrayMenuItem... systrayMenuItems) {
 		final SystemTray systemTray = SystemTray.get();
 		if (systemTray == null) {

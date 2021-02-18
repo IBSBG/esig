@@ -13,14 +13,6 @@
  */
 package lu.nowina.nexu;
 
-import java.awt.*;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javafx.application.Platform;
 import lu.nowina.nexu.api.NexuAPI;
 import lu.nowina.nexu.api.SystrayMenuItem;
@@ -29,12 +21,21 @@ import lu.nowina.nexu.api.flow.OperationFactory;
 import lu.nowina.nexu.api.flow.OperationResult;
 import lu.nowina.nexu.systray.SystrayMenuInitializer;
 import lu.nowina.nexu.view.core.NonBlockingUIOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.*;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class SystrayMenu {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SystrayMenu.class.getName());
 
 	public SystrayMenu(OperationFactory operationFactory, NexuAPI api, UserPreferences prefs) {
+		PopupMenu popupMenu = new PopupMenu();
+
 		final ResourceBundle resources = ResourceBundle.getBundle("bundles/nexu");
 
 		final List<SystrayMenuItem> extensionSystrayMenuItems = api.getExtensionSystrayMenuItems();
@@ -51,8 +52,8 @@ public class SystrayMenu {
 		Menu langMenu = new Menu(resources.getString("systray.menu.language"));
 		MenuItem bgLangMenuItem = new MenuItem(resources.getString("systray.menu.language.bg.item"));
 		MenuItem engLangMenuItem = new MenuItem(resources.getString("systray.menu.language.en.item"));
-		bgLangMenuItem.addActionListener(e -> changeLang("bg"));
-		engLangMenuItem.addActionListener(e -> changeLang("en"));
+		bgLangMenuItem.addActionListener(e -> changeLang(popupMenu, "bg"));
+		engLangMenuItem.addActionListener(e -> changeLang(popupMenu, "en"));
 		langMenu.add(bgLangMenuItem);
 		langMenu.add(engLangMenuItem);
 
@@ -67,13 +68,13 @@ public class SystrayMenu {
 				// Use reflection to avoid wrong initialization issues
 				Class.forName("lu.nowina.nexu.systray.AWTSystrayMenuInitializer")
 					.asSubclass(SystrayMenuInitializer.class).newInstance()
-					.init(tooltip, trayIconURL, operationFactory, exitMenuItem, langMenu, systrayMenuItems);
+					.init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, langMenu, systrayMenuItems);
 				break;
 			case LINUX:
 				// Use reflection to avoid wrong initialization issues
 				Class.forName("lu.nowina.nexu.systray.DorkboxSystrayMenuInitializer")
 					.asSubclass(SystrayMenuInitializer.class).newInstance()
-					.init(tooltip, trayIconURL, operationFactory, exitMenuItem, langMenu, systrayMenuItems);
+					.init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, langMenu, systrayMenuItems);
 				break;
 			case NOT_RECOGNIZED:
 				LOGGER.warn("System tray is currently not supported for NOT_RECOGNIZED OS.");
@@ -90,7 +91,16 @@ public class SystrayMenu {
 		}
 	}
 
-	private void changeLang(String lang){
+	private void changeLang(PopupMenu popupMenu, String lang){
+		// test begin
+
+			for (int i = 0; i < popupMenu.getItemCount(); i++) {
+				MenuItem menuItem = popupMenu.getItem(i);
+				menuItem.setLabel("test");
+			}
+
+		// test end
+
 		LOGGER.info("!!!!!!!!!!!!!!!!! " + lang);
 	}
 
