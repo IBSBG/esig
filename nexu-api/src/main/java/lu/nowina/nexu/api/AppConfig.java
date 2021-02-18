@@ -13,23 +13,18 @@
  */
 package lu.nowina.nexu.api;
 
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.Map.Entry;
+
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 
 /**
@@ -146,6 +141,8 @@ public class AppConfig {
     private boolean displayBackButton;
 
     private Product defaultProduct;
+
+    private ResourceBundle currentResourceBundle;
 
     public AppConfig() {
         try {
@@ -381,6 +378,14 @@ public class AppConfig {
 
     public void setEnableSystrayMenu(final boolean enableSystrayMenu) {
         this.enableSystrayMenu = enableSystrayMenu;
+    }
+
+    public ResourceBundle getCurrentResourceBundle() {
+        return currentResourceBundle;
+    }
+
+    public void setCurrentResourceBundle(ResourceBundle currentResourceBundle) {
+        this.currentResourceBundle = currentResourceBundle;
     }
 
     public File getNexuHome() {

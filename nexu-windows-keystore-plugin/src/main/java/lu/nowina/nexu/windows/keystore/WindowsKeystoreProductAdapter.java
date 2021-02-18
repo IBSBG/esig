@@ -114,7 +114,7 @@ public class WindowsKeystoreProductAdapter implements ProductAdapter {
 	}
 
 	@Override
-	public SystrayMenuItem getExtensionSystrayMenuItem() {
+	public SystrayMenuItem getExtensionSystrayMenuItem(NexuAPI api) {
 		return null;
 	}
 

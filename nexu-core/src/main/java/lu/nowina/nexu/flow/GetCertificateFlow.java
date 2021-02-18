@@ -53,7 +53,10 @@ class GetCertificateFlow extends AbstractCoreFlow<GetCertificateRequest, GetCert
     				final Object[] params = {
     						api.getAppConfig().getApplicationName(), api.detectCards(), api.detectProducts(), api
     				};
-    				final Operation<Product> operation = this.getOperationFactory().getOperation(UIOperation.class, "/fxml/product-selection.fxml", params);
+    				final Operation<Product> operation = this.getOperationFactory().getOperation(UIOperation.class,
+							"/fxml/product-selection.fxml",
+							api.getAppConfig().getCurrentResourceBundle(),
+							params);
     				final OperationResult<Product> selectProductOperationResult = operation.perform();
     				if (selectProductOperationResult.getStatus().equals(BasicOperationStatus.SUCCESS)) {
     					selectedProduct = selectProductOperationResult.getResult();
@@ -114,7 +117,10 @@ class GetCertificateFlow extends AbstractCoreFlow<GetCertificateRequest, GetCert
     								}
 
     								if (api.getAppConfig().isEnablePopUps() && api.getAppConfig().isEnableInformativePopUps()) {
-    									this.getOperationFactory().getOperation(UIOperation.class, "/fxml/message.fxml", new Object[] {
+    									this.getOperationFactory().getOperation(UIOperation.class,
+												"/fxml/message.fxml",
+												api.getAppConfig().getCurrentResourceBundle(),
+												new Object[] {
     											"certificates.flow.finished"
     									}).perform();
     								}

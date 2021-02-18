@@ -198,19 +198,21 @@ public class UIOperation<R> implements UIDisplayAwareOperation<R> {
 	}
 	
 	public static <R, T extends UIOperation<R>> FutureOperationInvocation<R> getFutureOperationInvocation(
-			final Class<T> operationClass, final String fxml, final Object... controllerParams) {
-		return new UIFutureOperationInvocation<>(operationClass, fxml, controllerParams);
+			final Class<T> operationClass, final String fxml, final ResourceBundle currentResourceBundle, final Object... controllerParams) {
+		return new UIFutureOperationInvocation<>(operationClass, fxml, currentResourceBundle, controllerParams);
 	}
 	
 	private static class UIFutureOperationInvocation<R, T extends UIOperation<R>> extends AbstractFutureOperationInvocation<R> {
 		private final Class<T> operationClass;
 		private final String fxml;
+		private final ResourceBundle currentResourceBundle;
 		private final Object[] controllerParams;
 		
-		public UIFutureOperationInvocation(final Class<T> operationClass, final String fxml, final Object... controllerParams) {
+		public UIFutureOperationInvocation(final Class<T> operationClass, final String fxml, final ResourceBundle currentResourceBundle, final Object... controllerParams) {
 			this.operationClass = operationClass;
 			this.fxml = fxml;
 			this.controllerParams = controllerParams;
+			this.currentResourceBundle = currentResourceBundle;
 		}
 
 		@Override
@@ -221,7 +223,7 @@ public class UIOperation<R> implements UIDisplayAwareOperation<R> {
 
 		@Override
 		protected Object[] getOperationParams() {
-			return (controllerParams != null) ? new Object[]{fxml, controllerParams} : new Object[]{fxml};
+			return (controllerParams != null) ? new Object[]{fxml, currentResourceBundle, controllerParams} : new Object[]{fxml};
 		}
 	}
 }

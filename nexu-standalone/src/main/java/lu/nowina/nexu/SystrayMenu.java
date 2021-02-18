@@ -43,13 +43,14 @@ public class SystrayMenu {
 
     public SystrayMenu(OperationFactory operationFactory, NexuAPI api, UserPreferences prefs) {
 
-        final List<SystrayMenuItem> extensionSystrayMenuItems = api.getExtensionSystrayMenuItems();
-
-        SystrayMenuItem[] systrayMenuItems = new SystrayMenuItem[extensionSystrayMenuItems.size() + 2];
-
         resourceBundleEN = ResourceBundle.getBundle("bundles/nexu", Locale.ENGLISH);
         resourceBundleBG = ResourceBundle.getBundle("bundles/nexu", localeBG);
         currentResourceBundle = resourceBundleEN;
+        api.getAppConfig().setCurrentResourceBundle(currentResourceBundle);
+
+        final List<SystrayMenuItem> extensionSystrayMenuItems = api.getExtensionSystrayMenuItems();
+        SystrayMenuItem[] systrayMenuItems = new SystrayMenuItem[extensionSystrayMenuItems.size() + 2];
+
 
         systrayMenuItems[0] = createAboutSystrayMenuItem(operationFactory, api, currentResourceBundle);
         systrayMenuItems[1] = createPreferencesSystrayMenuItem(operationFactory, api, prefs);
@@ -62,8 +63,8 @@ public class SystrayMenu {
         Menu languageMenu = new Menu(currentResourceBundle.getString("systray.menu.language"));
         MenuItem bgLangMenuItem = new MenuItem(currentResourceBundle.getString("systray.menu.language.bg.item"));
         MenuItem engLangMenuItem = new MenuItem(currentResourceBundle.getString("systray.menu.language.en.item"));
-        bgLangMenuItem.addActionListener(e -> changeLang(localeBG));
-        engLangMenuItem.addActionListener(e -> changeLang(Locale.ENGLISH));
+        bgLangMenuItem.addActionListener(e -> changeLang(localeBG, api));
+        engLangMenuItem.addActionListener(e -> changeLang(Locale.ENGLISH, api));
         languageMenu.add(bgLangMenuItem);
         languageMenu.add(engLangMenuItem);
 
@@ -101,7 +102,7 @@ public class SystrayMenu {
         }
     }
 
-    private void changeLang(Locale targetLocale) {
+    private void changeLang(Locale targetLocale, NexuAPI api) {
         LOGGER.info("Current locale : " + currentLocale.getLanguage());
         LOGGER.info("Change to locale : " + targetLocale.getLanguage());
 
@@ -122,6 +123,7 @@ public class SystrayMenu {
 
         currentLocale = targetLocale;
         currentResourceBundle = targetResourceBundle;
+        api.getAppConfig().setCurrentResourceBundle(currentResourceBundle);
 
         String targetKey;
         for (int i = 0; i < popupMenu.getItemCount(); i++) {
@@ -148,7 +150,9 @@ public class SystrayMenu {
                 return new FutureOperationInvocation<Void>() {
                     @Override
                     public OperationResult<Void> call(OperationFactory operationFactory) {
-                        return operationFactory.getOperation(NonBlockingUIOperation.class, "/fxml/about.fxml",
+                        return operationFactory.getOperation(NonBlockingUIOperation.class,
+                                "/fxml/about.fxml",
+                                api.getAppConfig().getCurrentResourceBundle(),
                                 api.getAppConfig().getApplicationName(), api.getAppConfig().getApplicationVersion(),
                                 resources).perform();
                     }
@@ -172,7 +176,8 @@ public class SystrayMenu {
                     public OperationResult<Void> call(OperationFactory operationFactory) {
                         final ProxyConfigurer proxyConfigurer = new ProxyConfigurer(api.getAppConfig(), prefs);
 
-                        return operationFactory.getOperation(NonBlockingUIOperation.class, "/fxml/preferences.fxml",
+                        return operationFactory.getOperation(NonBlockingUIOperation.class,
+                                "/fxml/preferences.fxml",
                                 currentResourceBundle,
                                 proxyConfigurer, prefs, !api.getAppConfig().isUserPreferencesEditable()).perform();
                     }

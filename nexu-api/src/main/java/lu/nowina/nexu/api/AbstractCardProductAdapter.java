@@ -147,7 +147,7 @@ public abstract class AbstractCardProductAdapter implements ProductAdapter {
 	 * This implementation returns <code>null</code>.
 	 */
 	@Override
-	public SystrayMenuItem getExtensionSystrayMenuItem() {
+	public SystrayMenuItem getExtensionSystrayMenuItem(NexuAPI api) {
 		return null;
 	}
 

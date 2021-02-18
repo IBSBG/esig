@@ -70,7 +70,9 @@ public abstract class Flow<I, O> {
 		if (api.getAppConfig().isEnablePopUps()) {
 			if (api.getAppConfig().isEnableIncidentReport()) {
 				final Feedback feedback = new Feedback(e);
-				getOperationFactory().getOperation(UIOperation.class, "/fxml/provide-feedback.fxml",
+				getOperationFactory().getOperation(UIOperation.class,
+						"/fxml/provide-feedback.fxml",
+						api.getAppConfig().getCurrentResourceBundle(),
 						new Object[] { feedback, api.getAppConfig().getServerUrl(),
 								api.getAppConfig().getApplicationVersion(), api.getAppConfig().getApplicationName(),
 								api.getAppConfig() })
@@ -78,6 +80,7 @@ public abstract class Flow<I, O> {
 			} else {
 				getOperationFactory()
 						.getOperation(UIOperation.class, "/fxml/message.fxml",
+								api.getAppConfig().getCurrentResourceBundle(),
 								new Object[] { "exception.failure.message", api.getAppConfig().getApplicationName() })
 						.perform();
 			}

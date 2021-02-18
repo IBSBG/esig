@@ -140,7 +140,11 @@ public class StandaloneUIDisplay implements UIDisplay {
 			LOGGER.info("Request password");
 			@SuppressWarnings("unchecked")
 			final OperationResult<char[]> passwordResult = StandaloneUIDisplay.this.operationFactory.getOperation(
-					UIOperation.class, "/fxml/password-input.fxml", passwordPrompt, NexuLauncher.getConfig().getApplicationName()).perform();
+					UIOperation.class,
+					"/fxml/password-input.fxml",
+					SystrayMenu.currentResourceBundle,
+					passwordPrompt,
+					NexuLauncher.getConfig().getApplicationName()).perform();
 			if(passwordResult.getStatus().equals(BasicOperationStatus.SUCCESS)) {
 				return passwordResult.getResult();
 			} else if(passwordResult.getStatus().equals(BasicOperationStatus.USER_CANCEL)) {
@@ -176,6 +180,7 @@ public class StandaloneUIDisplay implements UIDisplay {
 			if(Message.INPUT_PINPAD.equals(message)) {
 				StandaloneUIDisplay.this.operationFactory.getOperation(
 						NonBlockingUIOperation.class, "/fxml/message-no-button.fxml",
+						NexuLauncher.getConfig().getCurrentResourceBundle(),
 						"message.display.callback." + message.name().toLowerCase().replace('_', '.'),
 						NexuLauncher.getConfig().getApplicationName()).perform();
 			} else {

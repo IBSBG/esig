@@ -13,38 +13,8 @@
  */
 package lu.nowina.nexu;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-
-import javax.smartcardio.CardTerminal;
-
-import lu.nowina.nexu.api.AppConfig;
-import lu.nowina.nexu.api.AuthenticateRequest;
-import lu.nowina.nexu.api.AuthenticateResponse;
-import lu.nowina.nexu.api.ProductAdapter;
-import lu.nowina.nexu.api.DetectedCard;
-import lu.nowina.nexu.api.EnvironmentInfo;
-import lu.nowina.nexu.api.Execution;
-import lu.nowina.nexu.api.Feedback;
-import lu.nowina.nexu.api.GetCertificateRequest;
-import lu.nowina.nexu.api.GetCertificateResponse;
-import lu.nowina.nexu.api.GetIdentityInfoRequest;
-import lu.nowina.nexu.api.GetIdentityInfoResponse;
-import lu.nowina.nexu.api.Match;
-import lu.nowina.nexu.api.NexuAPI;
-import lu.nowina.nexu.api.Product;
-import lu.nowina.nexu.api.ScAPI;
-import lu.nowina.nexu.api.SignatureRequest;
-import lu.nowina.nexu.api.SignatureResponse;
-import lu.nowina.nexu.api.SystrayMenuItem;
-import lu.nowina.nexu.api.TokenId;
+import eu.europa.esig.dss.token.SignatureTokenConnection;
+import lu.nowina.nexu.api.*;
 import lu.nowina.nexu.api.flow.BasicOperationStatus;
 import lu.nowina.nexu.api.flow.OperationFactory;
 import lu.nowina.nexu.api.plugin.HttpPlugin;
@@ -57,11 +27,15 @@ import lu.nowina.nexu.generic.GenericCardAdapter;
 import lu.nowina.nexu.generic.SCDatabase;
 import lu.nowina.nexu.generic.SCInfo;
 import lu.nowina.nexu.view.core.UIDisplay;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.europa.esig.dss.token.SignatureTokenConnection;
+import javax.smartcardio.CardTerminal;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Implementation of the NexuAPI
@@ -288,7 +262,7 @@ public class InternalAPI implements NexuAPI {
 	public List<SystrayMenuItem> getExtensionSystrayMenuItems() {
 		final List<SystrayMenuItem> result = new ArrayList<>();
 		for(final ProductAdapter adapter : adapters) {
-			final SystrayMenuItem menuItem = adapter.getExtensionSystrayMenuItem();
+			final SystrayMenuItem menuItem = adapter.getExtensionSystrayMenuItem(this);
 			if(menuItem != null) {
 				result.add(menuItem);
 			}

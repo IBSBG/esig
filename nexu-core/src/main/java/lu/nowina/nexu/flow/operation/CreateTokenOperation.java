@@ -74,7 +74,9 @@ public class CreateTokenOperation extends AbstractCompositeOperation<Map<TokenOp
             if (this.api.getAppConfig().isAdvancedModeAvailable() && this.api.getAppConfig().isEnablePopUps()) {
                 LOG.info("Advanced mode available");
                 final OperationResult<Object> result =
-                        this.operationFactory.getOperation(UIOperation.class, "/fxml/unsupported-product.fxml",
+                        this.operationFactory.getOperation(UIOperation.class,
+                                "/fxml/unsupported-product.fxml",
+                                api.getAppConfig().getCurrentResourceBundle(),
                                 new Object[]{this.api.getAppConfig().getApplicationName()}).perform();
                 if(result.getStatus().equals(BasicOperationStatus.SUCCESS)) {
                     advanced = true;
@@ -86,7 +88,9 @@ public class CreateTokenOperation extends AbstractCompositeOperation<Map<TokenOp
                 return this.createTokenAdvanced();
             } else {
                 if(this.api.getAppConfig().isEnablePopUps()) {
-                    this.operationFactory.getOperation(UIOperation.class, "/fxml/message.fxml",
+                    this.operationFactory.getOperation(UIOperation.class,
+                            "/fxml/message.fxml",
+                            api.getAppConfig().getCurrentResourceBundle(),
                             "unsuported.product.message", this.api.getAppConfig().getApplicationName()).perform();
                 }
                 return new OperationResult<Map<TokenOperationResultKey, Object>>(CoreOperationStatus.UNSUPPORTED_PRODUCT);
@@ -127,7 +131,9 @@ public class CreateTokenOperation extends AbstractCompositeOperation<Map<TokenOp
         LOG.info("Advanced mode selected");
         @SuppressWarnings("unchecked")
         final OperationResult<ScAPI> result =
-        this.operationFactory.getOperation(UIOperation.class, "/fxml/api-selection.fxml",
+        this.operationFactory.getOperation(UIOperation.class,
+                "/fxml/api-selection.fxml",
+                api.getAppConfig().getCurrentResourceBundle(),
                 new Object[]{this.api.getAppConfig().getApplicationName()}).perform();
         if(result.getStatus().equals(BasicOperationStatus.USER_CANCEL)) {
             return new OperationResult<Map<TokenOperationResultKey, Object>>(BasicOperationStatus.USER_CANCEL);
@@ -144,7 +150,10 @@ public class CreateTokenOperation extends AbstractCompositeOperation<Map<TokenOp
                 break;
             case PKCS_11:
                 @SuppressWarnings("unchecked")
-                final OperationResult<Pkcs11Params> op2 = this.operationFactory.getOperation(UIOperation.class, "/fxml/pkcs11-params.fxml", new Object[]{this.api.getAppConfig().getApplicationName()}).perform();
+                final OperationResult<Pkcs11Params> op2 = this.operationFactory.getOperation(UIOperation.class,
+                        "/fxml/pkcs11-params.fxml",
+                        api.getAppConfig().getCurrentResourceBundle(),
+                        new Object[]{this.api.getAppConfig().getApplicationName()}).perform();
                 if(op2.getStatus().equals(BasicOperationStatus.USER_CANCEL)) {
                     return new OperationResult<Map<TokenOperationResultKey, Object>>(BasicOperationStatus.USER_CANCEL);
                 }
