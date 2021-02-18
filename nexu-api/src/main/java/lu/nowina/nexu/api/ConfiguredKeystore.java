@@ -13,15 +13,13 @@
  */
 package lu.nowina.nexu.api;
 
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.StringEscapeUtils;
+import java.text.MessageFormat;
 
 /**
  * Represents a configured keystore.
@@ -93,9 +91,9 @@ public class ConfiguredKeystore implements Product {
 	}
 
 	@Override
-	public String getLabel() {
+	public String getLabel(NexuAPI api) {
 		return StringEscapeUtils.unescapeJava(MessageFormat.format(
-				ResourceBundle.getBundle("bundles/nexu").getString("product.selection.configured.keystore.button.label"),
+				api.getAppConfig().getCurrentResourceBundle().getString("product.selection.configured.keystore.button.label"),
 				this.getType().getLabel(), this.getUrl().substring(this.getUrl().lastIndexOf('/') + 1)));
 	}
 }

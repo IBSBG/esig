@@ -13,11 +13,9 @@
  */
 package lu.nowina.nexu.windows.keystore;
 
-import java.util.ResourceBundle;
-
-import org.apache.commons.lang.StringEscapeUtils;
-
+import lu.nowina.nexu.api.NexuAPI;
 import lu.nowina.nexu.api.Product;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  * Represents a Windows keystore.
@@ -32,8 +30,8 @@ public class WindowsKeystore implements Product {
 	}
 
 	@Override
-	public String getLabel() {
-		return StringEscapeUtils.unescapeJava(ResourceBundle.getBundle("bundles/windowskeystore").getString("product.selection.windows.keystore"));
+	public String getLabel(NexuAPI api) {
+		return StringEscapeUtils.unescapeJava(api.getAppConfig().getCurrentResourceBundleWindows().getString("product.selection.windows.keystore"));
 	}
 
 }

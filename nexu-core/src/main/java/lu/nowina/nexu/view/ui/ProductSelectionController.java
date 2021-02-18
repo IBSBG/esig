@@ -13,12 +13,6 @@
  */
 package lu.nowina.nexu.view.ui;
 
-import java.net.URL;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,6 +26,12 @@ import lu.nowina.nexu.api.NexuAPI;
 import lu.nowina.nexu.api.Product;
 import lu.nowina.nexu.flow.StageHelper;
 import lu.nowina.nexu.view.core.AbstractUIOperationController;
+
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class ProductSelectionController extends AbstractUIOperationController<Product> implements Initializable {
 
@@ -70,7 +70,7 @@ public class ProductSelectionController extends AbstractUIOperationController<Pr
 
 		Platform.runLater(() -> {
 			message.setText(MessageFormat
-					.format(ResourceBundle.getBundle("bundles/nexu").getString("product.selection.header"), params[0]));
+					.format(api.getAppConfig().getCurrentResourceBundle().getString("product.selection.header"), params[0]));
 			@SuppressWarnings("unchecked")
 			final List<DetectedCard> cards = (List<DetectedCard>) params[1];
 			@SuppressWarnings("unchecked")

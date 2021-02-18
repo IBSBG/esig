@@ -13,8 +13,6 @@
  */
 package lu.nowina.nexu.api;
 
-import java.util.ResourceBundle;
-
 /**
  * Placeholder for new keystore.
  *
@@ -27,7 +25,7 @@ public class NewKeystore implements Product {
 	}
 
 	@Override
-	public String getLabel() {
-		return ResourceBundle.getBundle("bundles/nexu").getString("product.selection.add.new.keystore");
+	public String getLabel(NexuAPI api) {
+		return api.getAppConfig().getCurrentResourceBundle().getString("product.selection.add.new.keystore");
 	}
 }

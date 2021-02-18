@@ -144,6 +144,8 @@ public class AppConfig {
 
     private ResourceBundle currentResourceBundle;
 
+    private ResourceBundle currentResourceBundleWindows;
+
     public AppConfig() {
         try {
             final URL versionResourceURL = this.getClass().getResource("/version.txt");
@@ -386,6 +388,14 @@ public class AppConfig {
 
     public void setCurrentResourceBundle(ResourceBundle currentResourceBundle) {
         this.currentResourceBundle = currentResourceBundle;
+    }
+
+    public ResourceBundle getCurrentResourceBundleWindows() {
+        return currentResourceBundleWindows;
+    }
+
+    public void setCurrentResourceBundleWindows(ResourceBundle currentResourceBundleWindows) {
+        this.currentResourceBundleWindows = currentResourceBundleWindows;
     }
 
     public File getNexuHome() {

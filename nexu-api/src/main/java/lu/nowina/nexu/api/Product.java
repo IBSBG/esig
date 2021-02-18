@@ -24,6 +24,6 @@ public interface Product {
 	 * Returns a label for this product.
 	 * @return A label for this product.
 	 */
-	String getLabel();
+	String getLabel(NexuAPI api);
 	
 }

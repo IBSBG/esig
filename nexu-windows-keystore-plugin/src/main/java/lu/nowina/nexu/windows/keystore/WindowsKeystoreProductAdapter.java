@@ -45,7 +45,7 @@ public class WindowsKeystoreProductAdapter implements ProductAdapter {
 
 	@Override
 	public String getLabel(NexuAPI api, Product product, PasswordInputCallback callback) {
-		return product.getLabel();
+		return product.getLabel(api);
 	}
 
 	@Override

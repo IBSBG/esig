@@ -283,7 +283,7 @@ public class InternalAPI implements NexuAPI {
 	public String getLabel(Product p) {
 		final List<Match> matches = this.matchingProductAdapters(p);
 		if(matches.isEmpty()) {
-			return p.getLabel();
+			return p.getLabel(this);
 		} else {
 			final ProductAdapter adapter = matches.iterator().next().getAdapter();
 			if(adapter.supportMessageDisplayCallback(p)) {

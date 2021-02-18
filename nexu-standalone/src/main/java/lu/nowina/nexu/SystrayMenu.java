@@ -37,16 +37,23 @@ public class SystrayMenu {
 
     public static Locale currentLocale = Locale.ENGLISH;
     public static ResourceBundle currentResourceBundle;
+    public static ResourceBundle currentResourceBundleWindows;
     public static ResourceBundle resourceBundleEN;
     public static ResourceBundle resourceBundleBG;
+    public static ResourceBundle resourceBundleWindowsEN;
+    public static ResourceBundle resourceBundleWindowsBG;
     public static PopupMenu popupMenu = new PopupMenu();
 
     public SystrayMenu(OperationFactory operationFactory, NexuAPI api, UserPreferences prefs) {
 
         resourceBundleEN = ResourceBundle.getBundle("bundles/nexu", Locale.ENGLISH);
         resourceBundleBG = ResourceBundle.getBundle("bundles/nexu", localeBG);
+        resourceBundleWindowsEN = ResourceBundle.getBundle("bundles/windowskeystore", Locale.ENGLISH);
+        resourceBundleWindowsBG = ResourceBundle.getBundle("bundles/windowskeystore", localeBG);
         currentResourceBundle = resourceBundleEN;
         api.getAppConfig().setCurrentResourceBundle(currentResourceBundle);
+        currentResourceBundleWindows = resourceBundleWindowsEN;
+        api.getAppConfig().setCurrentResourceBundleWindows(currentResourceBundleWindows);
 
         final List<SystrayMenuItem> extensionSystrayMenuItems = api.getExtensionSystrayMenuItems();
         SystrayMenuItem[] systrayMenuItems = new SystrayMenuItem[extensionSystrayMenuItems.size() + 2];
@@ -107,10 +114,13 @@ public class SystrayMenu {
         LOGGER.info("Change to locale : " + targetLocale.getLanguage());
 
         ResourceBundle targetResourceBundle = resourceBundleEN;
+        ResourceBundle targetResourceBundleWindows = resourceBundleWindowsEN;
         if (targetLocale.equals(SystrayMenu.localeBG)) {
             targetResourceBundle = resourceBundleBG;
+            targetResourceBundleWindows = resourceBundleWindowsBG;
         } else if (targetLocale.equals(Locale.ENGLISH)) {
             targetResourceBundle = resourceBundleEN;
+            targetResourceBundleWindows = resourceBundleWindowsEN;
         }
 
         Enumeration<String> enumerationRef = currentResourceBundle.getKeys();
@@ -124,6 +134,8 @@ public class SystrayMenu {
         currentLocale = targetLocale;
         currentResourceBundle = targetResourceBundle;
         api.getAppConfig().setCurrentResourceBundle(currentResourceBundle);
+        currentResourceBundleWindows = targetResourceBundleWindows;
+        api.getAppConfig().setCurrentResourceBundleWindows(currentResourceBundleWindows);
 
         String targetKey;
         for (int i = 0; i < popupMenu.getItemCount(); i++) {

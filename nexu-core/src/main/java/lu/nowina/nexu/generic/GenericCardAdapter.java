@@ -39,7 +39,7 @@ public class GenericCardAdapter extends AbstractCardProductAdapter {
 
     @Override
     protected String getLabel(final NexuAPI api, final DetectedCard card, final PasswordInputCallback callback) {
-        return card.getLabel();
+        return card.getLabel(api);
     }
 
     @Override
