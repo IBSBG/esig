@@ -13,22 +13,17 @@
  */
 package lu.nowina.nexu.view.core;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.ResourceBundle;
-
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import lu.nowina.nexu.api.flow.*;
+import lu.nowina.nexu.flow.Flow;
+import lu.nowina.nexu.flow.operation.UIDisplayAwareOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import lu.nowina.nexu.api.flow.AbstractFutureOperationInvocation;
-import lu.nowina.nexu.api.flow.BasicOperationStatus;
-import lu.nowina.nexu.api.flow.FutureOperationInvocation;
-import lu.nowina.nexu.api.flow.OperationResult;
-import lu.nowina.nexu.api.flow.OperationStatus;
-import lu.nowina.nexu.flow.Flow;
-import lu.nowina.nexu.flow.operation.UIDisplayAwareOperation;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.ResourceBundle;
 
 /**
  * An <code>UIOperation</code> controls the user interaction with the {@link Flow}.
@@ -55,6 +50,7 @@ public class UIOperation<R> implements UIDisplayAwareOperation<R> {
 
 	private UIDisplay display;
 	private String fxml;
+	private ResourceBundle currentResourceBundle;
 	private Object[] params;
 	
 	private transient Parent root;
@@ -70,15 +66,16 @@ public class UIOperation<R> implements UIDisplayAwareOperation<R> {
 		}
 		try {
 			this.fxml = (String) params[0];
-			if(params.length > 1) {
-				if(params[1] instanceof Object[]) {
-					this.params = (Object[]) params[1];
+			this.currentResourceBundle = (ResourceBundle) params[1];
+			if(params.length > 2) {
+				if(params[2] instanceof Object[]) {
+					this.params = (Object[]) params[2];
 				} else {
-					this.params = Arrays.copyOfRange(params, 1, params.length);
+					this.params = Arrays.copyOfRange(params, 2, params.length);
 				}
 			}
 		} catch(ClassCastException e) {
-			throw new IllegalArgumentException("Expected parameters: fxml, controller params.");
+			throw new IllegalArgumentException("Expected parameters: fxml, resource bundle,  controller params.");
 		}
 	}
 	
@@ -87,7 +84,8 @@ public class UIOperation<R> implements UIDisplayAwareOperation<R> {
 		LOGGER.info("Loading " + fxml + " view");
 		final FXMLLoader loader = new FXMLLoader();
 		try {
-			loader.setResources(ResourceBundle.getBundle("bundles/nexu"));
+//			loader.setResources(ResourceBundle.getBundle("bundles/nexu"));
+			loader.setResources(currentResourceBundle);
 			loader.load(getClass().getResourceAsStream(fxml));
 		} catch(final IOException e) {
 			throw new RuntimeException(e);

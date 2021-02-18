@@ -36,6 +36,7 @@ public class SystrayMenu {
     final static Locale localeBG = new Locale("bg", "BG");
 
     public static Locale currentLocale = Locale.ENGLISH;
+    public static ResourceBundle currentResourceBundle;
     public static ResourceBundle resourceBundleEN;
     public static ResourceBundle resourceBundleBG;
     public static PopupMenu popupMenu = new PopupMenu();
@@ -43,28 +44,30 @@ public class SystrayMenu {
     public SystrayMenu(OperationFactory operationFactory, NexuAPI api, UserPreferences prefs) {
 
         final List<SystrayMenuItem> extensionSystrayMenuItems = api.getExtensionSystrayMenuItems();
-        final SystrayMenuItem[] systrayMenuItems = new SystrayMenuItem[extensionSystrayMenuItems.size() + 2];
+
+        SystrayMenuItem[] systrayMenuItems = new SystrayMenuItem[extensionSystrayMenuItems.size() + 2];
 
         resourceBundleEN = ResourceBundle.getBundle("bundles/nexu", Locale.ENGLISH);
         resourceBundleBG = ResourceBundle.getBundle("bundles/nexu", localeBG);
+        currentResourceBundle = resourceBundleEN;
 
-        systrayMenuItems[0] = createAboutSystrayMenuItem(operationFactory, api, resourceBundleEN);
-        systrayMenuItems[1] = createPreferencesSystrayMenuItem(operationFactory, api, prefs, resourceBundleEN);
+        systrayMenuItems[0] = createAboutSystrayMenuItem(operationFactory, api, currentResourceBundle);
+        systrayMenuItems[1] = createPreferencesSystrayMenuItem(operationFactory, api, prefs);
 
         int i = 2;
         for (final SystrayMenuItem systrayMenuItem : extensionSystrayMenuItems) {
             systrayMenuItems[i++] = systrayMenuItem;
         }
 
-        Menu langMenu = new Menu(resourceBundleEN.getString("systray.menu.language"));
-        MenuItem bgLangMenuItem = new MenuItem(resourceBundleEN.getString("systray.menu.language.bg.item"));
-        MenuItem engLangMenuItem = new MenuItem(resourceBundleEN.getString("systray.menu.language.en.item"));
+        Menu languageMenu = new Menu(currentResourceBundle.getString("systray.menu.language"));
+        MenuItem bgLangMenuItem = new MenuItem(currentResourceBundle.getString("systray.menu.language.bg.item"));
+        MenuItem engLangMenuItem = new MenuItem(currentResourceBundle.getString("systray.menu.language.en.item"));
         bgLangMenuItem.addActionListener(e -> changeLang(localeBG));
         engLangMenuItem.addActionListener(e -> changeLang(Locale.ENGLISH));
-        langMenu.add(bgLangMenuItem);
-        langMenu.add(engLangMenuItem);
+        languageMenu.add(bgLangMenuItem);
+        languageMenu.add(engLangMenuItem);
 
-        final SystrayMenuItem exitMenuItem = createExitSystrayMenuItem(resourceBundleEN);
+        final SystrayMenuItem exitMenuItem = createExitSystrayMenuItem(currentResourceBundle);
 
         final String tooltip = api.getAppConfig().getApplicationName();
         final URL trayIconURL = this.getClass().getResource("/tray-icon.png");
@@ -75,13 +78,13 @@ public class SystrayMenu {
                     // Use reflection to avoid wrong initialization issues
                     Class.forName("lu.nowina.nexu.systray.AWTSystrayMenuInitializer")
                             .asSubclass(SystrayMenuInitializer.class).newInstance()
-                            .init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, langMenu, systrayMenuItems);
+                            .init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, languageMenu, systrayMenuItems);
                     break;
                 case LINUX:
                     // Use reflection to avoid wrong initialization issues
                     Class.forName("lu.nowina.nexu.systray.DorkboxSystrayMenuInitializer")
                             .asSubclass(SystrayMenuInitializer.class).newInstance()
-                            .init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, langMenu, systrayMenuItems);
+                            .init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, languageMenu, systrayMenuItems);
                     break;
                 case NOT_RECOGNIZED:
                     LOGGER.warn("System tray is currently not supported for NOT_RECOGNIZED OS.");
@@ -99,36 +102,37 @@ public class SystrayMenu {
     }
 
     private void changeLang(Locale targetLocale) {
-
-        ResourceBundle refResourceBundle = resourceBundleEN;
-        if(currentLocale.equals(SystrayMenu.localeBG)) {
-            refResourceBundle = resourceBundleBG;
-        }
+        LOGGER.info("Current locale : " + currentLocale.getLanguage());
+        LOGGER.info("Change to locale : " + targetLocale.getLanguage());
 
         ResourceBundle targetResourceBundle = resourceBundleEN;
-        if(targetLocale.equals(SystrayMenu.localeBG)) {
+        if (targetLocale.equals(SystrayMenu.localeBG)) {
             targetResourceBundle = resourceBundleBG;
+        } else if (targetLocale.equals(Locale.ENGLISH)) {
+            targetResourceBundle = resourceBundleEN;
         }
 
-        Enumeration<String> enumerationRef = refResourceBundle.getKeys();
-        Hashtable <String, String> refHashtable = new Hashtable<>(10);
+        Enumeration<String> enumerationRef = currentResourceBundle.getKeys();
+        Hashtable<String, String> refHashtable = new Hashtable<>(10);
         String key;
         while (enumerationRef.hasMoreElements()) {
             key = enumerationRef.nextElement();
-            refHashtable.put(refResourceBundle.getString(key), key);
+            refHashtable.put(currentResourceBundle.getString(key), key);
         }
+
+        currentLocale = targetLocale;
+        currentResourceBundle = targetResourceBundle;
 
         String targetKey;
         for (int i = 0; i < popupMenu.getItemCount(); i++) {
             MenuItem menuItem = popupMenu.getItem(i);
             targetKey = refHashtable.get(menuItem.getLabel());
-            if(targetKey != null) {
+            if (targetKey != null) {
                 menuItem.setLabel(targetResourceBundle.getString(targetKey));
             }
         }
 
-        currentLocale = targetLocale;
-        LOGGER.info("!!!!!!!!!!!!!!!!! " + targetLocale.getLanguage());
+        LOGGER.info("Current locale : " + currentLocale.getLanguage());
     }
 
     private SystrayMenuItem createAboutSystrayMenuItem(final OperationFactory operationFactory, final NexuAPI api,
@@ -154,11 +158,11 @@ public class SystrayMenu {
     }
 
     private SystrayMenuItem createPreferencesSystrayMenuItem(final OperationFactory operationFactory,
-                                                             final NexuAPI api, final UserPreferences prefs, final ResourceBundle resources) {
+                                                             final NexuAPI api, final UserPreferences prefs) {
         return new SystrayMenuItem() {
             @Override
             public String getLabel() {
-                return resources.getString("systray.menu.preferences");
+                return currentResourceBundle.getString("systray.menu.preferences");
             }
 
             @Override
@@ -169,6 +173,7 @@ public class SystrayMenu {
                         final ProxyConfigurer proxyConfigurer = new ProxyConfigurer(api.getAppConfig(), prefs);
 
                         return operationFactory.getOperation(NonBlockingUIOperation.class, "/fxml/preferences.fxml",
+                                currentResourceBundle,
                                 proxyConfigurer, prefs, !api.getAppConfig().isUserPreferencesEditable()).perform();
                     }
                 };
