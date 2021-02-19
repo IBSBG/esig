@@ -6,7 +6,7 @@ function checkAgentStatus() {
         if (request.status == 200) {
             let responseText = JSON.parse(request.response).version;
             console.log(JSON.parse(request.response).version);
-            if ("1.23-SNAPSHOT" === responseText) {
+            if ("1.23forkBG" === responseText) {
                 document.getElementById("message").style.color = "green";
                 document.getElementById("message").innerText = "Успешно свързване с NexU локална компонента!";
                 document.getElementById("submitButton").disabled = false;
