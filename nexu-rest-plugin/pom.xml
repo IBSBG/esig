@@ -26,61 +26,61 @@
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-document</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-model</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-cades</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-pades-pdfbox</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-xades</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-jades</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-asic-cades</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-asic-xades</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-service</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.europa.ec.joinup.sd-dss</groupId>
 			<artifactId>dss-spi</artifactId>
-			<version>5.8.RC1</version>
+			<version>${dss.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
