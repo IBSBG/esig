@@ -13,24 +13,6 @@
  */
 package lu.nowina.nexu.jetty;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lu.nowina.nexu.ConfigurationException;
@@ -43,6 +25,22 @@ import lu.nowina.nexu.api.plugin.HttpPlugin;
 import lu.nowina.nexu.api.plugin.HttpResponse;
 import lu.nowina.nexu.api.plugin.HttpStatus;
 import lu.nowina.nexu.json.GsonHelper;
+import org.apache.commons.io.IOUtils;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestProcessor extends AbstractHandler {
 
@@ -147,14 +145,17 @@ public class RequestProcessor extends AbstractHandler {
 				response.setCharacterEncoding(UTF8);
 				response.setContentType(APPLICATION_JSON);
 				
-				final Execution<?> execution = new Execution<Object>(BasicOperationStatus.EXCEPTION);
+				Execution<?> execution = new Execution<Object>(BasicOperationStatus.EXCEPTION);
+				execution.setError(e.getMessage());
 				final Feedback feedback = new Feedback(e);
 				feedback.setNexuVersion(api.getAppConfig().getApplicationVersion());
 				feedback.setInfo(api.getEnvironmentInfo());
 				execution.setFeedback(feedback);
 				
 				final PrintWriter writer = response.getWriter();
-				writer.write(GsonHelper.toJson(execution));
+				String json = GsonHelper.toJson(execution);
+				logger.debug("json: " + json);
+				writer.write(json);
 				writer.close();
 			} catch (IOException e2) {
 				logger.error("Cannot write error !?", e2);

@@ -27,7 +27,7 @@ public class Execution<T> {
 
 	private final T response;
 
-	private final String error;
+	private String error;
 
 	private final String errorMessage;
 
@@ -71,4 +71,7 @@ public class Execution<T> {
 		this.feedback = feedback;
 	}
 
+	public void setError(String error) {
+		this.error = error;
+	}
 }

@@ -45,7 +45,11 @@ public class StageHelper {
 	}
 
 	public void setTitle(final String applicationName, String bundleKey) {
-		title = bundle.getString(bundleKey);
+		try {
+			title = bundle.getString(bundleKey);
+		} catch (Exception e) {
+			title = "";
+		}
 		if(!isBlank(applicationName) && !isBlank(title)) {
 			this.title = applicationName + " - " + title;
 		} else if(isBlank(applicationName)) {

@@ -332,7 +332,7 @@ public class RestHttpPlugin implements HttpPlugin {
 		}
 	}
 
-	public ToBeSigned getDataToSign(SignatureDocumentForm signatureDocumentForm) {
+	public ToBeSigned getDataToSign(SignatureDocumentForm signatureDocumentForm) throws ApplicationJsonRequestException {
 		logger.info("Start getDataToSign with one document");
 		DocumentSignatureService service = getSignatureService(signatureDocumentForm.getContainerType(), signatureDocumentForm.getSignatureForm());
 

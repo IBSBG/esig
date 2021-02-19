@@ -24,14 +24,13 @@ function sign(requestParameters) {
     request.onload = () => {
         if (request.status == 200) {
             console.log(request.response)
-            let obj = JSON.parse(request.response);
-            // let fileBlob = window.atob(obj.response.signedFileBase64);
 
-            if(obj.response.success == true){
+            json = JSON.parse(request.response);
+
+            if(json.success == true){
                 alert("Successful signing!");
             }
-
-            const binaryImg = atob(obj.response.signedFileBase64);
+            const binaryImg = atob(json.signedFileBase64);
             const length = binaryImg.length;
             const arrayBuffer = new ArrayBuffer(length);
             const uintArray = new Uint8Array(arrayBuffer);
@@ -42,12 +41,15 @@ function sign(requestParameters) {
 
             const fileBlob = new Blob([uintArray], { type: 'application/pdf' });
 
-            console.log(obj.response.signedFileBase64);
+            console.log(json.signedFileBase64);
 
             // let data = { x: 42, s: file, d: new Date() };
-            saveData(fileBlob, obj.response.signedFileName);
+            saveData(fileBlob, request.response.signedFileName);
         } else {
-            alert("ERROR status=" + request.status + " statusText=" + request.statusText);
+            let message = "ERROR status=" + request.status + " statusText=" + request.statusText + "\n";
+            json = JSON.parse(request.response);
+            if(json.error != undefined) message += json.error;
+            alert(message);
 
         }
     }
