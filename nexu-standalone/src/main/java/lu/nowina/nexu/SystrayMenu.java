@@ -104,6 +104,12 @@ public class SystrayMenu {
                 default:
                     throw new IllegalArgumentException("Unhandled value: " + api.getEnvironmentInfo().getOs());
             }
+            // show about
+            operationFactory.getOperation(NonBlockingUIOperation.class,
+                    "/fxml/about.fxml",
+                    api.getAppConfig().getCurrentResourceBundle(),
+                    api.getAppConfig().getApplicationName(), api.getAppConfig().getApplicationVersion(),
+                    currentResourceBundle).perform();
         } catch (InstantiationException e) {
             LOGGER.error("Cannot initialize systray menu", e);
         } catch (IllegalAccessException e) {

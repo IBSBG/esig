@@ -1,4 +1,5 @@
 @echo off
+echo "Starting local component - //todo - launcher could be much more user friendly"
 rem Â© Nowina Solutions, 2015-2015
 rem
 rem ConceÌ�deÌ�e sous licence EUPL, version 1.1 ou â€“ deÌ€s leur approbation par la Commission europeÌ�enne - versions ulteÌ�rieures de lâ€™EUPL (la Â«LicenceÂ»).
