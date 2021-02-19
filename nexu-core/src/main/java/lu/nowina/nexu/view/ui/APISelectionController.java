@@ -13,10 +13,6 @@
  */
 package lu.nowina.nexu.view.ui;
 
-import java.net.URL;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +25,10 @@ import lu.nowina.nexu.api.OS;
 import lu.nowina.nexu.api.ScAPI;
 import lu.nowina.nexu.flow.StageHelper;
 import lu.nowina.nexu.view.core.AbstractUIOperationController;
+
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 public class APISelectionController extends AbstractUIOperationController<ScAPI> implements Initializable {
 
@@ -92,7 +92,7 @@ public class APISelectionController extends AbstractUIOperationController<ScAPI>
 		StageHelper.getInstance().setTitle((String) params[0], "api.selection.title");
 		Platform.runLater(() -> 
 			message.setText(MessageFormat.format(
-					ResourceBundle.getBundle("bundles/nexu").getString("api.selection.header"),
+					StageHelper.getBundle().getString("api.selection.header"),
 					params[0]))
 		);
 	}

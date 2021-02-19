@@ -13,12 +13,6 @@
  */
 package lu.nowina.nexu.view.ui;
 
-import java.net.URL;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
-
-import org.apache.commons.lang.StringEscapeUtils;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,6 +20,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import lu.nowina.nexu.flow.StageHelper;
 import lu.nowina.nexu.view.core.AbstractUIOperationController;
+import org.apache.commons.lang.StringEscapeUtils;
+
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Return true if the user want to try "Advance mode"
@@ -55,6 +54,6 @@ public class UnsupportedProductController extends AbstractUIOperationController<
         StageHelper.getInstance().setTitle((String) params[0], "unsuported.product.title");
 
         Platform.runLater(() -> this.message.setText(StringEscapeUtils.unescapeJava(MessageFormat
-                .format(ResourceBundle.getBundle("bundles/nexu").getString("unsuported.product.header"), params[0]))));
+                .format(StageHelper.getBundle().getString("unsuported.product.header"), params[0]))));
     }
 }

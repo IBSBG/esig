@@ -19,6 +19,7 @@ import lu.nowina.nexu.api.SystrayMenuItem;
 import lu.nowina.nexu.api.flow.FutureOperationInvocation;
 import lu.nowina.nexu.api.flow.OperationFactory;
 import lu.nowina.nexu.api.flow.OperationResult;
+import lu.nowina.nexu.flow.StageHelper;
 import lu.nowina.nexu.systray.SystrayMenuInitializer;
 import lu.nowina.nexu.view.core.NonBlockingUIOperation;
 import org.slf4j.Logger;
@@ -50,10 +51,13 @@ public class SystrayMenu {
         resourceBundleBG = ResourceBundle.getBundle("bundles/nexu", localeBG);
         resourceBundleWindowsEN = ResourceBundle.getBundle("bundles/windowskeystore", Locale.ENGLISH);
         resourceBundleWindowsBG = ResourceBundle.getBundle("bundles/windowskeystore", localeBG);
-        currentResourceBundle = resourceBundleEN;
+
+        currentResourceBundle = resourceBundleBG;
         api.getAppConfig().setCurrentResourceBundle(currentResourceBundle);
-        currentResourceBundleWindows = resourceBundleWindowsEN;
+        currentResourceBundleWindows = resourceBundleWindowsBG;
         api.getAppConfig().setCurrentResourceBundleWindows(currentResourceBundleWindows);
+        currentLocale = localeBG;
+        StageHelper.setBundle(currentResourceBundle);
 
         final List<SystrayMenuItem> extensionSystrayMenuItems = api.getExtensionSystrayMenuItems();
         SystrayMenuItem[] systrayMenuItems = new SystrayMenuItem[extensionSystrayMenuItems.size() + 2];
@@ -136,6 +140,7 @@ public class SystrayMenu {
         api.getAppConfig().setCurrentResourceBundle(currentResourceBundle);
         currentResourceBundleWindows = targetResourceBundleWindows;
         api.getAppConfig().setCurrentResourceBundleWindows(currentResourceBundleWindows);
+        StageHelper.setBundle(currentResourceBundle);
 
         String targetKey;
         for (int i = 0; i < popupMenu.getItemCount(); i++) {
