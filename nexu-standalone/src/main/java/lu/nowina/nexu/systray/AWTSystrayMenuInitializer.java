@@ -36,11 +36,9 @@ public class AWTSystrayMenuInitializer implements SystrayMenuInitializer {
 	
 	@Override
 	public void init(PopupMenu popupMenu, final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
-			final SystrayMenuItem exitMenuItem, final Menu langMenu, final SystrayMenuItem... systrayMenuItems) {
+			final SystrayMenuItem exitMenuItem, final Menu langMenu, final MenuItem webDemoMenuItem, final SystrayMenuItem... systrayMenuItems) {
 		if (SystemTray.isSupported()) {
-//			PopupMenu popup = new PopupMenu();
-
-
+			popupMenu.add(webDemoMenuItem);
 
 			for(final SystrayMenuItem systrayMenuItem : systrayMenuItems) {
 				MenuItem mi = new MenuItem(systrayMenuItem.getLabel());

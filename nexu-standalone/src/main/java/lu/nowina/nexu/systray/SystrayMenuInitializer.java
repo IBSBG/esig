@@ -36,6 +36,6 @@ public interface SystrayMenuInitializer {
      * @param systrayMenuItems Systray menu items.
      */
     void init(PopupMenu popupMenu, final String tooltip, final URL trayIconURL, final OperationFactory operationFactory,
-              final SystrayMenuItem exitMenuItem, final Menu menu, final SystrayMenuItem... systrayMenuItems);
+              final SystrayMenuItem exitMenuItem, final Menu menu, final MenuItem webDemoMenuItem, final SystrayMenuItem... systrayMenuItems);
     
 }

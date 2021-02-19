@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.*;
@@ -71,6 +72,9 @@ public class SystrayMenu {
             systrayMenuItems[i++] = systrayMenuItem;
         }
 
+        MenuItem callWebDemo4Sign = new MenuItem(currentResourceBundle.getString("systray.menu.webdemo"));
+        callWebDemo4Sign.addActionListener(e -> openWebpage(currentResourceBundle.getString("web.demo.page")));
+
         Menu languageMenu = new Menu(currentResourceBundle.getString("systray.menu.language"));
         MenuItem bgLangMenuItem = new MenuItem(currentResourceBundle.getString("systray.menu.language.bg.item"));
         MenuItem engLangMenuItem = new MenuItem(currentResourceBundle.getString("systray.menu.language.en.item"));
@@ -90,13 +94,13 @@ public class SystrayMenu {
                     // Use reflection to avoid wrong initialization issues
                     Class.forName("lu.nowina.nexu.systray.AWTSystrayMenuInitializer")
                             .asSubclass(SystrayMenuInitializer.class).newInstance()
-                            .init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, languageMenu, systrayMenuItems);
+                            .init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, languageMenu, callWebDemo4Sign, systrayMenuItems);
                     break;
                 case LINUX:
                     // Use reflection to avoid wrong initialization issues
                     Class.forName("lu.nowina.nexu.systray.DorkboxSystrayMenuInitializer")
                             .asSubclass(SystrayMenuInitializer.class).newInstance()
-                            .init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, languageMenu, systrayMenuItems);
+                            .init(popupMenu, tooltip, trayIconURL, operationFactory, exitMenuItem, languageMenu, callWebDemo4Sign, systrayMenuItems);
                     break;
                 case NOT_RECOGNIZED:
                     LOGGER.warn("System tray is currently not supported for NOT_RECOGNIZED OS.");
@@ -228,5 +232,18 @@ public class SystrayMenu {
                 };
             }
         };
+    }
+
+    public static boolean openWebpage(String url) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(new URI(url));
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }
