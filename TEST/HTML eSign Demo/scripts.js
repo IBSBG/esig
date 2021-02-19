@@ -30,7 +30,7 @@ function sign(requestParameters) {
             if(json.success == true){
                 alert("Successful signing!");
             }
-            const binaryImg = atob(json.signedFileBase64);
+            const binaryImg = atob(json.response.signedFileBase64);
             const length = binaryImg.length;
             const arrayBuffer = new ArrayBuffer(length);
             const uintArray = new Uint8Array(arrayBuffer);
@@ -41,10 +41,10 @@ function sign(requestParameters) {
 
             const fileBlob = new Blob([uintArray], { type: 'application/pdf' });
 
-            console.log(json.signedFileBase64);
+            console.log(json.response.signedFileBase64);
 
             // let data = { x: 42, s: file, d: new Date() };
-            saveData(fileBlob, request.response.signedFileName);
+            saveData(fileBlob, json.response.signedFileName);
         } else {
             let message = "ERROR status=" + request.status + " statusText=" + request.statusText + "\n";
             json = JSON.parse(request.response);
