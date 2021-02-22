@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane prefHeight="170.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lu.nowina.nexu.view.ui.AboutController">
+<BorderPane prefHeight="170.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lu.nowina.nexu.view.ui.AboutController">
 
 	<top>
 		<GridPane hgap="5" vgap="5" alignment="TOP_LEFT">
@@ -35,6 +35,14 @@
                 	GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                 <Label fx:id="applicationVersion" text="" 
                 	GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label text="%source.page.label"
+                	GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <Label text="%source.page"
+                	GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label text="%license.page.label"
+                	GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <Label text="%license.page"
+                	GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 			</children>
 		</GridPane>
 	</top>
