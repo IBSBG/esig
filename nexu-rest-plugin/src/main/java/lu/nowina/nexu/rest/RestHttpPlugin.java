@@ -124,52 +124,62 @@ public class RestHttpPlugin implements HttpPlugin {
 	private HttpResponse getSignDoc(NexuAPI api, HttpRequest req, String signDataPayload) {
 		String certificatesPayload = "";
 		String signedDocumentBase64 = null;
-		HttpResponse httpGetCertificateResponse = getCertificates(api, req, certificatesPayload);// force window for select certificate
-		parseCertificateResponse(httpGetCertificateResponse);
+		SignDocResponse signDocResponse = new SignDocResponse();
 
-		logger.info("signDataPayload + " + signDataPayload);
-		if(execution != null
-				&& execution.isSuccess()
-				&& getCertificate != null
-				&& getCertificate.getCertificate() != null){
-			logger.info("SIGN FILE HERE");
-			parseSignDocRequestData(signDataPayload);
-			ToBeSigned dataToSign = getDataToSign();
-			if(dataToSign != null){
-				SignatureRequest signatureRequest = new SignatureRequest();
-				signatureRequest.setTokenId(getCertificate.getTokenId());
-				signatureRequest.setKeyId(getCertificate.getKeyId());
-				signatureRequest.setToBeSigned(dataToSign);
-				signatureRequest.setDigestAlgorithm(signatureDocumentForm.getDigestAlgorithm());
+		try {
+			HttpResponse httpGetCertificateResponse = getCertificates(api, req, certificatesPayload);// force window for select certificate
+			parseCertificateResponse(httpGetCertificateResponse);
 
-				String payloadForSign = GsonHelper.toJson(signatureRequest);
-				logger.info("payloadForSign= " + payloadForSign);
-//				SignatureData signatureData = GsonHelper.fromJson(payloadForSign, SignatureData.class);
-				if(payloadForSign != null){
-					HttpResponse httpGetSignResponse = signRequest(api, req, payloadForSign);// force window for pin code
+			logger.info("signDataPayload + " + signDataPayload);
+			if(execution != null
+					&& execution.isSuccess()
+					&& getCertificate != null
+					&& getCertificate.getCertificate() != null){
+				logger.info("SIGN FILE HERE");
+				parseSignDocRequestData(signDataPayload);
+				ToBeSigned dataToSign = getDataToSign();
+				if(dataToSign != null){
+					SignatureRequest signatureRequest = new SignatureRequest();
+					signatureRequest.setTokenId(getCertificate.getTokenId());
+					signatureRequest.setKeyId(getCertificate.getKeyId());
+					signatureRequest.setToBeSigned(dataToSign);
+					signatureRequest.setDigestAlgorithm(signatureDocumentForm.getDigestAlgorithm());
 
-					SignatureResponse signatureResponse = parseSignResponse(httpGetSignResponse);
-					if(signatureResponse != null){
-						signedDocumentBase64 = signDocument(signatureResponse);
-						SignDocResponse signDocResponse = new SignDocResponse();
-						signDocResponse.setSuccess(true);
-						signDocResponse.setSignedFileBase64(signedDocumentBase64);
-						signDocResponse.setSignedFileName(signedFileName);
+					String payloadForSign = GsonHelper.toJson(signatureRequest);
+					logger.info("payloadForSign= " + payloadForSign);
+	//				SignatureData signatureData = GsonHelper.fromJson(payloadForSign, SignatureData.class);
+					if(payloadForSign != null){
+						HttpResponse httpGetSignResponse = signRequest(api, req, payloadForSign);// force window for pin code
 
-						String payload = GsonHelper.toJson(signDocResponse);
-						SignDocResponse r = GsonHelper.fromJson(payload, SignDocResponse.class);
-						Execution<SignDocResponse> execution = new Execution(r);
-
-						return toHttpResponse(execution);
+						SignatureResponse signatureResponse = parseSignResponse(httpGetSignResponse, signDocResponse);
+						if(signatureResponse != null){
+							signedDocumentBase64 = signDocument(signatureResponse);
+							signDocResponse.setSuccess(true);
+							signDocResponse.setSignedFileBase64(signedDocumentBase64);
+							signDocResponse.setSignedFileName(signedFileName);
+						}
 					}
 				}
+			} else {
+				signDocResponse.setSuccess(false);
+				signDocResponse.setError(execution.getError());
+				signDocResponse.setErrorMessage(execution.getErrorMessage());
 			}
+
+			String payload = GsonHelper.toJson(signDocResponse);
+			SignDocResponse r = GsonHelper.fromJson(payload, SignDocResponse.class);
+			execution = new Execution(r);
+		} catch (Exception e) {
+			signDocResponse.setSuccess(false);
+			signDocResponse.setError("Exception");
+			signDocResponse.setErrorMessage(e.getMessage());
+			e.printStackTrace();
 		}
 
-		return httpGetCertificateResponse;
+		return toHttpResponse(execution);
 	}
 
-	private SignatureResponse parseSignResponse(HttpResponse httpGetSignResponse) {
+	private SignatureResponse parseSignResponse(HttpResponse httpGetSignResponse, SignDocResponse signDocResponse) {
 		logger.info("*** PARSE SIGN RESPONSE START ***");
 		execution = GsonHelper.fromJson(httpGetSignResponse.getContent(), Execution.class);
 		if(execution != null){
@@ -179,8 +189,11 @@ public class RestHttpPlugin implements HttpPlugin {
 				String responseString = GsonHelper.toJson(execution.getResponse());
 				SignatureResponse signatureResponse = GsonHelper.fromJson(responseString, SignatureResponse.class);
 				return signatureResponse;
+			} else {
+				signDocResponse.setSuccess(false);
+				signDocResponse.setError(execution.getError());
+				signDocResponse.setErrorMessage(execution.getErrorMessage());
 			}
-
 		}
 		logger.info("*** PARSE SIGN RESPONSE END ***");
 		return null;
