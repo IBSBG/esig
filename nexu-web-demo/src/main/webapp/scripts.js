@@ -1,4 +1,4 @@
-function checkAgentStatus() {
+function checkAgentStatus(lang) {
     let request = new XMLHttpRequest();
     request.open("GET", "http://localhost:9795/nexu-info");
     request.send();
@@ -8,7 +8,8 @@ function checkAgentStatus() {
             console.log(JSON.parse(request.response).version);
             if ("1.23forkBG" === responseText) {
                 document.getElementById("message").style.color = "green";
-                document.getElementById("message").innerText = "Успешно свързване с NexU локална компонента!";
+                if(lang === "bg") document.getElementById("message").innerText = "Успешно свързване с NexU локална компонента!";
+                if(lang === "en") document.getElementById("message").innerText = "Local component NexU ready!";
                 document.getElementById("submitButton").disabled = false;
             }
         } else {

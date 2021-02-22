@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Електронно подписване</title>
+    <title>Demo document signing</title>
     <meta name="description" content="The HTML5 Herald">
     <meta name="author" content="SitePoint">
 
@@ -15,12 +15,12 @@
 
 <div class="content">
     <form method="post" enctype="multipart/form-data">
-        <h1>Демонстрационно приложение за електронно подписване  (HTML/Javascript)<br>(Език: Български&nbsp;|&nbsp;<a href="indexEN.html" target="_blank">English</a>)</h1>
+        <h1>Demonstration page - electronic document signing (HTML/Javascript)<br>(Language: English&nbsp;|&nbsp;<a href="index.html" target="_blank">Български</a>)</h1>
         <hr>
-        <h3>Файл за подписване</h3>
-        <input type="file" id="file" name="file" title="Изберете файл" value="Изберете файл">
+        <h3>File to sign</h3>
+        <input type="file" id="file" name="file" title="Choose file" value="Choose file">
 
-        <h3>Контейнер</h3>
+        <h3>Container</h3>
         <div>
             <input type="radio" checked id="containerNo" onclick="changeContainer('no')" name="container" value="no">
             <label for="containerNo">No</label>
@@ -32,7 +32,7 @@
             <label for="containerASiC-E">ASiC-E</label>
         </div>
 
-        <h3>Формат на подписа</h3>
+        <h3>Signature format</h3>
         <div>
             <input type="radio" id="signatureFormatCAdES" onclick="changeSignatureLevel('CAdES')" name="signatureFormat" value="cades">
             <label for="signatureFormatCAdES">CAdES</label>
@@ -47,7 +47,7 @@
 <!--            <label for="signatureFormatJAdES">JAdES</label>-->
         </div>
 
-        <h3>Тип на подписа</h3>
+        <h3>Packaging</h3>
         <div>
             <input type="radio" disabled id="packagingFormatEnveloped" name="packagingFormat" value="enveloped">
             <label for="packagingFormatEnveloped">Enveloped</label>
@@ -62,7 +62,7 @@
             <label for="packagingFormatInternallyDetached">Internally detached</label>
         </div>
 
-        <h3>Ниво на подписa</h3>
+        <h3>Level</h3>
         <div>
             <input type="radio" id="signatureLevelBASELINE_B" name="signatureLevel" value="BASELINE_B">
             <label id="signatureLevelBASELINE_B_label" for="signatureLevelBASELINE_B">BASELINE_B</label>
@@ -79,7 +79,7 @@
             <label id="signatureLevelBASELINE_LTA_label" for="signatureLevelBASELINE_LTA">BASELINE_LTA</label>
         </div>
 
-        <h3>Хеш алгоритъм</h3>
+        <h3>Digest algorithm</h3>
         <div>
             <input type="radio" id="digestAlgorithmSHA1" name="digestAlgorithm" value="sha1">
             <label for="digestAlgorithmSHA1">SHA1</label>
@@ -95,26 +95,26 @@
         </div>
         <br>
         <br>
-        <button disabled id="submitButton" type="submit">Подпиши</button>
+        <button disabled id="submitButton" type="submit">Submit</button>
     </form>
 
     <br>
     <div>
-        <p id="message" class="message"><strong>Неуспешно свързване с NexU локална компонента!</strong></p>
+        <p id="message" class="message"><strong>Couldn't connect to NexU!</strong></p>
         <br>
-        <a href="nexu-bundle-1.23forkBG.zip" download target="_blank" >Изтегляне на локална компонента NexU (разархивирайте и стартирайте NexU-Startup.bat)</a>
+        <a href="nexu-bundle-1.23forkBG.zip" download target="_blank" >Download local component NexU (decompress and run NexU-Startup.bat)</a>
         <br>
-        <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" target="_blank" >Лиценз</a>
+        <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" target="_blank" >License</a>
         <br>
-        <a href="#" target="_blank" >Изходен код</a>
+        <a href="#" target="_blank" >Source code</a>
         <br>
-        <a href="mailto: esign@ibs.bg" target="_blank" >Обратна връзка (esign[at]ibs[dot]bg)</a>
+        <a href="mailto: esign@ibs.bg" target="_blank" >Feedback (esign[at]ibs[dot]bg)</a>
     </div>
 </div>
 
 <script src="scripts.js"></script>
 <script type="application/javascript">
-    checkAgentStatus("bg");
+    checkAgentStatus("en");
 </script>
 </body>
 </html>
