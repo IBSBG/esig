@@ -8,18 +8,24 @@ signature tool called NexU.
 
 http://nowina.lu/solutions/java-less-browser-signing-nexu/
 
-## This fork version 1.23-SNAPSHOT from GitHub
+## This is a fork of master branch version 1.23-SNAPSHOT from https://github.com/nowina-solutions/nexu
 
 Fork UPDATE INFO
 
-- whats changed
-...
+- whats new/changed
+-- new REST service for complete client side electronic signing ("/signDoc")
+-- UI internationalisation
+-- updated libraries - DSS 5.8 - https://ec.europa.eu/cefdigital/wiki/display/CEFDIGITAL/DSS
+-- Simple HTML/Javascript demo page in order to accelerate the integration process
 
-- how to use
+- how to use (demo page)
 demo page English: https://services.ibs.bg/esign/indexEN.html
 demo page Bulgarian: https://services.ibs.bg/esign/
 
 - todo
+-- better launcher Windows
+-- Linux support
+-- MacOS support
 ...
 
 - License
