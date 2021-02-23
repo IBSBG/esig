@@ -28,24 +28,24 @@ function sign(requestParameters) {
 
             json = JSON.parse(request.response);
 
-            if(json.success == true){
+            if(json.response.success == true){
                 alert("Successful signing!");
+                const binaryImg = atob(json.response.signedFileBase64);
+                const length = binaryImg.length;
+                const arrayBuffer = new ArrayBuffer(length);
+                const uintArray = new Uint8Array(arrayBuffer);
+
+                for (let i = 0; i < length; i++) {
+                    uintArray[i] = binaryImg.charCodeAt(i);
+                }
+
+                const fileBlob = new Blob([uintArray], { type: 'application/pdf' });
+
+                // console.log(json.response.signedFileBase64);
+
+                // let data = { x: 42, s: file, d: new Date() };
+                saveData(fileBlob, json.response.signedFileName);
             }
-            const binaryImg = atob(json.response.signedFileBase64);
-            const length = binaryImg.length;
-            const arrayBuffer = new ArrayBuffer(length);
-            const uintArray = new Uint8Array(arrayBuffer);
-
-            for (let i = 0; i < length; i++) {
-                uintArray[i] = binaryImg.charCodeAt(i);
-            }
-
-            const fileBlob = new Blob([uintArray], { type: 'application/pdf' });
-
-            console.log(json.response.signedFileBase64);
-
-            // let data = { x: 42, s: file, d: new Date() };
-            saveData(fileBlob, json.response.signedFileName);
         } else {
             let message = "ERROR status=" + request.status + " statusText=" + request.statusText + "\n";
             json = JSON.parse(request.response);
