@@ -4,11 +4,9 @@
     <property environment="env"/>
 
     <target name="clean">
-        <mkdir dir="${web.dist.dir}"/>
-        <mkdir dir="${win.dist.dir}"/>
 
         <delete quiet="false" includeemptydirs="true">
-            <fileset dir="${web.dist.dir}" includes="**/*">
+            <fileset dir="${web.build.dir}" includes="**/*">
             </fileset>
         </delete>
 
@@ -28,17 +26,45 @@
                 <include name="*.zip"/>
             </fileset>
         </copy>
+        <!-- copy macos bundle -->
+        <copy todir="${mac.dist.dir}">
+            <fileset dir="${target.nexu.bundle}">
+                <include name="*.dmg"/>
+            </fileset>
+        </copy>
+        <!-- copy linux bundle -->
+        <copy todir="${linux.dist.dir}">
+            <fileset dir="${target.nexu.bundle}">
+                <include name="*.rpm"/>
+            </fileset>
+        </copy>
 
-<!--        augment war with bundle in order to be available for download-->
-        <war destfile="${web.dist.dir}nexu-web-demo-${version}.war" needxmlfile="false">
+
+        <!--        augment war with bundle in order to be available for download-->
+        <war destfile="${web.build.dir}nexu-web-demo-${version}.war" needxmlfile="false">
             <fileset dir="${win.dist.dir}">
                 <include name="*.zip" />
+                <include name="*.txt" />
+            </fileset>
+            <fileset dir="${mac.dist.dir}">
+                <include name="*.dmg" />
+                <include name="*.txt" />
+            </fileset>
+            <fileset dir="${linux.dist.dir}">
+                <include name="*.rpm" />
+                <include name="*.txt" />
             </fileset>
             <fileset dir="${web.demo}">
                 <include name="**" />
             </fileset>
 <!--            <zipfileset dir="/" prefix="" />-->
         </war>
+
+        <copy todir="${web.dist.dir}">
+            <fileset dir="${web.build.dir}">
+                <include name="*.war"/>
+            </fileset>
+        </copy>
 
     </target>
 
