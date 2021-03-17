@@ -1,3 +1,0 @@
-1.	Изтегля се nexu-bundle-1.23forkBG.zip; 
-2.	Разархивира се nexu-bundle-1.23forkBG.zip в локална директория.
-3.	Стартира се NexU-Startup.bat.

@@ -1,2 +1,0 @@
-1.	Download nexu-1.0.dmg;
-2.	Mount/Execute nexu-1.0.dmg.

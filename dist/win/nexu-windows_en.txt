@@ -1,3 +1,0 @@
-1.	Download nexu-bundle-1.23forkBG.zip;
-2.	Decompress nexu-bundle-1.23forkBG.zip into local folder.
-3.	Execute NexU-Startup.bat.
