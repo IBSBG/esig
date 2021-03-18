@@ -1,6 +1,6 @@
 function checkAgentStatus(lang) {
     let request = new XMLHttpRequest();
-    request.open("GET", "http://localhost:9795/nexu-info");
+    request.open("GET", "http://localhost:9795/nexu-info", true);
     request.send();
     request.onload = () => {
         if (request.status == 200) {
@@ -20,7 +20,7 @@ function checkAgentStatus(lang) {
 
 function sign(requestParameters) {
     let request = new XMLHttpRequest();
-    request.open("POST", "http://localhost:9795/rest/signDoc");
+    request.open("POST", "http://localhost:9795/rest/signDoc", true);
     request.send(JSON.stringify(requestParameters));
     request.onload = () => {
         if (request.status == 200) {

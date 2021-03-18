@@ -1,0 +1,3 @@
+1.	Download nexu-1.0-1.x86_64.rpm;
+2.	Install nexu-1.0-1.x86_64.rpm – “sudo yum localinstall nexu-1.0-1.x86_64.rpm” (there are many ways to do that).
+Note: Depending on specific Linux environment, more prerequisites could exists, e.g. „rpmdevtools“ etc.
