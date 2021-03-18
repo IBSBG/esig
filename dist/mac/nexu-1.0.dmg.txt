@@ -1,0 +1,3 @@
+Файла nexu-1.0.dmg не е качен в github.com поради ограничение в размера на файла.
+
+https://docs.github.com/en/github/managing-large-files/what-is-my-disk-quota
