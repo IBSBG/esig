@@ -1,0 +1,33 @@
+#!/bin/bash
+# SEE https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html
+
+# JAVA_HOME=`/usr/java/jdk1.8.0_151 -v 1.8`
+
+APP_NAME="nexu"
+APP_TITLE="Nexu"
+APP_VERSION="1.0"
+BUNDLE_NAME="Nexu"
+BUNDLE_IDENTIFIER="lu.nowina.nexu"
+
+/usr/java/jdk1.8.0_101/bin/javapackager \
+	-deploy \
+	-name $APP_NAME \
+	-title $APP_TITLE \
+	-native rpm \
+	-srcfiles ./nexu.jar \
+	-outdir . \
+	-outfile nexu \
+	-appclass lu.nowina.nexu.NexuLauncher \
+	-nosign \
+	-BappVersion=$APP_VERSION \
+	-BmainJar=nexu.jar \
+	-Bmac.category=Utilities \
+	-Bmac.CFBundleIdentifier=$BUNDLE_IDENTIFIER \
+	-Bmac.CFBundleName=$BUNDLE_NAME \
+	-Bmac.CFBundleVersion=$APP_VERSION \
+	-v
+
+echo ""
+echo "If that succeeded, it created \"./bundles/${APP_NAME}-${APP_VERSION}.dmg\""
+
+
