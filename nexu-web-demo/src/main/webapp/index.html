@@ -1,127 +1,231 @@
-<!doctype html>
+﻿<!doctype html>
 
-<html lang="en">
+<html lang="bg" xml:lang="bg" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <meta charset="utf-8">
-
-    <title>Електронно подписване</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
-
-    <link rel="stylesheet" href="styles.css?v=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <title>Локална компонента NexU</title>
 </head>
 
 <body>
-
-<div class="content">
-    <form method="post" enctype="multipart/form-data">
-        <h1>Демонстрационно приложение за електронно подписване  (HTML/Javascript)<br>(Език: Български&nbsp;|&nbsp;<a href="indexEN.html" target="_blank">English</a>)</h1>
-        <hr>
-        <h3>Файл за подписване</h3>
-        <input type="file" id="file" name="file" title="Изберете файл" value="Изберете файл">
-
-        <h3>Контейнер</h3>
-        <div>
-            <input type="radio" checked id="containerNo" onclick="changeContainer('no')" name="container" value="no">
-            <label for="containerNo">No</label>
-
-            <input type="radio" id="containerASiC-S" onclick="changeContainer('asic-s')" name="container" value="asic-s">
-            <label for="containerASiC-S">ASiC-S</label>
-
-            <input type="radio" id="containerASiC-E" onclick="changeContainer('asic-e')" name="container" value="asic-e">
-            <label for="containerASiC-E">ASiC-E</label>
+    <header>
+        <div class="pre-header-container">
+            <a href="indexEN.html" target="_blank">English</a>
         </div>
-
-        <h3>Формат на подписа</h3>
-        <div>
-            <input type="radio" id="signatureFormatCAdES" onclick="changeSignatureLevel('CAdES')" name="signatureFormat" value="cades">
-            <label for="signatureFormatCAdES">CAdES</label>
-
-            <input type="radio" id="signatureFormatPAdES" onclick="changeSignatureLevel('PAdES')" name="signatureFormat" value="pades">
-            <label for="signatureFormatPAdES">PAdES</label>
-
-            <input type="radio" id="signatureFormatXAdES" onclick="changeSignatureLevel('XAdES')" name="signatureFormat" value="xades">
-            <label for="signatureFormatXAdES">XAdES</label>
-
-<!--            <input type="radio" id="signatureFormatJAdES" onclick="changeSignatureLevel('JAdES')" name="signatureFormat" value="jades">-->
-<!--            <label for="signatureFormatJAdES">JAdES</label>-->
+        <div class="header-container">
+            <div class="logo"><img src="img/logo.svg"></div>
+            <div class="site-title-container">
+                <div class="site-title">Локална компонента</div>
+                <div class="site-sub-title">Държавна агенция "Електронно управление"</div>
+                <!-- <div class="environment-indicator">ТЕСТОВА СРЕДА</div> -->
+            </div>
         </div>
+    </header>
+    <div id="blue-banner"></div>
+    <section class="container" style="display: flex; align-items: flex-start; flex-wrap: wrap; background-color: white;">
+        <div class="main-content">
+            <h1>Подпис с КЕП</h1>
 
-        <h3>Тип на подписа</h3>
-        <div>
-            <input type="radio" disabled id="packagingFormatEnveloped" name="packagingFormat" value="enveloped">
-            <label for="packagingFormatEnveloped">Enveloped</label>
+            <div id="messageUnsuccessfulConnection" style="display: none;" class="message alert-danger"><strong>Неуспешно свързване с NexU локална компонента! Моля, изтеглете инсталационните файлове и следвайте инструкциите.</strong></div>
+            <div id="messageSuccessfulConnection" style="display: none;" class="message alert-success"><strong>Успешно свързване с NexU локална компонента!</strong></div>
 
-            <input type="radio" disabled id="packagingFormatEnveloping" name="packagingFormat" value="enveloping">
-            <label for="packagingFormatEnveloping">Enveloping</label>
+            <form method="post" enctype="multipart/form-data">
+                <div class="sign_panel">
+                    <h3>Изберете файл за подписване</h3>
+                    <input type="file" id="file" name="file" title="Изберете файл" value="Изберете файл">
+                    <br>
+                    <br>
+                    <br>
+                    <button disabled id="submitButton" class="button" type="submit">Подпиши</button>
+                </div>
 
-            <input type="radio" disabled id="packagingFormatDetached" name="packagingFormat" value="detached">
-            <label for="packagingFormatDetached">Detached</label>
+                <button type="button" class="collapsible">Настройки</button>
+                <div class="collapsible_content">
+                    <h3>Контейнер</h3>
+                    <div>
+                        <input type="radio" checked id="containerNo" onclick="changeContainer('no')" name="container" value="no">
+                        <label for="containerNo">No</label>
 
-            <input type="radio" disabled id="packagingFormatInternallyDetached" name="packagingFormat" value="internally_detached">
-            <label for="packagingFormatInternallyDetached">Internally detached</label>
-        </div>
+                        <input type="radio" id="containerASiC-S" onclick="changeContainer('asic-s')" name="container" value="asic-s">
+                        <label for="containerASiC-S">ASiC-S</label>
 
-        <h3>Ниво на подписa</h3>
-        <div>
-            <input type="radio" id="signatureLevelBASELINE_B" name="signatureLevel" value="BASELINE_B">
-            <label id="signatureLevelBASELINE_B_label" for="signatureLevelBASELINE_B">BASELINE_B</label>
+                        <input type="radio" id="containerASiC-E" onclick="changeContainer('asic-e')" name="container" value="asic-e">
+                        <label for="containerASiC-E">ASiC-E</label>
+                    </div>
 
-            <input type="radio" id="signatureLevelBASELINE_T" name="signatureLevel" value="BASELINE_T">
-            <label id="signatureLevelBASELINE_T_label" for="signatureLevelBASELINE_T">BASELINE_T</label>
+                    <h3>Формат на подписа</h3>
+                    <div>
+                        <input type="radio" id="signatureFormatCAdES" onclick="changeSignatureLevel('CAdES')" name="signatureFormat" value="cades">
+                        <label for="signatureFormatCAdES">CAdES</label>
 
+                        <input type="radio" id="signatureFormatPAdES" onclick="changeSignatureLevel('PAdES')" name="signatureFormat" value="pades">
+                        <label for="signatureFormatPAdES">PAdES</label>
+
+                        <input type="radio" id="signatureFormatXAdES" onclick="changeSignatureLevel('XAdES')" name="signatureFormat" value="xades">
+                        <label for="signatureFormatXAdES">XAdES</label>
+
+                        <!--            <input type="radio" id="signatureFormatJAdES" onclick="changeSignatureLevel('JAdES')" name="signatureFormat" value="jades">-->
+                        <!--            <label for="signatureFormatJAdES">JAdES</label>-->
+                    </div>
+
+                    <h3>Тип на подписа</h3>
+                    <div>
+                        <input type="radio" disabled id="packagingFormatEnveloped" name="packagingFormat" value="enveloped">
+                        <label for="packagingFormatEnveloped">Enveloped</label>
+
+                        <input type="radio" disabled id="packagingFormatEnveloping" name="packagingFormat" value="enveloping">
+                        <label for="packagingFormatEnveloping">Enveloping</label>
+
+                        <input type="radio" disabled id="packagingFormatDetached" name="packagingFormat" value="detached">
+                        <label for="packagingFormatDetached">Detached</label>
+
+                        <input type="radio" disabled id="packagingFormatInternallyDetached" name="packagingFormat" value="internally_detached">
+                        <label for="packagingFormatInternallyDetached">Internally detached</label>
+                    </div>
+
+                    <h3>Ниво на подписa</h3>
+                    <div>
+                        <input type="radio" id="signatureLevelBASELINE_B" name="signatureLevel" value="BASELINE_B">
+                        <label id="signatureLevelBASELINE_B_label" for="signatureLevelBASELINE_B">BASELINE_B</label>
+
+                        <input type="radio" id="signatureLevelBASELINE_T" name="signatureLevel" value="BASELINE_T">
+                        <label id="signatureLevelBASELINE_T_label" for="signatureLevelBASELINE_T">BASELINE_T</label>
+
+                        <input type="radio" id="signatureLevelBASELINE_LT" name="signatureLevel" value="BASELINE_LT">
+                        <label id="signatureLevelBASELINE_LT_label" for="signatureLevelBASELINE_LT">BASELINE_LT</label>
+
+                        <input type="radio" id="signatureLevelBASELINE_LTA" name="signatureLevel" value="BASELINE_LTA">
+                        <label id="signatureLevelBASELINE_LTA_label" for="signatureLevelBASELINE_LTA">BASELINE_LTA</label>
+                    </div>
+
+                    <h3>Хеш алгоритъм</h3>
+                    <div>
+                        <input type="radio" id="digestAlgorithmSHA1" name="digestAlgorithm" value="sha1">
+                        <label for="digestAlgorithmSHA1">SHA1</label>
+
+                        <input type="radio" id="digestAlgorithmSHA256" checked name="digestAlgorithm" value="sha256">
+                        <label for="digestAlgorithmSHA256">SHA256</label>
+
+                        <input type="radio" id="digestAlgorithmSHA384" name="digestAlgorithm" value="sha384">
+                        <label for="digestAlgorithmSHA384">SHA384</label>
+
+                        <input type="radio" id="digestAlgorithmSHA512" name="digestAlgorithm" value="sha512">
+                        <label for="digestAlgorithmSHA512">SHA512</label>
+                    </div>
+                </div>
+            </form>
             <br>
 
-            <input type="radio" id="signatureLevelBASELINE_LT" name="signatureLevel" value="BASELINE_LT">
-            <label id="signatureLevelBASELINE_LT_label" for="signatureLevelBASELINE_LT">BASELINE_LT</label>
+            <button type="button" class="collapsible">Изтегляне на локална компонента NexU</button>
+            <div class="collapsible_content">
+<!--                <p>-->
+<!--                    <a href="https://services.ibs.bg/esign/NexuLauncher.jnlp" >Изтегляне на локална компонента NexU (JNLP)</a>-->
+<!--                </p>-->
+                <p>
+                    <a href="nexu-bundle-1.23-SNAPSHOT.exe" download target="_blank">Локална компонента NexU (Windows) (EXE)</a>
+                    <a href="nexu-bundle-1.23-SNAPSHOT.zip" download target="_blank">Локална компонента NexU (Windows) (ZIP)</a>
+                    <a href="nexu-windows.txt" download target="_blank">Инструкция</a>
+                </p>
+                <p>
+                    <a href="nexu-1.0.dmg" download target="_blank">Изтегляне на локална компонента NexU (MacOS)</a>
+                    <a href="nexu-macos.txt" download target="_blank">Инструкция за инсталация</a>
+                </p>
+                <p>
+                    <a href="nexu-1.0-1.x86_64.rpm" download target="_blank">Изтегляне на локална компонента NexU (Linux)</a>
+                    <a href="nexu-linux.txt" download target="_blank">Инструкция за инсталация</a>
+                </p>
+                <p>
+                    <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" target="_blank">Лиценз</a>
+                </p>
+                <p>
+                    <a href="https://github.com/IBSBG/esig.git" target="_blank">Изходен код</a>
+                </p>
 
-            <input type="radio" id="signatureLevelBASELINE_LTA" name="signatureLevel" value="BASELINE_LTA">
-            <label id="signatureLevelBASELINE_LTA_label" for="signatureLevelBASELINE_LTA">BASELINE_LTA</label>
+            </div>
+
+
         </div>
-
-        <h3>Хеш алгоритъм</h3>
-        <div>
-            <input type="radio" id="digestAlgorithmSHA1" name="digestAlgorithm" value="sha1">
-            <label for="digestAlgorithmSHA1">SHA1</label>
-
-            <input type="radio" id="digestAlgorithmSHA256" checked name="digestAlgorithm" value="sha256">
-            <label for="digestAlgorithmSHA256">SHA256</label>
-
-            <input type="radio" id="digestAlgorithmSHA384" name="digestAlgorithm" value="sha384">
-            <label for="digestAlgorithmSHA384">SHA384</label>
-
-            <input type="radio" id="digestAlgorithmSHA512" name="digestAlgorithm" value="sha512">
-            <label for="digestAlgorithmSHA512">SHA512</label>
+        <div class="aside">
+            <p>Кратък пояснителен текст за системата, ако се прецени, че има нужда от такъв.</p>
+            <p>Ако не, пак може да се сложи поне информация за връзка с <a href="https://egov.bg/wps/portal/egov/helpdesk" target="_blank">Помощния контактен център</a> на Държавна агенция "Електронно управление".
+            </p>
+            <br>
+            <a href="tel:070020341" class="header-helpdesk-phone">
+                <svg class="svg-icons">
+                    <use xlink:href="#phone"></use>
+                </svg> 070020341</a>
+            &nbsp;
+            <a href="mailto:help@e-gov.bg" class="header-helpdesk-email">
+                <svg class="svg-icons">
+                    <use xlink:href="#email"></use>
+                </svg> help@e-gov.bg</a>
         </div>
-        <br>
-        <br>
-        <button disabled id="submitButton" type="submit">Подпиши</button>
-    </form>
+    </section>
+    <footer>
+        <div class="container">
+            <div id="footer-content">
+                <div id="footer-text">Тази система е създаден в рамките на проект "Надграждане на интеграционния слой на Единния модел и гарантиране на работоспособността му".<br><br></div>
+                <div id="footer-logos">
+                    <img src="img/logosEU&OP.png" width=228>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    <br>
-    <div>
-        <p id="message" class="message"><strong>Неуспешно свързване с NexU локална компонента!</strong></p>
-        <br>
-        <a href="nexu-bundle-1.23forkBG.zip" download target="_blank" >Изтегляне на локална компонента NexU (Windows)</a>
-        <a href="nexu-windows.txt" download target="_blank" >Инструкция за инсталация</a>
-        <br>
-        <a href="nexu-1.0.dmg" download target="_blank" >Изтегляне на локална компонента NexU (MacOS)</a>
-        <a href="nexu-macos.txt" download target="_blank" >Инструкция за инсталация</a>
-        <br>
-        <a href="nexu-1.0-1.x86_64.rpm" download target="_blank" >Изтегляне на локална компонента NexU (Linux)</a>
-        <a href="nexu-linux.txt" download target="_blank" >Инструкция за инсталация</a>
-        <br>
-        <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" target="_blank" >Лиценз</a>
-        <br>
-        <a href="https://github.com/IBSBG/esig.git" target="_blank" >Изходен код</a>
-        <br>
-        <a href="mailto: esign@ibs.bg" target="_blank" >Обратна връзка (esign[at]ibs[dot]bg)</a>
+    <script src="scripts.js"></script>
+    <script type="application/javascript">
+        checkAgentStatus("bg");
+    </script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+    </script>
+
+    <div class="svg-container" style="display: none">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="phone" viewBox="0 0 512 512">
+                <title>phone</title>
+                <path id="Phone" d="M436.992,74.953c-99.989-99.959-262.08-99.935-362.039,0.055s-99.935,262.08,0.055,362.039s262.08,99.935,362.039-0.055
+            c48.006-48.021,74.968-113.146,74.953-181.047C511.986,188.055,485.005,122.951,436.992,74.953z M387.703,356.605
+            c-0.011,0.011-0.022,0.023-0.034,0.034v-0.085l-12.971,12.885c-16.775,16.987-41.206,23.976-64.427,18.432
+            c-23.395-6.262-45.635-16.23-65.877-29.525c-18.806-12.019-36.234-26.069-51.968-41.899
+            c-14.477-14.371-27.483-30.151-38.827-47.104c-12.408-18.242-22.229-38.114-29.184-59.051
+            c-7.973-24.596-1.366-51.585,17.067-69.717l15.189-15.189c4.223-4.242,11.085-4.257,15.326-0.034
+            c0.011,0.011,0.023,0.022,0.034,0.034l47.957,47.957c4.242,4.223,4.257,11.085,0.034,15.326c-0.011,0.011-0.022,0.022-0.034,0.034
+            l-28.16,28.16c-8.08,7.992-9.096,20.692-2.389,29.867c10.185,13.978,21.456,27.131,33.707,39.339
+            c13.659,13.718,28.508,26.197,44.373,37.291c9.167,6.394,21.595,5.316,29.525-2.56l27.221-27.648
+            c4.223-4.242,11.085-4.257,15.326-0.034c0.011,0.011,0.022,0.022,0.034,0.034l48.043,48.128
+            C391.911,345.502,391.926,352.363,387.703,356.605z" />
+            </symbol>
+            <symbol id="email" viewBox="0 0 448 448">
+                <title>email</title>
+                <path d="m314.375 144h-180.75l90.375 77.464844zm0 0" />
+                <path d="m224 240c-1.910156 0-3.757812-.683594-5.207031-1.929688l-98.792969-84.679687v150.609375h208v-150.609375l-98.792969 84.679687c-1.449219 1.246094-3.296875 1.929688-5.207031 1.929688zm0 0" />
+                <path d="m224 0c-123.710938 0-224 100.289062-224 224s100.289062 224 224 224 224-100.289062 224-224c-.140625-123.652344-100.347656-223.859375-224-224zm120 312c0 4.417969-3.582031 8-8 8h-224c-4.417969 0-8-3.582031-8-8v-176c0-4.417969 3.582031-8 8-8h224c4.417969 0 8 3.582031 8 8zm0 0" />
+            </symbol>
+        </svg>
     </div>
-</div>
 
-<script src="scripts.js"></script>
-<script type="application/javascript">
-    checkAgentStatus("bg");
-</script>
+
 </body>
+
 </html>

@@ -42,6 +42,7 @@
 
         <!--        augment war with bundle in order to be available for download-->
         <war destfile="${web.build.dir}nexu-web-demo-${version}.war" needxmlfile="false">
+
             <fileset dir="${win.dist.dir}">
                 <include name="*.zip" />
                 <include name="*.txt" />
@@ -57,7 +58,11 @@
             <fileset dir="${web.demo}">
                 <include name="**" />
             </fileset>
-<!--            <zipfileset dir="/" prefix="" />-->
+            <fileset dir="${win.dist.ext.dir}">
+                <include name="*.*" />
+            </fileset>
+
+            <!--            <zipfileset dir="/" prefix="" />-->
         </war>
 
         <copy todir="${web.dist.dir}">

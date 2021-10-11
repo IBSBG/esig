@@ -1,4 +1,7 @@
 function checkAgentStatus(lang) {
+    document.getElementById("messageUnsuccessfulConnection").style.display = "block";
+    document.getElementById("messageSuccessfulConnection").style.display = "none";
+    document.getElementById("submitButton").disabled = true;
     let request = new XMLHttpRequest();
     request.open("GET", "http://localhost:9795/nexu-info", true);
     request.send();
@@ -6,17 +9,24 @@ function checkAgentStatus(lang) {
         if (request.status == 200) {
             let responseText = JSON.parse(request.response).version;
             console.log(JSON.parse(request.response).version);
-            if ("1.23forkBG" === responseText) {
-                document.getElementById("message").style.color = "green";
-                if(lang === "bg") document.getElementById("message").innerText = "Успешно свързване с NexU локална компонента!";
-                if(lang === "en") document.getElementById("message").innerText = "Local component NexU ready!";
+            if ("1.23-SNAPSHOT" === responseText) {
+                document.getElementById("messageUnsuccessfulConnection").style.display = "none";
+                document.getElementById("messageSuccessfulConnection").style.display = "block";
                 document.getElementById("submitButton").disabled = false;
             }
         } else {
             alert("ERROR status=" + request.status + " statusText=" + request.statusText);
         }
     }
+    request.onerror = function (e) {
+        document.getElementById("messageUnsuccessfulConnection").style.display = "block";
+        document.getElementById("messageSuccessfulConnection").style.display = "none";
+        document.getElementById("submitButton").disabled = true;
+    };
 }
+
+// <div className="message alert-danger"><strong>Неуспешно свързване с NexU локална компонента! Моля, изтеглете инсталационните файлове и следвайте инструкциите.</strong></div>
+// <div className="message alert-success"><strong>Успешно свързване с NexU локална компонента!</strong></div>
 
 function sign(requestParameters) {
     let request = new XMLHttpRequest();
@@ -28,8 +38,7 @@ function sign(requestParameters) {
 
             json = JSON.parse(request.response);
 
-            if(json.response.success == true){
-                alert("Successful signing!");
+            if (json.response.success == true) {
                 const binaryImg = atob(json.response.signedFileBase64);
                 const length = binaryImg.length;
                 const arrayBuffer = new ArrayBuffer(length);
@@ -39,7 +48,7 @@ function sign(requestParameters) {
                     uintArray[i] = binaryImg.charCodeAt(i);
                 }
 
-                const fileBlob = new Blob([uintArray], { type: 'application/pdf' });
+                const fileBlob = new Blob([uintArray], {type: 'application/pdf'});
 
                 // console.log(json.response.signedFileBase64);
 
@@ -49,7 +58,7 @@ function sign(requestParameters) {
         } else {
             let message = "ERROR status=" + request.status + " statusText=" + request.statusText + "\n";
             json = JSON.parse(request.response);
-            if(json.error != undefined) message += json.error;
+            if (json.error != undefined) message += json.error;
             alert(message);
 
         }
@@ -70,8 +79,29 @@ let saveData = (function () {
         a.download = fileName;
         a.click();
         window.URL.revokeObjectURL(url);
+        resetForm()
     };
 }());
+
+function resetForm() {
+    document.getElementById("signatureFormatPAdES").checked = false;
+    document.getElementById("signatureFormatCAdES").checked = false;
+    document.getElementById("signatureFormatXAdES").checked = false;
+
+    document.getElementById("packagingFormatEnveloped").disabled = true;
+    document.getElementById("packagingFormatEnveloped").checked = false;
+    document.getElementById("packagingFormatDetached").disabled = true;
+    document.getElementById("packagingFormatDetached").checked = false;
+    document.getElementById("packagingFormatEnveloping").disabled = true;
+    document.getElementById("packagingFormatEnveloping").checked = false;
+    document.getElementById("packagingFormatInternallyDetached").disabled = true;
+    document.getElementById("packagingFormatInternallyDetached").checked = false;
+
+    document.getElementById("signatureLevelBASELINE_B").checked = false;
+    document.getElementById("signatureLevelBASELINE_T").checked = false;
+    document.getElementById("signatureLevelBASELINE_LT").checked = false;
+    document.getElementById("signatureLevelBASELINE_LTA").checked = false;
+}
 
 document.addEventListener('submit', function (event) {
 
@@ -85,6 +115,37 @@ document.addEventListener('submit', function (event) {
     let packagingFormat = formData.get('packagingFormat');
     let signatureLevel = formData.get('signatureLevel');
     let digestAlgorithm = formData.get('digestAlgorithm');
+
+    if(file.name === ""){
+        alert("Моля, изберете файл за подписване!");
+        document.getElementById("file").style.border = "1px solid red";
+        return;
+    }
+    document.getElementById("file").style.border = "none";
+
+    if (signatureFormat === null) {
+        if ("application/pdf" === file.type) {
+            signatureFormat = "pades";
+            document.getElementById("signatureFormatPAdES").checked = true;
+        } else if ("text/xml" === file.type) {
+            signatureFormat = "xades"
+            document.getElementById("signatureFormatXAdES").checked = true;
+        }
+    }
+    if (packagingFormat === null) {
+        document.getElementById("packagingFormatEnveloped").disabled = false;
+        document.getElementById("packagingFormatEnveloped").checked = true;
+        packagingFormat = "enveloped"
+    }
+    if (signatureLevel === null) {
+        if ("application/pdf" === file.type) {
+            signatureLevel = "PAdES-BASELINE-B";
+            document.getElementById("signatureLevelBASELINE_B").checked = true;
+        } else if ("text/xml" === file.type) {
+            signatureLevel = "XAdES-BASELINE-B"
+            document.getElementById("signatureLevelBASELINE_B").checked = true;
+        }
+    }
 
     // alert(" Файл [" + file.name + "]" +
     //     "\n Размер на файла [" + file.size + " bytes]" +
@@ -105,12 +166,12 @@ document.addEventListener('submit', function (event) {
         // alert("Файл byte array [" + fileByteArray + "]");
 
         let requestParameters = {
-            container:container,
-            signatureFormat:signatureFormat,
-            packagingFormat:packagingFormat,
-            signatureLevel:signatureLevel,
-            digestAlgorithm:digestAlgorithm,
-            fileBase64Format:fileBase64Format,
+            container: container,
+            signatureFormat: signatureFormat,
+            packagingFormat: packagingFormat,
+            signatureLevel: signatureLevel,
+            digestAlgorithm: digestAlgorithm,
+            fileBase64Format: fileBase64Format,
             fileName: file.name
         }
 
@@ -128,7 +189,7 @@ function uncheckedAllPackagingFormats() {
 }
 
 function changeSignatureLevel(signatureFormat) {
-    document.getElementById("signatureLevelBASELINE_B").checked  = true;
+    document.getElementById("signatureLevelBASELINE_B").checked = true;
     document.getElementById("signatureLevelBASELINE_B").value = signatureFormat + "-BASELINE-B";
     document.getElementById("signatureLevelBASELINE_B_label").innerText = signatureFormat + "-BASELINE_B";
 
@@ -143,22 +204,22 @@ function changeSignatureLevel(signatureFormat) {
 
 
     let selectedContainer = document.querySelector('input[name="container"]:checked').value;
-    if("no" === selectedContainer){
-        if("CAdES" === signatureFormat){
+    if ("no" === selectedContainer) {
+        if ("CAdES" === signatureFormat) {
             document.getElementById("packagingFormatInternallyDetached").disabled = true;
             document.getElementById("packagingFormatEnveloped").disabled = true;
             document.getElementById("packagingFormatDetached").disabled = false;
             document.getElementById("packagingFormatEnveloping").disabled = false;
 
             uncheckedAllPackagingFormats();
-        } else if("PAdES" === signatureFormat){
+        } else if ("PAdES" === signatureFormat) {
             document.getElementById("packagingFormatInternallyDetached").disabled = true;
             document.getElementById("packagingFormatEnveloping").disabled = true;
             document.getElementById("packagingFormatDetached").disabled = true;
             document.getElementById("packagingFormatEnveloped").disabled = false;
 
             document.getElementById("packagingFormatEnveloped").checked = true;
-        } else if("XAdES" === signatureFormat){
+        } else if ("XAdES" === signatureFormat) {
             document.getElementById("packagingFormatInternallyDetached").disabled = false;
             document.getElementById("packagingFormatEnveloping").disabled = false;
             document.getElementById("packagingFormatDetached").disabled = false;
@@ -170,7 +231,7 @@ function changeSignatureLevel(signatureFormat) {
 }
 
 function changeContainer(container) {
-    if("no" === container){
+    if ("no" === container) {
         document.getElementById("signatureFormatPAdES").disabled = false;
 
         document.getElementById("packagingFormatDetached").disabled = false;
@@ -181,7 +242,7 @@ function changeContainer(container) {
         document.getElementById("signatureFormatXAdES").checked = false;
 
         uncheckedAllPackagingFormats();
-    } else if("asic-s" === container){
+    } else if ("asic-s" === container) {
         document.getElementById("signatureFormatPAdES").disabled = true;
 
         document.getElementById("packagingFormatEnveloped").disabled = true;
@@ -190,7 +251,7 @@ function changeContainer(container) {
         document.getElementById("packagingFormatDetached").disabled = false;
 
         document.getElementById("packagingFormatDetached").checked = true;
-    } else if("asic-e" === container){
+    } else if ("asic-e" === container) {
         document.getElementById("signatureFormatPAdES").disabled = true;
 
         document.getElementById("packagingFormatEnveloped").disabled = true;

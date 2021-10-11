@@ -1,0 +1,129 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Електронно подписване</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+
+    <link rel="stylesheet" href="styles.css?v=1.0">
+</head>
+
+<body>
+
+<div class="content">
+    <form method="post" enctype="multipart/form-data">
+        <h1>Демонстрационно приложение за електронно подписване  (HTML/Javascript)<br>(Език: Български&nbsp;|&nbsp;<a href="indexEN_Old.html" target="_blank">English</a>)</h1>
+        <hr>
+        <h3>Файл за подписване</h3>
+        <input type="file" id="file" name="file" title="Изберете файл" value="Изберете файл">
+
+        <h3>Контейнер</h3>
+        <div>
+            <input type="radio" checked id="containerNo" onclick="changeContainer('no')" name="container" value="no">
+            <label for="containerNo">No</label>
+
+            <input type="radio" id="containerASiC-S" onclick="changeContainer('asic-s')" name="container" value="asic-s">
+            <label for="containerASiC-S">ASiC-S</label>
+
+            <input type="radio" id="containerASiC-E" onclick="changeContainer('asic-e')" name="container" value="asic-e">
+            <label for="containerASiC-E">ASiC-E</label>
+        </div>
+
+        <h3>Формат на подписа</h3>
+        <div>
+            <input type="radio" id="signatureFormatCAdES" onclick="changeSignatureLevel('CAdES')" name="signatureFormat" value="cades">
+            <label for="signatureFormatCAdES">CAdES</label>
+
+            <input type="radio" id="signatureFormatPAdES" onclick="changeSignatureLevel('PAdES')" name="signatureFormat" value="pades">
+            <label for="signatureFormatPAdES">PAdES</label>
+
+            <input type="radio" id="signatureFormatXAdES" onclick="changeSignatureLevel('XAdES')" name="signatureFormat" value="xades">
+            <label for="signatureFormatXAdES">XAdES</label>
+
+<!--            <input type="radio" id="signatureFormatJAdES" onclick="changeSignatureLevel('JAdES')" name="signatureFormat" value="jades">-->
+<!--            <label for="signatureFormatJAdES">JAdES</label>-->
+        </div>
+
+        <h3>Тип на подписа</h3>
+        <div>
+            <input type="radio" disabled id="packagingFormatEnveloped" name="packagingFormat" value="enveloped">
+            <label for="packagingFormatEnveloped">Enveloped</label>
+
+            <input type="radio" disabled id="packagingFormatEnveloping" name="packagingFormat" value="enveloping">
+            <label for="packagingFormatEnveloping">Enveloping</label>
+
+            <input type="radio" disabled id="packagingFormatDetached" name="packagingFormat" value="detached">
+            <label for="packagingFormatDetached">Detached</label>
+
+            <input type="radio" disabled id="packagingFormatInternallyDetached" name="packagingFormat" value="internally_detached">
+            <label for="packagingFormatInternallyDetached">Internally detached</label>
+        </div>
+
+        <h3>Ниво на подписa</h3>
+        <div>
+            <input type="radio" id="signatureLevelBASELINE_B" name="signatureLevel" value="BASELINE_B">
+            <label id="signatureLevelBASELINE_B_label" for="signatureLevelBASELINE_B">BASELINE_B</label>
+
+            <input type="radio" id="signatureLevelBASELINE_T" name="signatureLevel" value="BASELINE_T">
+            <label id="signatureLevelBASELINE_T_label" for="signatureLevelBASELINE_T">BASELINE_T</label>
+
+            <br>
+
+            <input type="radio" id="signatureLevelBASELINE_LT" name="signatureLevel" value="BASELINE_LT">
+            <label id="signatureLevelBASELINE_LT_label" for="signatureLevelBASELINE_LT">BASELINE_LT</label>
+
+            <input type="radio" id="signatureLevelBASELINE_LTA" name="signatureLevel" value="BASELINE_LTA">
+            <label id="signatureLevelBASELINE_LTA_label" for="signatureLevelBASELINE_LTA">BASELINE_LTA</label>
+        </div>
+
+        <h3>Хеш алгоритъм</h3>
+        <div>
+            <input type="radio" id="digestAlgorithmSHA1" name="digestAlgorithm" value="sha1">
+            <label for="digestAlgorithmSHA1">SHA1</label>
+
+            <input type="radio" id="digestAlgorithmSHA256" checked name="digestAlgorithm" value="sha256">
+            <label for="digestAlgorithmSHA256">SHA256</label>
+
+            <input type="radio" id="digestAlgorithmSHA384" name="digestAlgorithm" value="sha384">
+            <label for="digestAlgorithmSHA384">SHA384</label>
+
+            <input type="radio" id="digestAlgorithmSHA512" name="digestAlgorithm" value="sha512">
+            <label for="digestAlgorithmSHA512">SHA512</label>
+        </div>
+        <br>
+        <br>
+        <button disabled id="submitButton" type="submit">Подпиши</button>
+    </form>
+
+    <br>
+    <div>
+        <p id="message" class="message"><strong>Неуспешно свързване с NexU локална компонента!</strong></p>
+        <br>
+        <a href="https://services.ibs.bg/esign/NexuLauncher.jnlp" >Изтегляне (JNLP)</a>
+        <br>
+        <a href="nexu-bundle-1.23-SNAPSHOT.zip" download target="_blank" >Изтегляне на локална компонента NexU (Windows)</a>
+        <a href="nexu-windows.txt" download target="_blank" >Инструкция за инсталация</a>
+        <br>
+        <a href="nexu-1.0.dmg" download target="_blank" >Изтегляне на локална компонента NexU (MacOS)</a>
+        <a href="nexu-macos.txt" download target="_blank" >Инструкция за инсталация</a>
+        <br>
+        <a href="nexu-1.0-1.x86_64.rpm" download target="_blank" >Изтегляне на локална компонента NexU (Linux)</a>
+        <a href="nexu-linux.txt" download target="_blank" >Инструкция за инсталация</a>
+        <br>
+        <a href="https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12" target="_blank" >Лиценз</a>
+        <br>
+        <a href="https://github.com/IBSBG/esig.git" target="_blank" >Изходен код</a>
+        <br>
+        <a href="mailto: esign@ibs.bg" target="_blank" >Обратна връзка (esign[at]ibs[dot]bg)</a>
+    </div>
+</div>
+
+<script src="scripts.js"></script>
+<script type="application/javascript">
+    checkAgentStatus("bg");
+</script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+body {
+    background-color: #EEEEEE;
+}
+
+* {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    background-color: #fff;
+    height: 9em;
+    padding: 0 2em 2em 2em;
+    font-weight: 400;
+}
+
+.pre-header-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-top: 0.5em;
+    text-align: right;
+}
+
+.header-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    background-color: #fff;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+div.logo {
+    float: left;
+    padding-right: 25px;
+}
+
+.logo img {
+    width: 5em;
+}
+
+.site-title {
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.site-sub-title {
+    font-size: 1em;
+    font-weight: 400;
+    display: inline-block;
+}
+
+.environment-indicator {
+    background-color: #ed5656;
+    color: #fff;
+    display: inline-block;
+    font-size: 0.8em;
+    padding: 1px 5px;
+    margin-left: 10px;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    position: relative;
+}
+
+#blue-banner {
+    background-color: #014F7C;
+    height: 300px;
+    width: 100%;
+    position: fixed;
+    top: 9em;
+}
+
+.main-content {
+    padding: 3em;
+    flex: 2 1 700px;
+}
+
+div.aside {
+    flex: 1 1 200px;
+    margin: 3em;
+    padding: 2rem;
+    background-color: #eee;
+    font-size: 0.9em;
+    font-weight: 300;
+}
+
+div.aside img {
+    width: 100px;
+    float: left;
+    margin: 0 20px 15px 0;
+}
+
+div.aside a {
+    color: #07a;
+}
+
+h1 {
+    font-size: 2.437rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 1.5rem 0 0.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: #01497c;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+select {
+    border: 0px;
+    border-bottom: 1px solid #999;
+}
+
+.button {
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    background-color: #014f86;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    border: 1px solid #014f86;
+    border-radius: 7px;
+    padding: 0 20px;
+}
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+    background-color: #eee;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active,
+.collapsible:hover {
+    background-color: #ddd;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.collapsible_content {
+    padding: 1rem;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+.sign_panel {
+    margin-bottom: 3rem;
+}
+
+.message {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+
+footer {
+    margin-top: 2em;
+
+}
+
+#footer-content {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+#footer-text {
+    flex: 2 1 700px;
+    font-size: 0.8em;
+    font-weight: 300;
+    padding: 0 3em 3em;
+}
+
+#footer-text a {
+    font-size: 1em;
+}
+
+#footer-logos {
+    flex: 1 1 200px;
+    margin-left: 3em;
+}
+
+.svg-icons {
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    fill: #07a;
+}
+
+
+@media (max-width: 425px) {
+    .logo img {
+        width: 4em;
+    }
+
+    .site-title {
+        font-size: 1.5em;
+        font-weight: 600;
+    }
+
+    h1 {
+        font-size: 1.75em;
+    }
+
+}

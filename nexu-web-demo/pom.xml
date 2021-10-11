@@ -6,7 +6,7 @@
 
   <groupId>lu.nowina.apps</groupId>
   <artifactId>nexu-web-demo</artifactId>
-  <version>1.23forkBG</version>
+  <version>1.23-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>nexu-web-demo</name>

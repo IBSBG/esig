@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+"
+      codebase="https://services.ibs.bg/esign/"
+      href="NexuLauncher.jnlp">
+    <information>
+        <title>NexU</title>
+        <vendor>IBS</vendor>
+    </information>
+
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.8+"
+              href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="nexu.jar" main="true"/>
+    </resources>
+
+    <security>
+        <all-permissions/>
+    </security>
+
+    <application-desc
+            name="NexU local Application"
+            main-class="lu.nowina.nexu.NexuLauncher.class">
+    </application-desc>
+
+    <update check="background"/>
+</jnlp>
