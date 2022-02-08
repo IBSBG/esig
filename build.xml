@@ -4,12 +4,10 @@
     <property environment="env"/>
 
     <target name="clean">
-
         <delete quiet="false" includeemptydirs="true">
             <fileset dir="${web.build.dir}" includes="**/*">
             </fileset>
         </delete>
-
     </target>
 
     <target name="build_dist" depends="clean">
@@ -21,30 +19,36 @@
 <!--        </copy>-->
 
         <!-- copy nexu bundle -->
-        <copy todir="${win.dist.dir}">
-            <fileset dir="${target.nexu.bundle}">
-                <include name="*.zip"/>
-            </fileset>
-        </copy>
+<!--        <copy todir="${win.dist.dir}">-->
+<!--            <fileset dir="${target.nexu.bundle}">-->
+<!--                <include name="*.zip"/>-->
+<!--            </fileset>-->
+<!--        </copy>-->
+
         <!-- copy macos bundle -->
-        <copy todir="${mac.dist.dir}">
-            <fileset dir="${target.nexu.bundle}">
-                <include name="*.dmg"/>
-            </fileset>
-        </copy>
+<!--        <copy todir="${mac.dist.dir}">-->
+<!--            <fileset dir="${target.nexu.bundle}">-->
+<!--                <include name="*.dmg"/>-->
+<!--            </fileset>-->
+<!--        </copy>-->
         <!-- copy linux bundle -->
-        <copy todir="${linux.dist.dir}">
-            <fileset dir="${target.nexu.bundle}">
-                <include name="*.rpm"/>
-            </fileset>
-        </copy>
+<!--        <copy todir="${linux.dist.dir}">-->
+<!--            <fileset dir="${target.nexu.bundle}">-->
+<!--                <include name="*.rpm"/>-->
+<!--            </fileset>-->
+<!--        </copy>-->
 
 
+    <!--"c:\Program Files (x86)\Inno Setup 5\Compil32.exe" /cc NexU.iss-->
         <!--        augment war with bundle in order to be available for download-->
         <war destfile="${web.build.dir}nexu-web-demo-${version}.war" needxmlfile="false">
-
-            <fileset dir="${win.dist.dir}">
+<!--            <fileset dir="${win.dist.dir}">-->
+<!--                <include name="*.zip" />-->
+<!--                <include name="*.txt" />-->
+<!--            </fileset>-->
+            <fileset dir="${win.dist.ext.dir}">
                 <include name="*.zip" />
+                <include name="*.exe" />
                 <include name="*.txt" />
             </fileset>
             <fileset dir="${mac.dist.dir}">
@@ -58,11 +62,10 @@
             <fileset dir="${web.demo}">
                 <include name="**" />
             </fileset>
-            <fileset dir="${win.dist.ext.dir}">
-                <include name="*.*" />
-            </fileset>
-
-            <!--            <zipfileset dir="/" prefix="" />-->
+<!--            <fileset dir="${win.dist.ext.dir}">-->
+<!--                <include name="*.*" />-->
+<!--            </fileset>-->
+<!--            <zipfileset dir="/" prefix="" />-->
         </war>
 
         <copy todir="${web.dist.dir}">
@@ -72,5 +75,4 @@
         </copy>
 
     </target>
-
 </project>

@@ -13,14 +13,14 @@ body {
 header {
     background-color: #fff;
     height: 9em;
-    padding: 0 2em 2em 2em;
+    padding: 2em 2em 1em 2em;
     font-weight: 400;
 }
 
 .pre-header-container {
     max-width: 1300px;
     margin: 0 auto;
-    padding-top: 0.5em;
+    padding-top: 0em;
     text-align: right;
 }
 
@@ -40,6 +40,7 @@ div.logo {
 
 .logo img {
     width: 5em;
+    /*height: 6em;*/
 }
 
 .site-title {
@@ -72,8 +73,8 @@ div.logo {
     background-color: #014F7C;
     height: 300px;
     width: 100%;
-    position: fixed;
-    top: 9em;
+    position: absolute;
+    top: 10em;
 }
 
 .main-content {
